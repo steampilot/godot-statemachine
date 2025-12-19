@@ -1,0 +1,31 @@
+[gd_scene load_steps=4 format=3 uid="uid://b6xg2n5p2rvy2"]
+
+[ext_resource type="Script" path="res://src/player/player.gd"]
+[ext_resource type="Script" path="res://src/player/motor.gd"]
+[ext_resource type="Script" path="res://src/player/state_flags.gd"]
+[ext_resource type="Script" path="res://src/player/intent_emitter.gd"]
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("res://src/player/player.gd")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = CapsuleShape3D.new()
+
+[node name="CaptureSlot" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="AttachmentSlot" type="Node3D" parent="."]
+unique_name_in_owner = true
+position = Vector3(0.3, 1, 0)
+
+[node name="Visual" type="MeshInstance3D" parent="."]
+mesh = BoxMesh.new()
+
+[node name="IntentEmitter" type="Node" parent="."]
+script = ExtResource("res://src/player/intent_emitter.gd")
+
+[node name="Motor" type="Node" parent="."]
+script = ExtResource("res://src/player/motor.gd")
+
+[node name="StateFlags" type="Node" parent="."]
+script = ExtResource("res://src/player/state_flags.gd")

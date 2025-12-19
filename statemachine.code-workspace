@@ -1,0 +1,38 @@
+{
+  "folders": [
+    {
+      "path": "."
+    }
+  ],
+  "settings": {
+    "[gdscript]": {
+      "editor.formatOnSave": true,
+      "editor.insertSpaces": false,
+      "editor.tabSize": 1,
+      "editor.defaultFormatter": "gedevan-alekseev.gdscript"
+    },
+    "[gdshader]": {
+      "editor.insertSpaces": false,
+      "editor.tabSize": 1
+    },
+    "[json]": {
+      "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "files.exclude": {
+      "**/.godot": true,
+      "**/*.import": true,
+      "**/export": true
+    },
+    "search.exclude": {
+      "**/.godot": true,
+      "**/export": true
+    }
+  },
+  "extensions": {
+    "recommendations": [
+      "gedevan-alekseev.gdscript",
+      "ms-dotnettools.csharp",
+      "ms-vscode.makefile-tools"
+    ]
+  }
+}
