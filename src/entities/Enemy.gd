@@ -1,9 +1,11 @@
 extends CharacterBody2D
 class_name Enemy
 ## Beispiel Enemy mit HealthComponent und VelocityComponent
+## Enemy CAN queue_free bei Death (nicht wie Player)
 
 @onready var health: HealthComponent = $HealthComponent
 @onready var velocity_comp: VelocityComponent = $VelocityComponent
+@onready var death_comp: DeathComponent = $DeathComponent
 
 func _ready() -> void:
 	# Health Signals verbinden
@@ -12,6 +14,9 @@ func _ready() -> void:
 
 	# Velocity Signals verbinden
 	velocity_comp.velocity_changed.connect(_on_velocity_changed)
+
+	# Death ist OK für Enemy
+	death_comp.auto_queue_free = true
 
 func _physics_process(_delta: float) -> void:
 	# Movement wird von VelocityComponent gehandelt
@@ -25,12 +30,9 @@ func _on_health_changed(from: int, damage: int, max_hp: int) -> void:
 	# UI Update, Damage-Flash, etc.
 
 func _on_health_depleted() -> void:
-	print("Enemy defeated!")
-	die()
+	print("Enemy defeated! DeathComponent wird queue_free aufrufen...")
+	# DeathComponent handelt Death + queue_free
 
 func _on_velocity_changed(new_velocity: Vector2) -> void:
 	# Optional: Animation, Sound, etc.
 	pass
-
-func die() -> void:
-	queue_free()

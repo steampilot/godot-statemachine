@@ -4,6 +4,7 @@ class_name Box
 
 @onready var health: HealthComponent = $HealthComponent
 @onready var pushable: PushableComponent = $PushableComponent
+@onready var death_comp: DeathComponent = $DeathComponent
 
 func _ready() -> void:
 	# Health Signals
@@ -13,6 +14,9 @@ func _ready() -> void:
 	# Pushable Signals
 	pushable.pushed.connect(_on_pushed)
 	pushable.stopped.connect(_on_stopped)
+
+	# Box kann auch queue_free
+	death_comp.auto_queue_free = true
 
 func _physics_process(_delta: float) -> void:
 	# Bewegung wird von PushableComponent gehandelt
@@ -28,8 +32,8 @@ func _on_health_changed(from: int, damage: int, max_hp: int) -> void:
 	print("Box: %d -> %d / %d HP" % [from, from - damage, max_hp])
 
 func _on_health_depleted() -> void:
-	print("Box destroyed!")
-	destroy()
+	print("Box destroyed! DeathComponent wird queue_free aufrufen...")
+	# DeathComponent handelt Death + queue_free
 
 func _on_pushed(direction: Vector2, force: float) -> void:
 	print("Box pushed in direction: %s with force: %.1f" % [direction, force])
@@ -37,7 +41,3 @@ func _on_pushed(direction: Vector2, force: float) -> void:
 
 func _on_stopped() -> void:
 	print("Box stopped moving")
-
-func destroy() -> void:
-	# Explosion, Sound, Particle, etc.
-	queue_free()
