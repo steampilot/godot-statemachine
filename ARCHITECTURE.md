@@ -6,7 +6,7 @@
 src/
 ├── player/              # Player-System (Core)
 │   ├── player.gd       # Orchestrator
-│   ├── motor.gd        # Physik + Bewegung
+│   ├── engine.gd       # Physik + Bewegung
 │   ├── state_flags.gd  # Wahrheitsschicht
 │   ├── intent.gd       # Abstrakte Intents
 │   ├── intent_emitter.gd # Input → Intent
@@ -55,10 +55,10 @@ StateFlags:
 ### 4. Architektur-Schichten
 
 ```
-Layer 1: Intent (Absicht)
-Layer 2: Motor (Physik)
-Layer 3: StateFlags (Wahrheit)
-Layer 4: Animation (Beobachter - nur Darstellung)
+Layer 1: Intent (Absicht - Input-unabhängig)
+Layer 2: Engine (Physik - velocity, move_and_slide)
+Layer 3: StateFlags (Wahrheit - grounded, controlled, alive)
+Layer 4: Motor (Motion/Animation - AnimationPlayer2D)
 ```
 
 ## 🔄 Interaktions-Ablauf: Stuhl-Beispiel
@@ -129,7 +129,7 @@ extends Puppeteer
 
 func on_capture(player):
   # Chair übernimmt Player
-  player.motor.lock_movement()
+  player.engine.lock_movement()
   play_sit_animation()
 
 func on_intent(intent):
@@ -137,7 +137,7 @@ func on_intent(intent):
     release()
 
 func on_release(player):
-  player.motor.unlock_movement()
+  player.engine.unlock_movement()
   play_stand_animation()
 ```
 
@@ -167,7 +167,34 @@ func use():
 ✓ Animation ist nur Beobachter
 ```
 
-## 🧪 Testing
+## � NPCs im System
+
+**Ein NPC ist kein separater Code-Pfad - es ist ein Player mit AI-Puppeteer!**
+
+```gdscript
+# Ein NPC läuft ständig mit controlled=true
+npc.state.controlled = true
+npc.puppeteer = ai_controller
+
+# AI generiert Intents statt Input
+var intents = ai_controller.generate_intents()
+for intent in intents:
+    ai_controller.on_intent(intent)
+
+# Physik läuft identisch
+engine.physics_tick(delta)
+```
+
+**Skalierbar bis unendlich:**
+- Einfache Patrol-AI
+- Komplexe Behavior Trees
+- Possession (Player kontrolliert NPC)
+- Multi-Entity Fahrzeuge
+- Networked NPCs (Multiplayer)
+
+Siehe: [ADVANCED_CONCEPTS.md](ADVANCED_CONCEPTS.md#-npcs-permanently-puppeteered-players)
+
+## �🧪 Testing
 
 StateFlags ermöglichen isoliertes Testing ohne Animation zu mocken:
 
@@ -213,7 +240,7 @@ Kein separater NPC-Code nötig.
 | Klasse | Zweck |
 |--------|-------|
 | Player | Orchestrator |
-| Motor | Physik-Exekutive |
+| Engine | Physik-Exekutive |
 | StateFlags | Wahrheitsschicht |
 | Intent | Abstrakte Absicht |
 | IntentEmitter | Input → Intent |

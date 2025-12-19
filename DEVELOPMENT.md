@@ -12,7 +12,8 @@
 src/
 ├── player/
 │   ├── player.gd              # Orchestrator (Input → Intent routing)
-│   ├── motor.gd               # Physik-Executive (Intent → Movement)
+│   ├── engine.gd              # Physik-Executive (Intent → Movement)
+│   ├── motor.gd               # Motion-Executive (StateFlags → Animation)
 │   ├── state_flags.gd         # Truth Layer (controlled, grounded, alive)
 │   ├── intent.gd              # Abstract Intent Definition
 │   ├── intent_emitter.gd      # Input Handler (nur hier!)
@@ -40,37 +41,33 @@ StateFlags:
   alive: bool         # Noch am Leben?
 ```
 - **NICHT FSM** – orthogonale Flags statt State-Explosion
-- Animation liest diese, trifft aber keine Entscheidungen
+- Motor liest diese, Animation wird davon bestimmt
 
-### 3. **Puppeteering** (Temporäre Kontrolle)
+### 3. **Engine** (Physik)
+Physik-Executive:
 ```
-Player.free_state():
-  state.controlled = false
-  puppeteer = null
-
-Player.capture(chair):
-  state.controlled = true
-  puppeteer = chair
-  chair.on_capture(self)
-
-Chairs.on_intent(intent):
-  # Chair entscheidet über Ausführung
+Intent → Engine.apply_intent()
+  ↓
+velocity berechnen
+  ↓
+move_and_slide()
+  ↓
+StateFlags.grounded aktualisieren
 ```
 
-**Wichtig:** Puppeeter NICHT der Player, Objekt entscheidet!
-
-### 4. **Motor-Schicht** (Physik ≠ Animation)
+### 4. **Motor** (Motion/Animation)
+Animation-Executive (beobachtet StateFlags):
 ```
-Intent → Motor.apply_intent()
-           ↓
-         velocity.x = direction * speed
-           ↓
-         move_and_slide()
-           ↓
-         StateFlags.grounded = is_on_floor()
+StateFlags.controlled, grounded, velocity
+  ↓
+Motor.update_animation()
+  ↓
+Passende Animation wählen
+  ↓
+AnimationPlayer2D.play()
+  ↓
+AnimatedSprite2D + Sound-Effekte
 ```
-
-Animation beobachtet später StateFlags und Velocity, entscheidet aber NICHT über sie!
 
 ## 🔄 Ablauf: Player Sitzt auf Stuhl
 
@@ -85,7 +82,7 @@ chair.candidate_player = player
 IntentEmitter.collect() → Intent(Type.INTERACT)
 Player._physics_process():
   if not controlled:
-    motor.apply_intent(intent)  # Normalfall → ignoriert
+    engine.apply_intent(intent)  # Normalfall → ignoriert
   # ABER: Intent signalisiert "möchte interagieren"
 ```
 
@@ -176,7 +173,7 @@ func _unhandled_input(event):
     occupant.capture(self)
 
 func on_capture(player: Player):
-  player.motor.lock_movement()
+  player.engine.lock_movement()
   # Play Animation
 
 func on_intent(intent: Intent):
@@ -184,7 +181,7 @@ func on_intent(intent: Intent):
     release()
 
 func on_release(player: Player):
-  player.motor.unlock_movement()
+  player.engine.unlock_movement()
   # Play Stand Animation
   occupant = null
 ```
@@ -226,7 +223,7 @@ func test_player_captured():
 ✅ Intent IMMER abstrakt (keine Typ-Referenzen)
 ✅ StateFlags = Single Source of Truth
 ✅ Puppeteer entscheidet Ausführung, nicht Absicht
-✅ Motor führt Intent nur aus wenn !controlled
+✅ Engine führt Intent nur aus wenn !controlled
 ✅ Animation ist reiner Beobachter
 ✅ Player kennt KEINE Objekttypen
 ✅ Objekte kennen KEIN Input-System
@@ -239,12 +236,18 @@ func test_player_captured():
 3. **Cola/Dose** – Attachment-Beispiel
 4. **Main Scene** – Alles zusammenbringen
 
-## 📚 WICHTIGE FILES
+## � WICHTIGE DATEIEN
 
 - `ARCHITECTURE.md` – Design-Dokumentation für User
+- `ADVANCED_CONCEPTS.md` – **NPC-Modell, Possession, komplexe Szenarien**
 - `src/player/player.gd` – Core Orchestrator
 - `src/puppeteer.gd` – Interface für Objekte
 - `project.godot` – Godot Project Config
+
+---
+
+**ZENTRALES KONZEPT:** Ein NPC ist ein Player mit AI-Puppeteer!
+Siehe [ADVANCED_CONCEPTS.md](ADVANCED_CONCEPTS.md#-npcs-permanently-puppeteered-players)
 
 ---
 
