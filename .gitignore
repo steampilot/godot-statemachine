@@ -21,7 +21,7 @@ mono_crash.*.json
 
 # System/IDE files
 .DS_Store
-.vscode/
+
 .vs/
 *.swp
 *.swo
