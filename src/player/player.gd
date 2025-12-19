@@ -1,10 +1,11 @@
 extends CharacterBody2D
 class_name Player
 
-## Orchestrator - koordiniert Intent-Sammlung, Puppetry und Motor
-## Input → Intent → (Player | Puppeteer) → Motor → Physik
+## Orchestrator - koordiniert Intent-Sammlung, Puppetry und Motion/Animation
+## Input → Intent → (Player | Puppeteer) → Engine (Physik) + Motor (Animation)
 
 @onready var intent_emitter: IntentEmitter = $IntentEmitter
+@onready var engine: Engine = $Engine
 @onready var motor: Motor = $Motor
 @onready var state: StateFlags = $StateFlags
 
@@ -12,22 +13,23 @@ class_name Player
 var puppeteer: Node = null
 
 func _ready():
-	motor.setup(self, state)
+	engine.setup(self, state)
+	motor.setup(self)
 
 func _physics_process(delta):
 	## Intents sammeln
 	var intents = intent_emitter.collect()
 
-	## Routing: Controlled → Puppeteer, sonst → Motor
+## Routing: Controlled → Puppeteer, sonst → Engine
 	if state.controlled and puppeteer:
 		for intent in intents:
 			puppeteer.on_intent(intent)
 	else:
 		for intent in intents:
-			motor.apply_intent(intent, delta)
+			engine.apply_intent(intent, delta)
 
-	## Motor macht Physik
-	motor.physics_tick(delta)
+	## Engine macht Physik
+	engine.physics_tick(delta)
 
 ## Capture-Schnittstelle (wird vom Puppeteer aufgerufen)
 func capture(puppeteer_node: Node):

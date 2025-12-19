@@ -1,63 +1,101 @@
 extends Node
 class_name Motor
 
-## Exekutive Schicht - Physik, Bewegung, Regelwerk
-## Interpretiert Intents und setzt sie in physische Bewegung um
-## Entscheidet NICHT, welche Animation läuft - das macht der Beobachter
+## Motion/Animation Controller - beobachtet StateFlags und steuert AnimationPlayer2D
+## "Motor" = Motion Engine für Animation & Sound
+## Der Motor kümmert sich um:
+## - Welche Animation läuft
+## - AnimationPlayer2D Trigger
+## - AnimatedSprite2D Richtung/Flip
+## - Sound-Effekte synchron mit Animationen
+## - Andere Attribute (Partikel, etc.)
 
-@export var speed: float = 5.0
-@export var gravity: float = 9.8
-@export var jump_force: float = 5.0
+@onready var animation_player: AnimationPlayer = $"../AnimationPlayer"
+@onready var animated_sprite: AnimatedSprite2D = $"../AnimatedSprite2D"
+@onready var state: StateFlags = $"../StateFlags"
 
-var body: CharacterBody3D
-var state: StateFlags
+var body: CharacterBody2D
+var current_animation: String = "idle"
 
-func setup(p_body: CharacterBody3D, p_state: StateFlags):
+func setup(p_body: CharacterBody2D):
 	body = p_body
-	state = p_state
 
-## Interpretiert Intent und wendet sie an
-func apply_intent(intent: Intent, delta: float):
+func _physics_process(delta: float):
+	## Beobachte StateFlags und bestimme Animation
+	update_animation()
+	update_sprite_direction()
+
+## ===== ANIMATION LOGIC =====
+
+func update_animation():
+	"""Bestimmt die aktuelle Animation basierend auf StateFlags und Physics"""
+	var target_anim = _get_target_animation()
+
+	if target_anim != current_animation:
+		_transition_to(target_anim)
+
+func _get_target_animation() -> String:
+	"""Bestimmt welche Animation laufen soll"""
+
+	# Controlled (auf Chair, im Auto, etc.)
 	if state.controlled:
-		# Gepuppt: Intents werden ignoriert
+		return "sit"  # Placeholder
+
+	# Nicht am Leben
+	if not state.alive:
+		return "dead"
+
+	# In der Luft
+	if not state.grounded:
+		# Fällt oder springt?
+		if body.velocity.y > 0:
+			return "fall"
+		else:
+			return "jump"
+
+	# Am Boden - Bewegung oder Idle?
+	if abs(body.velocity.x) > 0.1:
+		return "run"
+
+	return "idle"
+
+func _transition_to(anim_name: String):
+	"""Wechselt zur neuer Animation"""
+	if not animation_player.has_animation(anim_name):
+		print("⚠️ Animation '%s' nicht vorhanden!" % anim_name)
 		return
 
-	match intent.type:
-		Intent.Type.MOVE:
-			_apply_move(intent.value, delta)
-		Intent.Type.INTERACT:
-			pass  # Hier würde Interaktionslogik hin, wenn nötig
-		Intent.Type.CANCEL:
-			pass  # Hier würde Abbruch-Logik hin
+	print("▶️ Motion: %s" % anim_name)
+	current_animation = anim_name
+	animation_player.play(anim_name)
 
-## Wendet Bewegung an
-func _apply_move(dir: Vector2, delta: float):
-	var direction = Vector3(dir.x, 0, dir.y)
-	# Optional: Rotation berücksichtigen
-	# direction = direction.rotated(Vector3.UP, body.rotation.y)
+## ===== SPRITE DIRECTION =====
 
-	body.velocity.x = direction.x * speed
-	body.velocity.z = direction.y * speed
+func update_sprite_direction():
+	"""Flipped Sprite basierend auf Bewegungsrichtung"""
+	if abs(body.velocity.x) > 0.1:
+		animated_sprite.flip_h = body.velocity.x < 0
 
-## Physics-Tick: Gravität, Bodenkontakt, Move-and-Slide
-func physics_tick(delta: float):
-	# Gravität anwenden, wenn in der Luft
-	if not body.is_on_floor():
-		body.velocity.y -= gravity * delta
-	else:
-		state.grounded = true
-		# Sanftes Landen (nur kleine negative Y)
-		if body.velocity.y < 0:
-			body.velocity.y = 0
+## ===== SOUND EFFECTS (über AnimationPlayer Callbacks) =====
 
-	# Physik-Simulation
-	body.move_and_slide()
+func _on_animation_finished(anim_name: String):
+	"""Wird vom AnimationPlayer aufgerufen wenn Animation fertig"""
+	match anim_name:
+		"jump":
+			play_sound("jump")
+		"land":
+			play_sound("land")
+		"drink":
+			play_sound("drink")
 
-## Lock-Funktionen für Puppeteer
-func lock_movement():
-	"""Blockiert Bewegungs-Intents"""
-	pass
+func play_sound(sound_name: String):
+	"""Spiele einen Sound ab"""
+	# TODO: AudioStreamPlayer2D Integration
+	print("🔊 Sound: %s" % sound_name)
 
-func unlock_movement():
-	"""Gibt Bewegungs-Intents wieder frei"""
-	pass
+## ===== PUBLIC API =====
+
+func trigger_animation(anim_name: String):
+	"""Force-Trigger eine Animation (z.B. von Puppeteer)"""
+	if animation_player.has_animation(anim_name):
+		_transition_to(anim_name)
