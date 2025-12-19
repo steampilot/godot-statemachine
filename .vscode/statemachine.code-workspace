@@ -30,9 +30,7 @@
   },
   "extensions": {
     "recommendations": [
-      "gedevan-alekseev.gdscript",
-      "ms-dotnettools.csharp",
-      "ms-vscode.makefile-tools"
+      "gedevan-alekseev.gdscript"
     ]
   }
 }
