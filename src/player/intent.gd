@@ -6,11 +6,15 @@ class_name Intent
 enum Type {
 	MOVE,
 	INTERACT,
-	CANCEL
+	CANCEL,
+	# Game-Level Intents
+	LOAD_SCENE,
+	PAUSE,
+	RESUME
 }
 
 var type: Type
-var value  # Vector2 für MOVE, null für andere
+var value  # Vector2 für MOVE, String für LOAD_SCENE, null für andere
 
 func _init(t: Type, v = null):
 	type = t
