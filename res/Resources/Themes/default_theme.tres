@@ -1,0 +1,32 @@
+[gd_resource type="Theme" load_steps=3 format=3 uid="uid://dvvspbwgxl5e9h"]
+
+[ext_resource type="FontFile" id="1_j8g0g" path="res://Fonts/PixelOperator8.ttf"]
+[ext_resource type="FontFile" id="2_5lqjk" path="res://Fonts/PixelOperator8-Bold.ttf"]
+
+[resource]
+
+# Label
+font_sizes/font_size = SubResource("FontSizeResource1")
+fonts/font = ExtResource("1_j8g0g")
+
+# Labels - alle verwenden PixelOperator8
+Label/font_sizes/font_size = 32
+Label/fonts/font = ExtResource("1_j8g0g")
+
+# Button
+Button/font_sizes/font_size = 24
+Button/fonts/font = ExtResource("2_5lqjk")
+
+# Title (für Überschriften)
+Label@title/font_sizes/font_size = 48
+Label@title/fonts/font = ExtResource("2_5lqjk")
+
+# Small Text
+Label@small/font_sizes/font_size = 16
+Label@small/fonts/font = ExtResource("1_j8g0g")
+
+# Farben
+Label/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_color = Color(1, 1, 1, 1)
+Button/colors/font_focus_color = Color(1, 1, 0, 1)
+Button/colors/font_pressed_color = Color(0.8, 0.8, 0.8, 1)

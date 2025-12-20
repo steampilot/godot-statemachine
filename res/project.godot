@@ -20,6 +20,11 @@ config/icon="res://icon.svg"
 window/size/initial_position_type=2
 window/stretch/scale_mode="integer"
 
+[gui]
+
+theme/custom_font="res://Fonts/PixelOperator8.ttf"
+theme/default_theme="res://Resources/Themes/default_theme.tres"
+
 [rendering]
 
 textures/canvas_textures/default_texture_filter=0
