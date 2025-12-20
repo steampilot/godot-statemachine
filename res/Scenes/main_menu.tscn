@@ -10,28 +10,63 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("1_navar")
+metadata/_edit_use_anchors_ = true
 
-[node name="VBoxContainer" type="VBoxContainer" parent="."]
+[node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
+unique_name_in_owner = true
+title = "Quit Game"
+initial_position = 2
+size = Vector2i(400, 150)
+dialog_text = "Are you sure you want to quit?"
+
+[node name="Panelcontainer" type="PanelContainer" parent="."]
 layout_mode = 1
-anchors_preset = 8
+anchors_preset = 7
 anchor_left = 0.5
-anchor_top = 0.5
+anchor_top = 1.0
 anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -100.0
-offset_top = -60.0
-offset_right = 100.0
-offset_bottom = 60.0
+anchor_bottom = 1.0
+offset_left = -248.0
+offset_top = -212.0
+offset_right = 248.0
 grow_horizontal = 2
-grow_vertical = 2
+grow_vertical = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Panelcontainer"]
+layout_mode = 2
 alignment = 1
 
-[node name="Label" type="Label" parent="VBoxContainer"]
+[node name="Label" type="Label" parent="Panelcontainer/VBoxContainer"]
 layout_mode = 2
 theme_override_font_sizes/font_size = 32
 text = "Godot State Machine"
 
-[node name="StartButton" type="Button" parent="VBoxContainer"]
+[node name="StartNewGame" type="Button" parent="Panelcontainer/VBoxContainer"]
+unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
-text = "Start Game"
+text = "Start New Game"
+
+[node name="LoadGame" type="Button" parent="Panelcontainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Load Game [INOP]"
+
+[node name="Settings" type="Button" parent="Panelcontainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Settings [INOP]"
+
+[node name="Credits" type="Button" parent="Panelcontainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "Credits [INOP]"
+
+[node name="EndGame" type="Button" parent="Panelcontainer/VBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_font_sizes/font_size = 24
+text = "END GAME"

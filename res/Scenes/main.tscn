@@ -1,14 +1,31 @@
-[gd_scene load_steps=3 format=3 uid="uid://cx6xfyylldh5t"]
+[gd_scene load_steps=4 format=3 uid="uid://cx6xfyylldh5t"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_bypvg"]
 [ext_resource type="PackedScene" uid="uid://bggpn6ycsjvnw" path="res://Scenes/main_menu.tscn" id="2_1g5m5"]
+[ext_resource type="Texture2D" uid="uid://j3oonrhc487s" path="res://Assets/Graphics/Mainmenu/MainMenuBackground_001.png" id="2_87hq0"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_bypvg")
 
-[node name="MainMenu" parent="." instance=ExtResource("2_1g5m5")]
-offset_left = 617.0
-offset_top = 305.0
-offset_right = 617.0
-offset_bottom = 305.0
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+follow_viewport_enabled = true
+
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("2_87hq0")
+expand_mode = 5
+
+[node name="MainMenu" parent="CanvasLayer" instance=ExtResource("2_1g5m5")]
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+grow_vertical = 0
 size_flags_horizontal = 4
