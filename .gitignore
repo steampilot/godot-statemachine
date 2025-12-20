@@ -1,8 +1,9 @@
 # Godot 4+ specific ignores
 .godot/
-*.godot
+*.import
 *.tres~
 *.gd~
+*.tscn~
 
 # Compiled Object files
 *.sco
@@ -21,7 +22,6 @@ mono_crash.*.json
 
 # System/IDE files
 .DS_Store
-
 .vs/
 *.swp
 *.swo
@@ -41,13 +41,6 @@ dist/
 
 # Editor temporary files
 *.tmp
-
-# Scene backups (optional, remove if you want to keep them)
-*.tscn~
-*.tres~
-
-# Import cache
-.import/
 
 # Environment files
 .env

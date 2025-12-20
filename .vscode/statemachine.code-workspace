@@ -7,9 +7,9 @@
   "settings": {
     "[gdscript]": {
       "editor.formatOnSave": true,
-      "editor.insertSpaces": false,
-      "editor.tabSize": 1,
-      "editor.defaultFormatter": "gedevan-alekseev.gdscript"
+      "editor.insertSpaces": true,
+      "editor.tabSize": 4,
+      "editor.defaultFormatter": "geequlim.godot-tools"
     },
     "[gdshader]": {
       "editor.insertSpaces": false,
@@ -26,11 +26,17 @@
     "search.exclude": {
       "**/.godot": true,
       "**/export": true
+    },
+    "godotTools.editorPath.godot4": "c:\\Godot\\Godot_v4.3-stable_win64.exe",
+    "godot_tools": {
+      "gdformat_path": "gdformat",
+      "linter": "gdlint"
     }
   },
   "extensions": {
     "recommendations": [
-      "gedevan-alekseev.gdscript"
+      "geequlim.godot-tools",
+      "alfish.godot-files"
     ]
   }
 }
