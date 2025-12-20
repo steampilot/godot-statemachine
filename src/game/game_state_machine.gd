@@ -1,12 +1,12 @@
-extends Node
 class_name GameStateMachine
+extends Node
 
 ## State Machine für Game-Level States
 
+signal state_changed(old_state: GameState, new_state: GameState)
+
 var current_state: GameState
 var states: Dictionary = {}
-
-signal state_changed(old_state: GameState, new_state: GameState)
 
 func _ready() -> void:
 	pass

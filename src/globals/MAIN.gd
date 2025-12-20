@@ -1,7 +1,19 @@
-extends Node
 class_name MAIN
+extends Node
 ## Global Singleton für zentrale Game-Verwaltung
 ## Verwaltet: Player, UI, Game States, Scores, etc.
+
+# Signals
+signal level_changed(level: int)
+signal score_changed(score: int)
+signal items_collected(count: int)
+signal game_paused_state_changed(is_paused: bool)
+
+# Globale Spielzustände
+var current_level: int = 1
+var total_score: int = 0
+var collected_items: int = 0
+var game_paused: bool = false
 
 # Globale State Machine
 @onready var game_state_machine: GameStateMachine = GameStateMachine.new()
@@ -12,24 +24,8 @@ class_name MAIN
 @onready var main_menu: MainMenu = null
 @onready var game_scene: Node = null
 
-# Globale Spielzustände
-var current_level: int = 1
-var total_score: int = 0
-var collected_items: int = 0
-var game_paused: bool = false
-
-# Signals
-signal level_changed(level: int)
-signal score_changed(score: int)
-signal items_collected(count: int)
-signal game_paused_state_changed(is_paused: bool)
-
 func _ready() -> void:
-	# Singleton-Pattern
-	if not is_node_unique():
-		queue_free()
-		return
-
+	# Singleton-Pattern wird über AutoLoad verwaltet
 	set_name("MAIN")
 	print("✓ MAIN Singleton initialisiert")
 

@@ -1,11 +1,11 @@
-extends Control
 class_name MainMenu
+extends Control
 
 ## Main Menu UI - Splash Screen mit Start Button
 
-@onready var start_button: Button = $VBoxContainer/StartButton
-
 signal load_scene_requested(scene_path: String)
+
+@onready var start_button: Button = $VBoxContainer/StartButton
 
 func _ready() -> void:
 	start_button.pressed.connect(_on_start_pressed)
@@ -20,4 +20,4 @@ func _ready() -> void:
 	offset_bottom = 100
 
 func _on_start_pressed() -> void:
-	load_scene_requested.emit("res://src/scenes/main.tscn")
+	load_scene_requested.emit("res://scenes/main.tscn")
