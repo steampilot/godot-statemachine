@@ -5,6 +5,8 @@
 *.gd~
 *.tscn~
 
+.scratch/
+
 # Compiled Object files
 *.sco
 *.o
