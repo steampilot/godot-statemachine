@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://dkeo345qq555v"]
+[gd_scene load_steps=11 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ridw5"]
 [ext_resource type="Texture2D" uid="uid://dxqaaodplsd4d" path="res://Assets/Graphics/PlayableCharacters/GothicVania/idle.png" id="2_ggkbi"]
@@ -43,6 +43,16 @@ animations = [{
 radius = 6.0
 height = 42.0
 
+[sub_resource type="Gradient" id="Gradient_8if78"]
+offsets = PackedFloat32Array(0.0107914, 0.52518)
+colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_tw8vx"]
+gradient = SubResource("Gradient_8if78")
+fill = 2
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(1.495, 0)
+
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_ridw5")
 
@@ -53,3 +63,10 @@ sprite_frames = SubResource("SpriteFrames_5jmtt")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -21)
 shape = SubResource("CapsuleShape2D_aysp5")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+position = Vector2(14, -32)
+color = Color(1, 1, 0.580392, 1)
+energy = 0.52
+texture = SubResource("GradientTexture2D_tw8vx")
+height = 2.0
