@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://bggpn6ycsjvnw"]
+[gd_scene load_steps=4 format=3 uid="uid://bggpn6ycsjvnw"]
 
 [ext_resource type="Script" path="res://Scripts/main_menu.gd" id="1_navar"]
+[ext_resource type="Texture2D" uid="uid://j3oonrhc487s" path="res://Assets/Graphics/Mainmenu/MainMenuBackground_001.png" id="2_81vqg"]
+[ext_resource type="FontFile" uid="uid://d3k4chn3u2nyc" path="res://Fonts/PixelOperator8-Bold.ttf" id="3_3ynqw"]
 
 [node name="MainMenu" type="Control"]
 layout_mode = 3
@@ -12,61 +14,105 @@ grow_vertical = 2
 script = ExtResource("1_navar")
 metadata/_edit_use_anchors_ = true
 
-[node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="."]
-unique_name_in_owner = true
-title = "Quit Game"
-initial_position = 2
-size = Vector2i(400, 150)
-dialog_text = "Are you sure you want to quit?"
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Panelcontainer" type="PanelContainer" parent="."]
-layout_mode = 1
+[node name="TextureRect" type="TextureRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_bottom = 120.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("2_81vqg")
+expand_mode = 5
+stretch_mode = 6
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 7
 anchor_left = 0.5
 anchor_top = 1.0
 anchor_right = 0.5
 anchor_bottom = 1.0
-offset_left = -248.0
-offset_top = -212.0
-offset_right = 248.0
+offset_left = -272.0
+offset_top = -264.0
+offset_right = 272.0
 grow_horizontal = 2
 grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 24
+theme_override_constants/margin_top = 24
+theme_override_constants/margin_right = 24
+theme_override_constants/margin_bottom = 24
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Panelcontainer"]
+[node name="Panelcontainer" type="PanelContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="CanvasLayer/MarginContainer/Panelcontainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/separation = 4
 alignment = 1
 
-[node name="Label" type="Label" parent="Panelcontainer/VBoxContainer"]
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer/VBoxContainer"]
 layout_mode = 2
+theme_override_colors/font_color = Color(0, 1, 0, 1)
+theme_override_fonts/font = ExtResource("3_3ynqw")
 theme_override_font_sizes/font_size = 32
-text = "Godot State Machine"
+text = "Caprica 
+VS 
+The AI-SLOB"
+horizontal_alignment = 1
+vertical_alignment = 1
 
-[node name="StartNewGame" type="Button" parent="Panelcontainer/VBoxContainer"]
+[node name="Separator" type="Control" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="StartNewGame" type="Button" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Start New Game"
 
-[node name="LoadGame" type="Button" parent="Panelcontainer/VBoxContainer"]
+[node name="LoadGame" type="Button" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Load Game [INOP]"
 
-[node name="Settings" type="Button" parent="Panelcontainer/VBoxContainer"]
+[node name="Settings" type="Button" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Settings [INOP]"
 
-[node name="Credits" type="Button" parent="Panelcontainer/VBoxContainer"]
+[node name="Credits" type="Button" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
 theme_override_font_sizes/font_size = 24
 text = "Credits [INOP]"
 
-[node name="EndGame" type="Button" parent="Panelcontainer/VBoxContainer"]
+[node name="EndGame" type="Button" parent="CanvasLayer/MarginContainer/Panelcontainer/HBoxContainer/VBoxContainer"]
 unique_name_in_owner = true
 layout_mode = 2
+theme_override_colors/font_hover_pressed_color = Color(1.51612e-06, 0.653202, 5.77569e-07, 1)
+theme_override_colors/font_hover_color = Color(0, 1, 0, 1)
+theme_override_colors/font_pressed_color = Color(1, 0, 0, 1)
+theme_override_colors/font_focus_color = Color(0, 0, 1, 1)
+theme_override_constants/outline_size = 4
+theme_override_constants/h_separation = 12
 theme_override_font_sizes/font_size = 24
 text = "END GAME"
+
+[node name="QuitConfirmationDialog" type="ConfirmationDialog" parent="CanvasLayer"]
+unique_name_in_owner = true
+title = "Quit Game"
+initial_position = 2
+size = Vector2i(400, 150)
+dialog_text = "Are you sure you want to quit?"
