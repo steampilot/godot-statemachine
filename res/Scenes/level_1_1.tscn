@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://bffa5qax302xi"]
+[gd_scene load_steps=12 format=4 uid="uid://bffa5qax302xi"]
 
 [ext_resource type="PackedScene" uid="uid://cp3c7eshwaeg5" path="res://Scenes/background_4_layerstscn.tscn" id="1_1es0j"]
 [ext_resource type="Texture2D" uid="uid://bwu84we2np4mu" path="res://Assets/Graphics/FreeGreneZone/Objects/ObjectsTileSet.png" id="2_6eda6"]
@@ -578,6 +578,9 @@ gradient = SubResource("Gradient_t4qlm")
 fill = 1
 fill_from = Vector2(0.5, 0.5)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_sfif1"]
+size = Vector2(16, 42)
+
 [node name="Level_1-1" type="Node2D"]
 
 [node name="Background" parent="." instance=ExtResource("1_1es0j")]
@@ -635,3 +638,10 @@ scale = Vector2(0.554687, 0.578125)
 color = Color(1, 1, 0.478431, 1)
 energy = 0.68
 texture = SubResource("GradientTexture2D_v11y6")
+
+[node name="Door" type="Area2D" parent="."]
+position = Vector2(745, 256)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Door"]
+position = Vector2(0, -21)
+shape = SubResource("RectangleShape2D_sfif1")

@@ -1,9 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://drqj04tcbsc3i"]
+[gd_scene load_steps=3 format=3 uid="uid://drqj04tcbsc3i"]
+
+[ext_resource type="Script" path="res://Scripts/door_way.gd" id="1_0wsae"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_f6kx0"]
 size = Vector2(24, 48)
 
 [node name="DoorWay" type="Area2D"]
+script = ExtResource("1_0wsae")
+transition_delay = null
+auto_transition = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -24)
