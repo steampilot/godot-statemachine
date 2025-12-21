@@ -1,0 +1,180 @@
+[gd_scene load_steps=3 format=3 uid="uid://ci55t4tpct53i"]
+
+[ext_resource type="Script" path="res://Scripts/settings_menu.gd" id="1_nixpv"]
+[ext_resource type="FontFile" uid="uid://d3k4chn3u2nyc" path="res://Fonts/PixelOperator8-Bold.ttf" id="2_klbqo"]
+
+[node name="SettingsMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_nixpv")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 64
+theme_override_constants/margin_top = 64
+theme_override_constants/margin_right = 64
+theme_override_constants/margin_bottom = 64
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 32
+theme_override_constants/margin_top = 32
+theme_override_constants/margin_right = 32
+theme_override_constants/margin_bottom = 32
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer"]
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 3
+theme_override_constants/separation = 20
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_klbqo")
+theme_override_font_sizes/font_size = 32
+text = "Audio Settings"
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="GridContainer" type="GridContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/h_separation = 16
+theme_override_constants/v_separation = 12
+columns = 3
+
+[node name="MasterLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Master"
+
+[node name="MasterSlider" type="HSlider" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MasterValueLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "100%"
+
+[node name="MusicLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Music"
+
+[node name="MusicSlider" type="HSlider" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="MusicValueLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "100%"
+
+[node name="SFXLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Sounds"
+
+[node name="SFXSlider" type="HSlider" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="SFXValueLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "100%"
+
+[node name="DialogLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "Dialog"
+
+[node name="DialogSlider" type="HSlider" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.01
+value = 1.0
+
+[node name="DialogValueLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/GridContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(60, 0)
+layout_mode = 2
+text = "100%"
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="MusicSelectionLabel" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+text = "Musik Auswahl"
+
+[node name="MusicRadioContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 8
+
+[node name="MusicTrack1" type="CheckBox" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/MusicRadioContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+button_pressed = true
+text = "Track 1 - Main Theme"
+
+[node name="MusicTrack2" type="CheckBox" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/MusicRadioContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Track 2 - Ambient"
+
+[node name="MusicTrack3" type="CheckBox" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer/MusicRadioContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Track 3 - Action"
+
+[node name="HSeparator3" type="HSeparator" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/HBoxContainer/ScrollContainer/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(150, 40)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Zurück"

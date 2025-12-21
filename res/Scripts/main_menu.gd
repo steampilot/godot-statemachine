@@ -30,8 +30,8 @@ func _on_load_pressed() -> void:
 	# TODO: Savegame-System implementieren
 
 func _on_settings_pressed() -> void:
-	print("→ Settings [NICHT IMPLEMENTIERT]")
-	# TODO: Settings-Screen erstellen
+	print("→ Settings wird geladen...")
+	get_tree().change_scene_to_file("res://Scenes/settings_menu.tscn")
 
 func _on_credits_pressed() -> void:
 	print("→ Credits [NICHT IMPLEMENTIERT]")
