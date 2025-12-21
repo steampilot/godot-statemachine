@@ -6,6 +6,7 @@
 *.tscn~
 
 .scratch/
+res/Assets/
 
 # Compiled Object files
 *.sco
