@@ -19,6 +19,7 @@ config/icon="res://icon.svg"
 
 Audio="*res://Globals/AUDIO.gd"
 MusicPlayer="*res://Globals/MUSIC_PLAYER.tscn"
+LevelLoader="*res://Globals/LEVEL_LOADER.gd"
 
 [display]
 
