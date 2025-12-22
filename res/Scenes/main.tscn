@@ -13,8 +13,11 @@ script = ExtResource("1_bypvg")
 position = Vector2(128, 192)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
-position = Vector2(-128, -192)
-zoom = Vector2(3, 3)
+position = Vector2(0, -16)
+zoom = Vector2(4, 4)
 limit_left = 0
 limit_top = 0
 position_smoothing_enabled = true
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+color = Color(1.15514e-06, 0.259701, 0.433874, 1)
