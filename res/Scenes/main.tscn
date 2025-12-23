@@ -1,9 +1,8 @@
-[gd_scene load_steps=5 format=3 uid="uid://cx6xfyylldh5t"]
+[gd_scene load_steps=4 format=3 uid="uid://b2ibswhcwe8fo"]
 
 [ext_resource type="Script" path="res://Scripts/main.gd" id="1_bypvg"]
 [ext_resource type="PackedScene" uid="uid://bffa5qax302xi" path="res://Scenes/level_1_1.tscn" id="3_7wi8j"]
 [ext_resource type="PackedScene" uid="uid://dkeo345qq555v" path="res://Scenes/player.tscn" id="3_qavgu"]
-[ext_resource type="Script" path="res://Scripts/debug_hud.gd" id="4_debug_hud"]
 
 [node name="Main" type="Node2D"]
 script = ExtResource("1_bypvg")
@@ -22,5 +21,3 @@ position_smoothing_enabled = true
 
 [node name="CanvasModulate" type="CanvasModulate" parent="."]
 color = Color(1.15514e-06, 0.259701, 0.433874, 1)
-[node name="DebugHUD" type="CanvasLayer" parent="."]
-script = ExtResource("4_debug_hud")

@@ -146,7 +146,6 @@ var coyote_timer = 0.0
 var jump_buffer_timer = 0.0
 # Für Landing Detection
 var was_on_floor = false
-var debug_label: Label
 
 # Calculated values (werden in _ready() berechnet)
 # Berechnete Sprunggeschwindigkeit (upward acceleration)
@@ -169,10 +168,6 @@ func _ready() -> void:
 
 	# Initialisiere Double Jump Counter
 	_jumps_remaining = double_jumps_available
-
-	if has_node("DebugLabel"):
-		debug_label = get_node("DebugLabel")
-		debug_label.modulate.a = 0.8
 
 
 func calculate_jump_physics() -> void:
@@ -201,9 +196,6 @@ func _physics_process(delta: float) -> void:
 
 	# Update Camera Ghost Position
 	update_camera_ghost()
-
-	# Update Debug Label
-	update_debug_label()
 
 	# Store floor state for next frame
 	was_on_floor = is_on_floor()
@@ -386,18 +378,3 @@ func update_camera_ghost() -> void:
 		# Kamera folgt direkt ohne Ghost
 		camera_ghost_position = global_position
 		camera_ignore_timer = 0.0
-
-
-func update_debug_label() -> void:
-	if debug_label == null:
-		return
-
-	var info = []
-	info.append("Speed: %.0f / %.0f" % [abs(velocity.x), max_speed])
-	info.append("Jump Height: %.0f px" % jump_height)
-	info.append("Jump Duration: %.2fs" % jump_duration)
-	info.append("Jumps Left: %d" % _jumps_remaining if double_jump_enabled else "Jumps: Single")
-	info.append("VJump: %s" % ("ON" % ("ON" if variable_jump_height else "OFF")))
-	info.append("Air Control: %.1f" % air_control)
-
-	debug_label.text = "\n".join(info)
