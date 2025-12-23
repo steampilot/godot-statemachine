@@ -54,7 +54,7 @@ func play_music(music_path: String, _fade_in: bool = false) -> void:
 	if not music_player:
 		push_error("MUSIC_PLAYER nicht initialisiert!")
 		return
-	
+
 	# Nutze die play_track Funktion des MUSIC_PLAYER
 	music_player.play_track(music_path)
 	music_started.emit(music_path.get_file())
