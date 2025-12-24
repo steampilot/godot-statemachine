@@ -11,25 +11,25 @@ var max_speed = 300.0
 var acceleration = 1800.0
 # Wie schnell bremst der Spieler beim Loslassen
 var deceleration = 1400.0
-# Wie schnell aus Rechts -> Links (und umgekehrt)
-var turn_speed = 2000.0
+# Richtungswechsel-Faktor (0.0 - 1.0) multipliziert mit (deceleration + acceleration)
+var turn_speed = 1.0
 # Sofortige Bewegung (kein Acceleration)
 var instant_movement = false
 
 # ========== JUMP VARIABLES ==========
 # Basic Jump Settings
 # Sprunghöhe in Pixeln (wird zu upward velocity konvertiert)
-var jump_height = 100.0
+var jump_height = 64.0 # Default: 100 Pixel
 # Zeit bis zum höchsten Punkt des Sprungs (berechnet Gravitation)
-var jump_duration = 0.5
+var jump_duration = 0.2 # Default: 0.5 Sekunden
 
 # Air Control - NUR horizontale (X) Bewegung in der Luft!
-# Horizontale Beschleunigung in der Luft (0 = keine X-Bewegung möglich)
-var air_acceleration = 900.0
+# Horizontale Beschleunigung in der Luft (0.0 - 1.0) als Faktor von acceleration
+var air_acceleration = 0.5
 # Kontrolle in der Luft (0.0 = keine, 1.0 = volle Kontrolle)
 var air_control = 0.8
-# Horizontale Bremskraft in der Luft
-var air_brake = 800.0
+# Horizontale Bremskraft in der Luft (0.0 - 1.0) als Faktor von deceleration
+var air_brake = 0.6
 
 # Gravity Settings
 # Gravity-Multiplikator beim Fallen (nach Peak des Jumps)
@@ -155,6 +155,9 @@ var _gravity = 0.0
 # Verbleibende Jumps (für Double Jump)
 var _jumps_remaining = 0
 
+# Node References
+@onready var sprite: AnimatedSprite2D = $Sprite
+
 
 func _ready() -> void:
 	add_to_group("player")
@@ -196,6 +199,9 @@ func _physics_process(delta: float) -> void:
 
 	# Update Camera Ghost Position
 	update_camera_ghost()
+
+	# Update Jump Animation
+	update_jump_animation()
 
 	# Store floor state for next frame
 	was_on_floor = is_on_floor()
@@ -262,7 +268,7 @@ func handle_movement(delta: float) -> void:
 			var target_speed = direction * max_speed
 
 			# Wähle Acceleration basierend auf Air/Ground
-			var accel = air_acceleration if is_airborne else acceleration
+			var accel = acceleration * air_acceleration if is_airborne else acceleration
 
 			# Apply Air Control Multiplier
 			if is_airborne:
@@ -273,13 +279,14 @@ func handle_movement(delta: float) -> void:
 
 			if is_turning:
 				# Schnellere Richtungsänderung mit turn_speed
-				velocity.x = move_toward(velocity.x, target_speed, turn_speed * delta)
+				var turn_accel = (deceleration + acceleration) * turn_speed
+				velocity.x = move_toward(velocity.x, target_speed, turn_accel * delta)
 			else:
 				# Normale Beschleunigung
 				velocity.x = move_toward(velocity.x, target_speed, accel * delta)
 		else:
 			# Keine Input - Deceleration
-			var decel = air_brake if is_airborne else deceleration
+			var decel = deceleration * air_brake if is_airborne else deceleration
 			velocity.x = move_toward(velocity.x, 0.0, decel * delta)
 
 
@@ -378,3 +385,29 @@ func update_camera_ghost() -> void:
 		# Kamera folgt direkt ohne Ghost
 		camera_ghost_position = global_position
 		camera_ignore_timer = 0.0
+
+
+func update_jump_animation() -> void:
+	"""
+	Aktualisiert die Sprung-Animation basierend auf vertikaler Geschwindigkeit.
+	Animationen: jump_ascend, jump_peak, jump_descend
+	"""
+	if not sprite:
+		return
+	
+	if not is_on_floor():
+		# Threshold für Peak Detection (nahe 0 velocity)
+		var peak_threshold = 50.0
+		
+		if abs(velocity.y) < peak_threshold:
+			# Am höchsten Punkt (Peak)
+			if sprite.animation != "jump_peak":
+				sprite.play("jump_peak")
+		elif velocity.y < 0:
+			# Aufsteigend
+			if sprite.animation != "jump_ascend":
+				sprite.play("jump_ascend")
+		else:
+			# Fallend
+			if sprite.animation != "jump_descend":
+				sprite.play("jump_descend")
