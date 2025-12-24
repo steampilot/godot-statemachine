@@ -605,6 +605,7 @@ position = Vector2(0, -21)
 shape = SubResource("RectangleShape2D_sfif1")
 
 [node name="Node2D2" type="Node2D" parent="."]
+visible = false
 
 [node name="PointLight2D2" type="PointLight2D" parent="Node2D2"]
 position = Vector2(745.5, 221.322)
