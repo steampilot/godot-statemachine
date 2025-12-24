@@ -110,7 +110,7 @@ func start_attack() -> void:
 	# Aktiviere Hitbox
 	if hitbox:
 		hitbox.monitoring = true
-	
+
 	attack_started.emit()
 
 
@@ -124,7 +124,7 @@ func end_attack() -> void:
 	# Deaktiviere Hitbox
 	if hitbox:
 		hitbox.monitoring = false
-	
+
 	attack_finished.emit()
 
 
