@@ -19,7 +19,7 @@ var music_volume: float = 1.0
 var sfx_volume: float = 1.0
 var dialog_volume: float = 1.0
 
-var music_player: Node = null
+var music_player: AudioStreamPlayer = null
 var sfx_players: Dictionary = {} # id -> AudioStreamPlayer
 
 # Music Track Management
@@ -58,32 +58,6 @@ func play_music(music_path: String, _fade_in: bool = false) -> void:
 	# Nutze die play_track Funktion des MUSIC_PLAYER
 	music_player.play_track(music_path)
 	music_started.emit(music_path.get_file())
-
-func play_layered_music(layer_paths: Array[String]) -> void:
-	"""
-	Spielt mehrere Audio-Layer synchron ab.
-	layer_paths: Array von Pfaden zu den einzelnen Audio-Streams
-	Beispiel: ["res://drum.ogg", "res://bass.ogg", "res://melody.ogg"]
-	"""
-	if not music_player:
-		push_error("MUSIC_PLAYER nicht initialisiert!")
-		return
-	
-	music_player.setup_layers(layer_paths)
-	music_player.play_all_layers()
-	music_started.emit("Layered Music")
-
-func set_music_layer(layer_index: int, enabled: bool) -> void:
-	"""
-	Aktiviert/Deaktiviert einen Musik-Layer.
-	layer_index: Index des Layers (0-basiert)
-	enabled: true = Layer hörbar, false = Layer stumm
-	"""
-	if not music_player:
-		push_error("MUSIC_PLAYER nicht initialisiert!")
-		return
-	
-	music_player.set_layer_enabled(layer_index, enabled)
 
 func stop_music() -> void:
 	if music_player:
