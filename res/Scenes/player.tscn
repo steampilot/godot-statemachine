@@ -201,18 +201,6 @@ region = Rect2(276, 396, 69, 44)
 atlas = ExtResource("2_2b3d0")
 region = Rect2(345, 396, 69, 44)
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_qxyl2"]
-atlas = ExtResource("2_2b3d0")
-region = Rect2(276, 308, 69, 44)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_yi7k0"]
-atlas = ExtResource("2_2b3d0")
-region = Rect2(345, 308, 69, 44)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_svgbp"]
-atlas = ExtResource("2_2b3d0")
-region = Rect2(0, 352, 69, 44)
-
 [sub_resource type="AtlasTexture" id="AtlasTexture_hog7l"]
 atlas = ExtResource("3_lqdg6")
 region = Rect2(69, 264, 69, 44)
@@ -264,6 +252,26 @@ region = Rect2(0, 308, 69, 44)
 [sub_resource type="AtlasTexture" id="AtlasTexture_l7c4b"]
 atlas = ExtResource("2_2b3d0")
 region = Rect2(69, 308, 69, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qxyl2"]
+atlas = ExtResource("2_2b3d0")
+region = Rect2(276, 308, 69, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_yi7k0"]
+atlas = ExtResource("2_2b3d0")
+region = Rect2(345, 308, 69, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_svgbp"]
+atlas = ExtResource("2_2b3d0")
+region = Rect2(0, 352, 69, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jvfl1"]
+atlas = ExtResource("2_2b3d0")
+region = Rect2(138, 308, 69, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qh57r"]
+atlas = ExtResource("2_2b3d0")
+region = Rect2(207, 308, 69, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_n4dx7"]
 atlas = ExtResource("2_2b3d0")
@@ -412,14 +420,6 @@ region = Rect2(0, 176, 69, 44)
 [sub_resource type="AtlasTexture" id="AtlasTexture_c8g5n"]
 atlas = ExtResource("2_2b3d0")
 region = Rect2(69, 176, 69, 44)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_jvfl1"]
-atlas = ExtResource("2_2b3d0")
-region = Rect2(138, 308, 69, 44)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_qh57r"]
-atlas = ExtResource("2_2b3d0")
-region = Rect2(207, 308, 69, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_6ur8p"]
 atlas = ExtResource("3_lqdg6")
@@ -604,20 +604,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_qxyl2")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_yi7k0")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_svgbp")
-}],
-"loop": true,
-"name": &"fall",
-"speed": 5.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_hog7l")
 }, {
 "duration": 1.0,
@@ -667,8 +653,33 @@ animations = [{
 "texture": SubResource("AtlasTexture_l7c4b")
 }],
 "loop": true,
-"name": &"jump",
+"name": &"jump_ascend",
 "speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qxyl2")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_yi7k0")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_svgbp")
+}],
+"loop": true,
+"name": &"jump_descend",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jvfl1")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qh57r")
+}],
+"loop": false,
+"name": &"jump_peak",
+"speed": 4.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -808,17 +819,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_jvfl1")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_qh57r")
-}],
-"loop": false,
-"name": &"up_to_fall",
-"speed": 8.0
-}, {
-"frames": [{
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_6ur8p")
 }, {
 "duration": 1.0,
@@ -857,9 +857,10 @@ shape = SubResource("CapsuleShape2D_aysp5")
 material = SubResource("ShaderMaterial_vd7gw")
 position = Vector2(0, -22)
 sprite_frames = SubResource("SpriteFrames_5jmtt")
-animation = &"idle"
+animation = &"jump_peak"
 autoplay = "idle"
-frame_progress = 0.00311557
+frame = 1
+frame_progress = 1.0
 offset = Vector2(8, 0)
 script = ExtResource("4_2j8qm")
 
@@ -868,3 +869,7 @@ visible = false
 position = Vector2(6, -22)
 occluder = SubResource("OccluderPolygon2D_iihe0")
 sdf_collision = false
+
+[node name="AudioListener2D" type="AudioListener2D" parent="."]
+position = Vector2(0, -28)
+current = true
