@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 # Available Controls
-# Keyboard: Arrow Keys (Left/Right), Space (Jump)
-# Controller: DPAD, Left Stick, BUTT_2 (Jump)
+# Keyboard: Arrow Keys (Left/Right), Space (Jump), Mouse Left (Attack)
+# Controller (Xbox): A Button (Jump), X Button (Attack), DPAD/Left Stick (Movement)
 
 # ========== STATE MACHINES ==========
 # Player State (Alive, Dead, Invincible, etc.)
@@ -190,6 +190,7 @@ var _jumps_remaining = 0
 
 # Node References
 @onready var sprite: AnimatedSprite2D = $Sprite
+@onready var weapon: Node2D = $PlayerWeaponSword if has_node("PlayerWeaponSword") else null
 
 
 func _ready() -> void:
@@ -230,6 +231,9 @@ func _physics_process(delta: float) -> void:
 
 	# Update Timers
 	update_timers(delta)
+
+	# Handle Attack Input
+	handle_attack()
 
 	# Handle Jump
 	handle_jump()
@@ -289,6 +293,25 @@ func update_timers(delta: float) -> void:
 	# Jump Buffer Timer
 	if jump_buffer_timer > 0:
 		jump_buffer_timer -= delta
+
+func handle_attack() -> void:
+	"""
+	Handhabt Attack Input und triggert Weapon
+	"""
+	if not weapon:
+		return
+
+	var attack_pressed = (
+		Input.is_action_just_pressed("attack") or
+		Input.is_action_just_pressed("BUTT_1")
+	)
+
+
+	if attack_pressed and weapon.can_attack():
+		weapon.attack()
+		# Trigger Strike Animation auf Player
+		if sprite and movement_state != MovementState.JUMPING and movement_state != MovementState.FALLING:
+			sprite.play("strike")
 
 
 func handle_movement(delta: float) -> void:
