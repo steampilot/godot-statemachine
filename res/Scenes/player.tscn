@@ -1,4 +1,4 @@
-[gd_scene load_steps=115 format=3 uid="uid://dkeo345qq555v"]
+[gd_scene load_steps=116 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ridw5"]
 [ext_resource type="Texture2D" uid="uid://ck1uof10kts0" path="res://Assets/Sprites/Player/Warrior_SheetnoEffect.png" id="2_2b3d0"]
@@ -264,6 +264,10 @@ region = Rect2(345, 308, 69, 44)
 [sub_resource type="AtlasTexture" id="AtlasTexture_svgbp"]
 atlas = ExtResource("2_2b3d0")
 region = Rect2(0, 352, 69, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_agsbf"]
+atlas = ExtResource("3_lqdg6")
+region = Rect2(69, 484, 69, 44)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_jvfl1"]
 atlas = ExtResource("2_2b3d0")
@@ -672,6 +676,14 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_agsbf")
+}],
+"loop": false,
+"name": &"jump_land",
+"speed": 8.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_jvfl1")
 }, {
 "duration": 1.0,
@@ -679,7 +691,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"jump_peak",
-"speed": 4.0
+"speed": 8.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -754,7 +766,7 @@ animations = [{
 }],
 "loop": true,
 "name": &"run",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -857,10 +869,10 @@ shape = SubResource("CapsuleShape2D_aysp5")
 material = SubResource("ShaderMaterial_vd7gw")
 position = Vector2(0, -22)
 sprite_frames = SubResource("SpriteFrames_5jmtt")
-animation = &"jump_peak"
+animation = &"run"
 autoplay = "idle"
-frame = 1
-frame_progress = 1.0
+frame = 5
+frame_progress = 0.683048
 offset = Vector2(8, 0)
 script = ExtResource("4_2j8qm")
 
@@ -871,5 +883,4 @@ occluder = SubResource("OccluderPolygon2D_iihe0")
 sdf_collision = false
 
 [node name="AudioListener2D" type="AudioListener2D" parent="."]
-position = Vector2(0, -28)
 current = true

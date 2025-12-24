@@ -4,6 +4,34 @@ extends CharacterBody2D
 # Keyboard: Arrow Keys (Left/Right), Space (Jump)
 # Controller: DPAD, Left Stick, BUTT_2 (Jump)
 
+# ========== STATE MACHINES ==========
+# Player State (Alive, Dead, Invincible, etc.)
+enum PlayerState {
+	ALIVE,
+	DEAD,
+	INVINCIBLE,
+	STUNNED
+}
+
+# Movement State (Idle, Running, Jumping, etc.)
+enum MovementState {
+	IDLE,
+	RUNNING,
+	JUMPING,
+	FALLING,
+	LANDING
+}
+
+# Animation State (korrespondiert mit Movement State)
+enum AnimationState {
+	IDLE,
+	RUN,
+	JUMP_ASCEND,
+	JUMP_PEAK,
+	JUMP_DESCEND,
+	LAND
+}
+
 # ========== RUNNING VARIABLES ==========
 # Maximale Laufgeschwindigkeit
 var max_speed = 300.0
@@ -21,7 +49,7 @@ var instant_movement = false
 # Sprunghöhe in Pixeln (wird zu upward velocity konvertiert)
 var jump_height = 64.0 # Default: 100 Pixel
 # Zeit bis zum höchsten Punkt des Sprungs (berechnet Gravitation)
-var jump_duration = 0.2 # Default: 0.5 Sekunden
+var jump_duration = 0.5 # Default: 0.5 Sekunden
 
 # Air Control - NUR horizontale (X) Bewegung in der Luft!
 # Horizontale Beschleunigung in der Luft (0.0 - 1.0) als Faktor von acceleration
@@ -41,7 +69,7 @@ var terminal_velocity = 1000.0
 # Variable Sprunghöhe aktiv
 var variable_jump_height = true
 # Extra Gravitation wenn Jump-Button losgelassen (Amount of extra force)
-var jump_cutoff_multiplier = 3.0
+var jump_cutoff_multiplier = 4.0
 
 # Double Jump
 # Erlaubt zweiten Sprung in der Luft
@@ -141,6 +169,11 @@ var sfx_land: AudioStream = null
 # Double Jump Sound Resource
 var sfx_doublejump: AudioStream = null
 
+# Current States
+var player_state: PlayerState = PlayerState.ALIVE
+var movement_state: MovementState = MovementState.IDLE
+var animation_state: AnimationState = AnimationState.IDLE
+
 # ========== STATE ==========
 var coyote_timer = 0.0
 var jump_buffer_timer = 0.0
@@ -185,6 +218,13 @@ func calculate_jump_physics() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	# Check if player is alive
+	if player_state != PlayerState.ALIVE:
+		return
+
+	# Update Movement State
+	update_movement_state()
+
 	# Apply Gravity (mit Variable Jump Height)
 	apply_gravity(delta)
 
@@ -200,8 +240,8 @@ func _physics_process(delta: float) -> void:
 	# Update Camera Ghost Position
 	update_camera_ghost()
 
-	# Update Jump Animation
-	update_jump_animation()
+	# Update Animation State
+	update_animation_state()
 
 	# Store floor state for next frame
 	was_on_floor = is_on_floor()
@@ -387,6 +427,182 @@ func update_camera_ghost() -> void:
 		camera_ignore_timer = 0.0
 
 
+# ========== STATE MACHINE FUNCTIONS ==========
+
+func update_movement_state() -> void:
+	"""
+	Aktualisiert den Movement State basierend auf Spieler-Zustand
+	"""
+	var was_jumping = movement_state == MovementState.JUMPING
+	var was_falling = movement_state == MovementState.FALLING
+
+	if is_on_floor():
+		# Auf dem Boden
+		if (was_jumping or was_falling) and movement_state != MovementState.LANDING:
+			# Gerade gelandet
+			movement_state = MovementState.LANDING
+		elif movement_state == MovementState.LANDING:
+			# Landing Animation läuft noch
+			pass
+		elif abs(velocity.x) > 10.0:
+			# Bewegung
+			movement_state = MovementState.RUNNING
+		else:
+			# Stillstand
+			movement_state = MovementState.IDLE
+	else:
+		# In der Luft
+		if velocity.y < 0:
+			# Aufsteigend
+			movement_state = MovementState.JUMPING
+		else:
+			# Fallend
+			movement_state = MovementState.FALLING
+
+
+func update_animation_state() -> void:
+	"""
+	Aktualisiert den Animation State und spielt entsprechende Animation ab
+	"""
+	if not sprite:
+		return
+
+	var new_anim_state = animation_state
+	var peak_threshold = 50.0
+
+	# Bestimme neue Animation basierend auf Movement State
+	match movement_state:
+		MovementState.IDLE:
+			new_anim_state = AnimationState.IDLE
+
+		MovementState.RUNNING:
+			new_anim_state = AnimationState.RUN
+
+		MovementState.JUMPING:
+			if abs(velocity.y) < peak_threshold:
+				new_anim_state = AnimationState.JUMP_PEAK
+			else:
+				new_anim_state = AnimationState.JUMP_ASCEND
+
+		MovementState.FALLING:
+			new_anim_state = AnimationState.JUMP_DESCEND
+
+		MovementState.LANDING:
+			new_anim_state = AnimationState.LAND
+
+	# Spiele Animation ab wenn State sich geändert hat
+	if new_anim_state != animation_state:
+		animation_state = new_anim_state
+		play_animation(animation_state)
+
+	# Update Running Animation Speed basierend auf Geschwindigkeit
+	if animation_state == AnimationState.RUN:
+		update_run_animation_speed()
+
+	# Flip Sprite basierend auf Bewegungsrichtung
+	if velocity.x != 0:
+		sprite.flip_h = velocity.x < 0
+
+
+func update_run_animation_speed() -> void:
+	"""
+	Passt die Geschwindigkeit der Running-Animation basierend auf der aktuellen Geschwindigkeit an.
+	Animation Speed wird zwischen 8 und 16 FPS geclampd.
+	"""
+	if not sprite:
+		return
+
+	# Berechne Speed-Faktor basierend auf aktueller Geschwindigkeit vs max_speed
+	var speed_ratio = abs(velocity.x) / max_speed
+
+	# Map speed_ratio (0.0 - 1.0) zu FPS Range (8 - 16)
+	var min_fps = 8.0
+	var max_fps = 16.0
+	var target_fps = lerp(min_fps, max_fps, speed_ratio)
+
+	# AnimatedSprite2D verwendet speed_scale (default FPS * speed_scale)
+	# Wir nehmen an, dass die Run-Animation mit 12 FPS designed wurde
+	var base_fps = 12.0
+	sprite.speed_scale = target_fps / base_fps
+
+
+func play_animation(anim_state: AnimationState) -> void:
+	"""
+	Spielt die entsprechende Animation für den Animation State ab
+	"""
+	if not sprite:
+		return
+
+	match anim_state:
+		AnimationState.IDLE:
+			sprite.play("idle")
+			sprite.speed_scale = 1.0
+
+		AnimationState.RUN:
+			sprite.play("run")
+			# Speed wird in update_run_animation_speed() gesetzt
+
+		AnimationState.JUMP_ASCEND:
+			sprite.play("jump_ascend")
+			sprite.speed_scale = 1.0
+
+		AnimationState.JUMP_PEAK:
+			sprite.play("jump_peak")
+			sprite.speed_scale = 1.0
+
+		AnimationState.JUMP_DESCEND:
+			sprite.play("jump_descend")
+			sprite.speed_scale = 1.0
+
+		AnimationState.LAND:
+			sprite.play("jump_land")
+			sprite.speed_scale = 1.0
+			# Nach Landing Animation zurück zu IDLE/RUNNING
+			await sprite.animation_finished
+			if is_on_floor():
+				if abs(velocity.x) > 10.0:
+					movement_state = MovementState.RUNNING
+				else:
+					movement_state = MovementState.IDLE
+
+
+func set_player_state(new_state: PlayerState) -> void:
+	"""
+	Wechselt den Player State
+	"""
+	if player_state == new_state:
+		return
+
+	# Exit current state
+	match player_state:
+		PlayerState.ALIVE:
+			pass
+		PlayerState.DEAD:
+			pass
+		PlayerState.INVINCIBLE:
+			pass
+		PlayerState.STUNNED:
+			pass
+
+	# Enter new state
+	player_state = new_state
+	match player_state:
+		PlayerState.ALIVE:
+			pass
+		PlayerState.DEAD:
+			# Stop movement
+			velocity = Vector2.ZERO
+			# Play death animation
+			if sprite:
+				sprite.play("death")
+		PlayerState.INVINCIBLE:
+			# Visual feedback (z.B. Blinken)
+			pass
+		PlayerState.STUNNED:
+			# Stop movement
+			velocity.x = 0
+
+
 func update_jump_animation() -> void:
 	"""
 	Aktualisiert die Sprung-Animation basierend auf vertikaler Geschwindigkeit.
@@ -394,11 +610,11 @@ func update_jump_animation() -> void:
 	"""
 	if not sprite:
 		return
-	
+
 	if not is_on_floor():
 		# Threshold für Peak Detection (nahe 0 velocity)
 		var peak_threshold = 50.0
-		
+
 		if abs(velocity.y) < peak_threshold:
 			# Am höchsten Punkt (Peak)
 			if sprite.animation != "jump_peak":
