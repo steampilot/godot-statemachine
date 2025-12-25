@@ -208,12 +208,10 @@ func _ready() -> void:
 
 
 func calculate_jump_physics() -> void:
-	"""
-	Berechnet jump_velocity und gravity aus jump_height und jump_duration.
-	Basiert auf kinematischen Gleichungen:
-	- v = 2h/t (velocity to reach height h in time t)
-	- g = 2h/t² (gravity needed)
-	"""
+	# Berechnet jump_velocity und gravity aus jump_height und jump_duration.
+	# Basiert auf kinematischen Gleichungen:
+	# - v = 2h/t (velocity to reach height h in time t)
+	# - g = 2h/t² (gravity needed)
 	_jump_velocity = - (2.0 * jump_height) / jump_duration
 	_gravity = (2.0 * jump_height) / (jump_duration * jump_duration)
 
@@ -295,9 +293,7 @@ func update_timers(delta: float) -> void:
 		jump_buffer_timer -= delta
 
 func handle_attack() -> void:
-	"""
-	Handhabt Attack Input und triggert Weapon
-	"""
+	# Handhabt Attack Input und triggert Weapon
 	if not weapon:
 		return
 
@@ -453,9 +449,7 @@ func update_camera_ghost() -> void:
 # ========== STATE MACHINE FUNCTIONS ==========
 
 func update_movement_state() -> void:
-	"""
-	Aktualisiert den Movement State basierend auf Spieler-Zustand
-	"""
+	# Aktualisiert den Movement State basierend auf Spieler-Zustand
 	var was_jumping = movement_state == MovementState.JUMPING
 	var was_falling = movement_state == MovementState.FALLING
 
@@ -484,9 +478,7 @@ func update_movement_state() -> void:
 
 
 func update_animation_state() -> void:
-	"""
-	Aktualisiert den Animation State und spielt entsprechende Animation ab
-	"""
+	# Aktualisiert den Animation State und spielt entsprechende Animation ab
 	if not sprite:
 		return
 
@@ -528,10 +520,8 @@ func update_animation_state() -> void:
 
 
 func update_run_animation_speed() -> void:
-	"""
-	Passt die Geschwindigkeit der Running-Animation basierend auf der aktuellen Geschwindigkeit an.
-	Animation Speed wird zwischen 8 und 16 FPS geclampd.
-	"""
+	# Passt die Geschwindigkeit der Running-Animation basierend auf der aktuellen Geschwindigkeit an.
+	# Animation Speed wird zwischen 8 und 16 FPS geclampd.
 	if not sprite:
 		return
 
@@ -550,9 +540,7 @@ func update_run_animation_speed() -> void:
 
 
 func play_animation(anim_state: AnimationState) -> void:
-	"""
-	Spielt die entsprechende Animation für den Animation State ab
-	"""
+	# Spielt die entsprechende Animation für den Animation State ab
 	if not sprite:
 		return
 
@@ -590,9 +578,7 @@ func play_animation(anim_state: AnimationState) -> void:
 
 
 func set_player_state(new_state: PlayerState) -> void:
-	"""
-	Wechselt den Player State
-	"""
+	# Wechselt den Player State
 	if player_state == new_state:
 		return
 
@@ -627,10 +613,8 @@ func set_player_state(new_state: PlayerState) -> void:
 
 
 func update_jump_animation() -> void:
-	"""
-	Aktualisiert die Sprung-Animation basierend auf vertikaler Geschwindigkeit.
-	Animationen: jump_ascend, jump_peak, jump_descend
-	"""
+	# Aktualisiert die Sprung-Animation basierend auf vertikaler Geschwindigkeit.
+	# Animationen: jump_ascend, jump_peak, jump_descend
 	if not sprite:
 		return
 

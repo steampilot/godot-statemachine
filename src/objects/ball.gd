@@ -21,7 +21,7 @@ func _on_area_entered(body: Node3D):
 ## ===== ATTACHMENT INTERFACE =====
 
 func attach_to_player(player: Player):
-	"""Ball wird an Player angehängt"""
+	# Ball wird an Player angehängt
 	if is_attached:
 		return
 
@@ -38,7 +38,7 @@ func attach_to_player(player: Player):
 	area.monitoring = false
 
 func drop_at(position: Vector2):
-	"""Ball fällt auf den Boden"""
+	# Ball fällt auf den Boden
 	if not is_attached:
 		return
 

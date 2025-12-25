@@ -26,9 +26,9 @@ func apply_intent(intent: Intent, delta: float):
 		Intent.Type.MOVE:
 			_apply_move(intent.value, delta)
 		Intent.Type.INTERACT:
-			pass  # Hier würde Interaktionslogik hin, wenn nötig
+			pass # Hier würde Interaktionslogik hin, wenn nötig
 		Intent.Type.CANCEL:
-			pass  # Hier würde Abbruch-Logik hin
+			pass # Hier würde Abbruch-Logik hin
 
 ## Wendet Bewegung an (2D Sidescroller)
 func _apply_move(dir: Vector2, delta: float):
@@ -53,9 +53,9 @@ func physics_tick(delta: float):
 
 ## Lock-Funktionen für Puppeteer
 func lock_movement():
-	"""Blockiert Bewegungs-Intents"""
+	# Blockiert Bewegungs-Intents
 	pass
 
 func unlock_movement():
-	"""Gibt Bewegungs-Intents wieder frei"""
+	# Gibt Bewegungs-Intents wieder frei
 	pass

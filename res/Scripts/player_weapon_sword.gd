@@ -74,10 +74,8 @@ func _process(delta: float) -> void:
 
 
 func attack() -> bool:
-	"""
-	Führt einen Attack aus.
-	Returns true wenn Attack gestartet wurde, false wenn nicht möglich
-	"""
+	# Führt einen Attack aus.
+	# Returns true wenn Attack gestartet wurde, false wenn nicht möglich
 	# Check ob Attack möglich ist
 	if current_state == AttackState.COOLDOWN:
 		return false
@@ -96,9 +94,7 @@ func attack() -> bool:
 
 
 func start_attack() -> void:
-	"""
-	Startet den Attack
-	"""
+	# Startet den Attack
 	current_state = AttackState.ATTACKING
 	attack_timer = attack_duration
 	combo_timer = combo_window
@@ -115,9 +111,7 @@ func start_attack() -> void:
 
 
 func end_attack() -> void:
-	"""
-	Beendet den Attack und startet Cooldown
-	"""
+	# Beendet den Attack und startet Cooldown
 	current_state = AttackState.COOLDOWN
 	cooldown_timer = attack_cooldown
 
@@ -129,16 +123,12 @@ func end_attack() -> void:
 
 
 func reset_combo() -> void:
-	"""
-	Setzt den Combo-Counter zurück
-	"""
+	# Setzt den Combo-Counter zurück
 	current_combo = 0
 
 
 func update_hitbox_position() -> void:
-	"""
-	Aktualisiert die Hitbox-Position basierend auf Player-Richtung
-	"""
+	# Aktualisiert die Hitbox-Position basierend auf Player-Richtung
 	if not collision_shape:
 		return
 
@@ -154,9 +144,7 @@ func update_hitbox_position() -> void:
 
 
 func _on_hitbox_body_entered(body: Node2D) -> void:
-	"""
-	Wird aufgerufen wenn Hitbox einen Body trifft
-	"""
+	# Wird aufgerufen wenn Hitbox einen Body trifft
 	# Verhindere mehrfache Treffer pro Attack
 	if body in hit_targets:
 		return
@@ -175,9 +163,7 @@ func _on_hitbox_body_entered(body: Node2D) -> void:
 
 
 func can_attack() -> bool:
-	"""
-	Prüft ob Attack möglich ist
-	"""
+	# Prüft ob Attack möglich ist
 	return current_state == AttackState.IDLE or (
 		current_state == AttackState.ATTACKING
 		and current_combo < max_combo
@@ -186,16 +172,12 @@ func can_attack() -> bool:
 
 
 func is_attacking() -> bool:
-	"""
-	Gibt zurück ob gerade attackiert wird
-	"""
+	# Gibt zurück ob gerade attackiert wird
 	return current_state == AttackState.ATTACKING
 
 
 func get_attack_direction() -> Vector2:
-	"""
-	Gibt die Richtung des Attacks zurück (basierend auf Parent Player Sprite flip)
-	"""
+	# Gibt die Richtung des Attacks zurück (basierend auf Parent Player Sprite flip)
 	var parent = get_parent()
 	if parent and parent.has_node("Sprite"):
 		var player_sprite = parent.get_node("Sprite")

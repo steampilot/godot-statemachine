@@ -28,18 +28,17 @@ func _physics_process(delta: float):
 ## ===== ANIMATION LOGIC =====
 
 func update_animation():
-	"""Bestimmt die aktuelle Animation basierend auf StateFlags und Physics"""
+	# Bestimmt die aktuelle Animation basierend auf StateFlags und Physics
 	var target_anim = _get_target_animation()
 
 	if target_anim != current_animation:
 		_transition_to(target_anim)
 
 func _get_target_animation() -> String:
-	"""Bestimmt welche Animation laufen soll"""
-
+	# Bestimmt welche Animation laufen soll
 	# Controlled (auf Chair, im Auto, etc.)
 	if state.controlled:
-		return "sit"  # Placeholder
+		return "sit" # Placeholder
 
 	# Nicht am Leben
 	if not state.alive:
@@ -60,7 +59,7 @@ func _get_target_animation() -> String:
 	return "idle"
 
 func _transition_to(anim_name: String):
-	"""Wechselt zur neuer Animation"""
+	# Wechselt zur neuer Animation
 	if not animation_player.has_animation(anim_name):
 		print("⚠️ Animation '%s' nicht vorhanden!" % anim_name)
 		return
@@ -72,14 +71,14 @@ func _transition_to(anim_name: String):
 ## ===== SPRITE DIRECTION =====
 
 func update_sprite_direction():
-	"""Flipped Sprite basierend auf Bewegungsrichtung"""
+	# Flipped Sprite basierend auf Bewegungsrichtung
 	if abs(body.velocity.x) > 0.1:
 		animated_sprite.flip_h = body.velocity.x < 0
 
 ## ===== SOUND EFFECTS (über AnimationPlayer Callbacks) =====
 
 func _on_animation_finished(anim_name: String):
-	"""Wird vom AnimationPlayer aufgerufen wenn Animation fertig"""
+	# Wird vom AnimationPlayer aufgerufen wenn Animation fertig
 	match anim_name:
 		"jump":
 			play_sound("jump")
@@ -89,13 +88,13 @@ func _on_animation_finished(anim_name: String):
 			play_sound("drink")
 
 func play_sound(sound_name: String):
-	"""Spiele einen Sound ab"""
+	# Spiele einen Sound ab
 	# TODO: AudioStreamPlayer2D Integration
 	print("🔊 Sound: %s" % sound_name)
 
 ## ===== PUBLIC API =====
 
 func trigger_animation(anim_name: String):
-	"""Force-Trigger eine Animation (z.B. von Puppeteer)"""
+	# Force-Trigger eine Animation (z.B. von Puppeteer)
 	if animation_player.has_animation(anim_name):
 		_transition_to(anim_name)
