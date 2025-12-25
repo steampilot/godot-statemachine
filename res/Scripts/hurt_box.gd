@@ -18,7 +18,9 @@ func _on_area_entered(hit_box: HitBox) -> void:
 		return
 	if owner.has_method("receive_damage"):
 		owner.receive_damage(hit_box.damage)
-		print("💥 %s of %s received %d damage from %s" % [self.name, owner.name, hit_box.damage, hit_box.owner.name])
+		print("💥 %s of %s received %d damage from %s" % [
+			self.name, owner.name, hit_box.damage, hit_box.owner.name
+		])
 
 
 func _on_child_added(child: Node) -> void:
