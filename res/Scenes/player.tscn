@@ -1,26 +1,17 @@
 [gd_scene load_steps=104 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ridw5"]
-[ext_resource type="Script" path="res://Scripts/player_sprite_flip_manager.gd" id="2_1bu87"]
 [ext_resource type="Shader" path="res://Scenes/player.gdshader" id="2_l7oja"]
-[ext_resource type="Texture2D" uid="uid://n6qw6tru3jfc" path="res://Assets/Sprites/Warrior_Attack_Centered_80-48.png" id="5_xoy6b"]
-[ext_resource type="Texture2D" uid="uid://bak62b7aadaqy" path="res://Assets/Sprites/Warrior_Dash-Attack_Centered.png" id="6_d41cc"]
-[ext_resource type="Texture2D" uid="uid://bjaa7keronlre" path="res://Assets/Sprites/Warrior_Sheet_32x48.png" id="7_inhbu"]
-[ext_resource type="Texture2D" uid="uid://dns3td635mfpc" path="res://Assets/Sprites/Warior_Sneet_Edge_64x48.png" id="8_gtg3t"]
-
-[sub_resource type="Gradient" id="Gradient_f7jv8"]
-offsets = PackedFloat32Array(0, 0.482014)
-colors = PackedColorArray(1, 1, 1, 1, 0, 0, 0, 1)
-
-[sub_resource type="GradientTexture2D" id="GradientTexture2D_iko4g"]
-gradient = SubResource("Gradient_f7jv8")
-use_hdr = true
-fill = 1
-fill_from = Vector2(0.5, 0.5)
+[ext_resource type="Texture2D" uid="uid://n6qw6tru3jfc" path="res://Assets/Sprites/Player/Warrior_Attack_Centered_80-48.png" id="5_xoy6b"]
+[ext_resource type="Texture2D" uid="uid://bak62b7aadaqy" path="res://Assets/Sprites/Player/Warrior_Dash-Attack_Centered.png" id="6_d41cc"]
+[ext_resource type="Texture2D" uid="uid://bjaa7keronlre" path="res://Assets/Sprites/Player/Warrior_Sheet_32x48.png" id="7_inhbu"]
+[ext_resource type="Script" path="res://Scripts/hit_box.gd" id="8_8qjxp"]
+[ext_resource type="Texture2D" uid="uid://dns3td635mfpc" path="res://Assets/Sprites/Player/Warior_Sneet_Edge_64x48.png" id="8_gtg3t"]
+[ext_resource type="PackedScene" uid="uid://d0kq8ragktfnn" path="res://Scenes/hurt_box.tscn" id="9_5nh85"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
-radius = 6.0
-height = 34.0
+radius = 5.0
+height = 26.0
 
 [sub_resource type="CompressedTexture2D" id="CompressedTexture2D_rfvub"]
 load_path = "res://.godot/imported/Warrior_Sheet-Effect_n.png-9d303ceabbe24270e65ab4c241cdd887.ctex"
@@ -741,28 +732,18 @@ animations = [{
 "speed": 8.0
 }]
 
-[sub_resource type="OccluderPolygon2D" id="OccluderPolygon2D_iihe0"]
-polygon = PackedVector2Array(-8, -13.2, -8, -12, -9.8, -12, -10.8, -8, -12, -8, -12, -0.4, -12.4, 0, -14, 0, -14, 3, -15, 3, -15, 13, -12, 13, -12, 22, -8.3, 22, -7.1, 18.3, -6, 18.6, -6, 19.7, -4.8, 20.2, -4, 19.4, -4, 22, 0.700001, 22, 1.2, 20.8, 0, 19.6, 0, 16.1, 2, 11.2, 2, 10, 5.2, 10, 2.9, -1.5, 5, -3.6, 5, -7, 1.4, -7, 1, -9.2, 1, -11.9)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_he03s"]
+size = Vector2(10, 26.5)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_m01h4"]
+size = Vector2(6, 28.5)
 
 [node name="Player" type="CharacterBody2D"]
 script = ExtResource("1_ridw5")
-
-[node name="PlayerSpriteFlipManager" type="Node" parent="."]
-script = ExtResource("2_1bu87")
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
-color = Color(0, 0, 0, 1)
-
-[node name="PointLight2D" type="PointLight2D" parent="."]
-visible = false
-position = Vector2(12, -3)
-energy = 0.52
-texture = SubResource("GradientTexture2D_iko4g")
-texture_scale = 2.2
+max_health = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(0, -17)
+position = Vector2(0, -13)
 shape = SubResource("CapsuleShape2D_aysp5")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
@@ -776,10 +757,21 @@ frame = 2
 frame_progress = 1.0
 offset = Vector2(4, 0)
 
-[node name="LightOccluder2D2" type="LightOccluder2D" parent="."]
-visible = false
-position = Vector2(6, -22)
-occluder = SubResource("OccluderPolygon2D_iihe0")
-sdf_collision = false
+[node name="HitBox" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("8_8qjxp")
 
-[node name="AudioListener2D" type="AudioListener2D" parent="."]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
+position = Vector2(15, -14)
+shape = SubResource("RectangleShape2D_he03s")
+debug_color = Color(0, 0.65098, 0, 0.419608)
+
+[node name="HurtBox" parent="." instance=ExtResource("9_5nh85")]
+collision_layer = 4
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
+position = Vector2(0, -14.75)
+shape = SubResource("RectangleShape2D_m01h4")
+debug_color = Color(1, 0, 0, 0.419608)
