@@ -27,8 +27,13 @@ LevelLoader="*res://Globals/LEVEL_LOADER.gd"
 
 [display]
 
-window/size/viewport_width=1920
-window/size/viewport_height=1080
+window/size/viewport_width=640
+window/size/viewport_height=480
+
+[global_group]
+
+Enemy=""
+Player=""
 
 [gui]
 
@@ -89,6 +94,7 @@ GRAB={
 2d_physics/layer_2="Hitboxes"
 2d_physics/layer_3="Hurtboxes"
 2d_physics/layer_4="Player"
+2d_physics/layer_5="Enemy"
 
 [rendering]
 
