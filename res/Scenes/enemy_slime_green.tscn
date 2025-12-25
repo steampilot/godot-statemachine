@@ -125,31 +125,22 @@ script = ExtResource("1_sjm07")
 position = Vector2(0, -5)
 shape = SubResource("CircleShape2D_dhxq6")
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="StaticBody2D"]
+[node name="Sprite" type="AnimatedSprite2D" parent="StaticBody2D"]
+unique_name_in_owner = true
 position = Vector2(0, -12)
 sprite_frames = SubResource("SpriteFrames_vl4dg")
 animation = &"hurt"
 
 [node name="HurtBox" parent="." instance=ExtResource("2_veyho")]
-collision_layer = 4
-collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2(-0.5, -13.5)
 shape = SubResource("RectangleShape2D_pjyff")
 debug_color = Color(1, 0, 0, 0.419608)
 
-[node name="HitBox" parent="." instance=ExtResource("3_2u5ij")]
-collision_layer = 2
-collision_mask = 4
-active = null
+[node name="HitBox" parent="." groups=["Enemy"] instance=ExtResource("3_2u5ij")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(-4, -5)
-shape = SubResource("RectangleShape2D_qvux8")
-debug_color = Color(0, 0.65098, 0, 0.419608)
-
-[node name="CollisionShape2D2" type="CollisionShape2D" parent="HitBox"]
-position = Vector2(4, -5)
+position = Vector2(-6, -5)
 shape = SubResource("RectangleShape2D_qvux8")
 debug_color = Color(0, 0.65098, 0, 0.419608)
