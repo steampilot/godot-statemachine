@@ -19,17 +19,21 @@ enum MovementState {
 	RUNNING,
 	JUMPING,
 	FALLING,
-	LANDING
+	LANDING,
+	ATTACKING,
 }
 
 # Animation State (korrespondiert mit Movement State)
 enum AnimationState {
 	IDLE,
+	IDLE_RELAXED,
 	RUN,
 	JUMP_ASCEND,
 	JUMP_PEAK,
 	JUMP_DESCEND,
-	LAND
+	LAND,
+	ATTACK,
+	DASH_ATTACK
 }
 
 # ========== RUNNING VARIABLES ==========
@@ -307,7 +311,7 @@ func handle_attack() -> void:
 		weapon.attack()
 		# Trigger Strike Animation auf Player
 		if sprite and movement_state != MovementState.JUMPING and movement_state != MovementState.FALLING:
-			sprite.play("strike")
+			sprite.play("attack")
 
 
 func handle_movement(delta: float) -> void:
@@ -554,15 +558,15 @@ func play_animation(anim_state: AnimationState) -> void:
 			# Speed wird in update_run_animation_speed() gesetzt
 
 		AnimationState.JUMP_ASCEND:
-			sprite.play("jump_ascend")
+			sprite.play("jump_up")
 			sprite.speed_scale = 1.0
 
 		AnimationState.JUMP_PEAK:
-			sprite.play("jump_peak")
+			sprite.play("jump_top")
 			sprite.speed_scale = 1.0
 
 		AnimationState.JUMP_DESCEND:
-			sprite.play("jump_descend")
+			sprite.play("jump_down")
 			sprite.speed_scale = 1.0
 
 		AnimationState.LAND:
