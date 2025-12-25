@@ -211,7 +211,7 @@ var _gravity = 0.0
 var _jumps_remaining = 0
 
 # Node References
-@onready var sprite: AnimatedSprite2D = $Sprite
+@onready var sprite: AnimatedSprite2D = %Sprite
 
 func _ready() -> void:
 	add_to_group("player")
@@ -241,6 +241,15 @@ func _ready() -> void:
 	if sprite:
 		sprite.animation_finished.connect(_on_animation_finished)
 
+func receive_damage(amount: int) -> void:
+	print("%s received %d damage!" % [self.name, amount])
+	health -= amount
+	print("%s Is now at health: %d of %d" % [self.name, health, max_health])
+	sprite.play("hurt")
+	if health <= 0:
+		print("%s has been defeated!" % [self.name])
+		sprite.play("diying")
+		
 
 func calculate_jump_physics() -> void:
 	# Berechnet jump_velocity und gravity aus jump_height und jump_duration.
