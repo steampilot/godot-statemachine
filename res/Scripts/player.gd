@@ -36,6 +36,24 @@ enum AnimationState {
 	DASH_ATTACK
 }
 
+enum Inputs {
+	MOVE_LEFT,
+	MOVE_RIGHT,
+	JUMP,
+	ATTACK
+}
+
+# ========== Health VARIABLES ==========
+@export var max_health = 100
+@export var health = max_health
+
+
+# ========== Attack/HitBox References ==========
+var hitbox: Area2D = null
+var hitbox_shape: CollisionShape2D = null
+var hitbox_offset_x: float = 15.0
+var is_attacking: bool = false
+
 # ========== RUNNING VARIABLES ==========
 # Maximale Laufgeschwindigkeit
 var max_speed = 300.0
@@ -194,8 +212,6 @@ var _jumps_remaining = 0
 
 # Node References
 @onready var sprite: AnimatedSprite2D = $Sprite
-@onready var weapon: Node2D = $PlayerWeaponSword if has_node("PlayerWeaponSword") else null
-
 
 func _ready() -> void:
 	add_to_group("player")
@@ -209,6 +225,21 @@ func _ready() -> void:
 
 	# Initialisiere Double Jump Counter
 	_jumps_remaining = double_jumps_available
+
+	# Find and setup HitBox
+	hitbox = get_node_or_null("HitBox")
+	if hitbox:
+		# Find the first CollisionShape2D child
+		for child in hitbox.get_children():
+			if child is CollisionShape2D:
+				hitbox_shape = child
+				break
+		# Disable HitBox by default
+		hitbox.monitoring = false
+
+	# Connect to sprite animation signals if sprite exists
+	if sprite:
+		sprite.animation_finished.connect(_on_animation_finished)
 
 
 func calculate_jump_physics() -> void:
@@ -266,10 +297,7 @@ func apply_gravity(delta: float) -> void:
 
 		# Variable Jump Height - Extra Gravitation wenn Button losgelassen
 		if variable_jump_height and velocity.y < 0:
-			var jump_released = (
-				not Input.is_action_pressed("ui_accept") and
-				not Input.is_action_pressed("BUTT_2")
-			)
+			var jump_released = not Input.is_action_pressed("JUMP")
 			if jump_released:
 				# Jump Cutoff - starke Gravitation beim Loslassen
 				gravity_force *= jump_cutoff_multiplier
@@ -297,21 +325,22 @@ func update_timers(delta: float) -> void:
 		jump_buffer_timer -= delta
 
 func handle_attack() -> void:
-	# Handhabt Attack Input und triggert Weapon
-	if not weapon:
+	# Check if already attacking
+	if is_attacking:
 		return
 
-	var attack_pressed = (
-		Input.is_action_just_pressed("attack") or
-		Input.is_action_just_pressed("BUTT_1")
-	)
+	var attack_pressed = Input.is_action_just_pressed("ATTACK")
 
+	if attack_pressed:
+		var is_grounded_attack = (
+			movement_state != MovementState.JUMPING and
+			movement_state != MovementState.FALLING
+		)
 
-	if attack_pressed and weapon.can_attack():
-		weapon.attack()
-		# Trigger Strike Animation auf Player
-		if sprite and movement_state != MovementState.JUMPING and movement_state != MovementState.FALLING:
+		if sprite and is_grounded_attack:
+			is_attacking = true
 			sprite.play("attack")
+			_enable_hitboxes()
 
 
 func handle_movement(delta: float) -> void:
@@ -354,26 +383,12 @@ func handle_movement(delta: float) -> void:
 
 
 func get_input_direction() -> float:
-	var direction := 0.0
-
-	# Linker Analog Stick (höchste Priorität)
-	if Input.get_action_strength("STICK_L_X") != 0.0:
-		direction = Input.get_axis("", "STICK_L_X")
-	# D-Pad als Fallback
-	elif Input.is_action_pressed("DPAD_LEFT") or Input.is_action_pressed("DPAD_RIGHT"):
-		direction = Input.get_axis("DPAD_LEFT", "DPAD_RIGHT")
-	# Keyboard
-	else:
-		direction = Input.get_axis("ui_left", "ui_right")
-
+	var direction := Input.get_axis("MOVE_LEFT", "MOVE_RIGHT")
 	return direction
 
 
 func handle_jump() -> void:
-	var jump_pressed = (
-		Input.is_action_just_pressed("ui_accept") or
-		Input.is_action_just_pressed("BUTT_2")
-	)
+	var jump_pressed = Input.is_action_just_pressed("JUMP")
 
 	# Jump Buffer - Speichere Jump-Input kurz vor Landung
 	if jump_pressed:
@@ -524,7 +539,8 @@ func update_animation_state() -> void:
 
 
 func update_run_animation_speed() -> void:
-	# Passt die Geschwindigkeit der Running-Animation basierend auf der aktuellen Geschwindigkeit an.
+	# Passt die Geschwindigkeit der Running-Animation
+	# basierend auf der aktuellen Geschwindigkeit an.
 	# Animation Speed wird zwischen 8 und 16 FPS geclampd.
 	if not sprite:
 		return
@@ -580,6 +596,36 @@ func play_animation(anim_state: AnimationState) -> void:
 				else:
 					movement_state = MovementState.IDLE
 
+
+# ========== ATTACK FUNCTIONS ==========
+
+func _enable_hitboxes() -> void:
+	# Enable HitBox and position it based on player direction
+	if not hitbox or not hitbox_shape:
+		return
+
+	var facing_left = sprite and sprite.flip_h
+
+	# Update HitBox position based on direction
+	if facing_left:
+		hitbox_shape.position.x = - hitbox_offset_x
+	else:
+		hitbox_shape.position.x = hitbox_offset_x
+
+	hitbox.monitoring = true
+
+func _disable_hitboxes() -> void:
+	# Disable HitBox
+	if hitbox:
+		hitbox.monitoring = false
+
+func _on_animation_finished() -> void:
+	# Called when an animation finishes
+	if sprite.animation == "attack":
+		is_attacking = false
+		_disable_hitboxes()
+
+# ========== STATE MACHINE FUNCTIONS ==========
 
 func set_player_state(new_state: PlayerState) -> void:
 	# Wechselt den Player State
