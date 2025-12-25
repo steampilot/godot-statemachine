@@ -1,7 +1,8 @@
-[gd_scene load_steps=11 format=4 uid="uid://bffa5qax302xi"]
+[gd_scene load_steps=12 format=4 uid="uid://bffa5qax302xi"]
 
 [ext_resource type="PackedScene" uid="uid://cp3c7eshwaeg5" path="res://Scenes/background_4_layerstscn.tscn" id="1_1es0j"]
 [ext_resource type="Texture2D" uid="uid://bwu84we2np4mu" path="res://Assets/Graphics/FreeGreneZone/Objects/ObjectsTileSet.png" id="2_6eda6"]
+[ext_resource type="PackedScene" uid="uid://crg8k2j1uo3gr" path="res://Scenes/enemy_slime_green.tscn" id="4_3o5sv"]
 [ext_resource type="Texture2D" uid="uid://dw4qrifvvnyr4" path="res://Assets/Graphics/FreeGreneZone/Tileset.png" id="5_o1c4g"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ox3st"]
@@ -643,3 +644,6 @@ energy = 2.46
 texture = SubResource("GradientTexture2D_v11y6")
 texture_scale = 1.9
 height = 10.0
+
+[node name="EnemySlimeGreen" parent="." instance=ExtResource("4_3o5sv")]
+position = Vector2(412, 320)
