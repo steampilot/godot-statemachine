@@ -1,0 +1,41 @@
+@tool
+# Shape that defines the area that receives damage.
+class_name HurtBox
+extends Area2D
+
+
+func _init() -> void:
+	collision_layer = 4 # hurt_box layer
+	collision_mask = 2 # hit_box_mask
+
+func _ready() -> void:
+	connect("area_entered", _on_area_entered)
+
+	# Connect to child_entered_tree signal to handle dynamically added shapes
+	child_entered_tree.connect(_on_child_added)
+	# Apply to existing children
+	_apply_debug_color_to_all()
+
+
+func _on_area_entered(hit_box: HitBox) -> void:
+	if hit_box == null:
+		return
+	if owner.has_method("apply_damage"):
+		owner.apply_damage(hit_box.damage)
+		print("💥 %d received damage: %d", [%owner.name, hit_box.damage])
+
+
+func _on_child_added(child: Node) -> void:
+	# Automatically apply debug color when a new CollisionShape2D is added
+	if child is CollisionShape2D:
+		_apply_debug_color(child)
+
+func _apply_debug_color_to_all() -> void:
+	# Apply debug color to all existing CollisionShape2D children
+	for child in get_children():
+		if child is CollisionShape2D:
+			_apply_debug_color(child)
+
+func _apply_debug_color(shape: CollisionShape2D) -> void:
+	# Set the debug color for a specific CollisionShape2D
+	shape.debug_color = Color("ff00006b")
