@@ -20,6 +20,9 @@ Arbeite nach diesen Best Practices für dieses Projekt.
 3. **Clean Architecture**
    - `res/` = nur aktiver Spielecode
    - `src/` = Framework-Referenz (nicht von Godot geparst)
+   - `.scratch/` = Unsortierte nicht importierte Assets und Codes zur vorbereitung
+   - `doc/` = Dokumentation, Konzepte, 
+
    - Komponenten-basiertes Design
 
 ## 📝 Sprache & Lokalisation
@@ -92,6 +95,37 @@ Vor `create_file` oder `replace_string_in_file`:
 # ❌ Zu komplex für Phase 1
 @onready var game_state_machine = GameStateMachine.new()
 @onready var health = HealthComponent.new()
+
+Codestyle zeichenlänge pro zeile nicht mehr als 100
+keine verschachtelten funktionen, möglichst sprechender code
+Keine inline kommentare
+Kommentare als zeile über dem code
+
+## 📝 Kommentar-Regeln (WICHTIG!)
+
+**NIEMALS """ (Triple-Quotes) verwenden!**
+**IMMER # für Kommentare!**
+
+```gdscript
+# ✅ RICHTIG - Einzelne # Kommentare
+# This function handles player movement
+# It takes delta time as parameter
+func move_player(delta: float) -> void:
+	velocity.x = speed * delta
+
+# ❌ FALSCH - Triple Quotes
+"""
+This function handles player movement
+It takes delta time as parameter
+"""
+func move_player(delta: float) -> void:
+	velocity.x = speed * delta
+```
+
+**Warum?**
+- """ ist nicht idiomatisch in GDScript
+- # ist der Standard für alle Kommentare
+- Konsistenz im gesamten Projekt
 
 # ✅ Stattdessen: Direkt in Script
 func _ready() -> void:
