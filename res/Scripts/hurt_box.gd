@@ -4,10 +4,6 @@ class_name HurtBox
 extends Area2D
 
 
-func _init() -> void:
-	collision_layer = 4 # hurt_box layer
-	collision_mask = 2 # hit_box_mask
-
 func _ready() -> void:
 	connect("area_entered", _on_area_entered)
 
@@ -20,9 +16,9 @@ func _ready() -> void:
 func _on_area_entered(hit_box: HitBox) -> void:
 	if hit_box == null:
 		return
-	if owner.has_method("apply_damage"):
-		owner.apply_damage(hit_box.damage)
-		print("💥 %d received damage: %d", [%owner.name, hit_box.damage])
+	if owner.has_method("receive_damage"):
+		owner.receive_damage(hit_box.damage)
+		print("💥 %s of %s received %d damage from %s" % [self.name, owner.name, hit_box.damage, hit_box.owner.name])
 
 
 func _on_child_added(child: Node) -> void:

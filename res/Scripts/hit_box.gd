@@ -5,12 +5,6 @@ extends Area2D
 @export var active: bool = true
 @export var damage: int = 10
 
-func _init() -> void:
-	# hit_box layer
-	collision_layer = 2
-
-	# hurt_box_mask
-	collision_mask = 4
 
 func _ready() -> void:
 	# Connect to child_entered_tree signal to handle dynamically added shapes
