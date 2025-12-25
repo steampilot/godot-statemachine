@@ -1,7 +1,6 @@
-[gd_scene load_steps=104 format=3 uid="uid://dkeo345qq555v"]
+[gd_scene load_steps=101 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ridw5"]
-[ext_resource type="Shader" path="res://Scenes/player.gdshader" id="2_l7oja"]
 [ext_resource type="Texture2D" uid="uid://n6qw6tru3jfc" path="res://Assets/Sprites/Player/Warrior_Attack_Centered_80-48.png" id="5_xoy6b"]
 [ext_resource type="Texture2D" uid="uid://bak62b7aadaqy" path="res://Assets/Sprites/Player/Warrior_Dash-Attack_Centered.png" id="6_d41cc"]
 [ext_resource type="Texture2D" uid="uid://bjaa7keronlre" path="res://Assets/Sprites/Player/Warrior_Sheet_32x48.png" id="7_inhbu"]
@@ -12,13 +11,6 @@
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
 radius = 5.0
 height = 26.0
-
-[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_rfvub"]
-load_path = "res://.godot/imported/Warrior_Sheet-Effect_n.png-9d303ceabbe24270e65ab4c241cdd887.ctex"
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_vd7gw"]
-shader = ExtResource("2_l7oja")
-shader_parameter/normal_map = SubResource("CompressedTexture2D_rfvub")
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_4i138"]
 atlas = ExtResource("5_xoy6b")
@@ -748,7 +740,6 @@ shape = SubResource("CapsuleShape2D_aysp5")
 
 [node name="Sprite" type="AnimatedSprite2D" parent="."]
 unique_name_in_owner = true
-material = SubResource("ShaderMaterial_vd7gw")
 position = Vector2(-4, -24)
 sprite_frames = SubResource("SpriteFrames_5jmtt")
 animation = &"jump_land"
