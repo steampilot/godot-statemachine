@@ -1,4 +1,4 @@
-[gd_scene load_steps=115 format=3 uid="uid://dkeo345qq555v"]
+[gd_scene load_steps=121 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" path="res://Scripts/player.gd" id="1_ridw5"]
 [ext_resource type="Texture2D" uid="uid://4mmcrmda1g43" path="res://Assets/Sprites/Player/Warrior_Death_Centered.png" id="5_qfe86"]
@@ -9,6 +9,12 @@
 [ext_resource type="Texture2D" uid="uid://dns3td635mfpc" path="res://Assets/Sprites/Player/Warior_Sneet_Edge_64x48.png" id="8_gtg3t"]
 [ext_resource type="PackedScene" uid="uid://buqqexwjp2j4i" path="res://Scenes/hit_box.tscn" id="8_vwsrv"]
 [ext_resource type="PackedScene" uid="uid://d0kq8ragktfnn" path="res://Scenes/hurt_box.tscn" id="9_5nh85"]
+[ext_resource type="Script" path="res://Scripts/state_machine.gd" id="10_mh7vu"]
+[ext_resource type="Script" path="res://Scripts/jump_state.gd" id="11_k5grt"]
+[ext_resource type="Script" path="res://Scripts/idle_state.gd" id="12_qloii"]
+[ext_resource type="Script" path="res://Scripts/fall_state.gd" id="13_k42dt"]
+[ext_resource type="Script" path="res://Scripts/run_state.gd" id="14_yrwt2"]
+[ext_resource type="Script" path="res://Scripts/attack_state.gd" id="15_i56dd"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
 radius = 5.0
@@ -829,10 +835,8 @@ shape = SubResource("CapsuleShape2D_aysp5")
 unique_name_in_owner = true
 position = Vector2(-4, -24)
 sprite_frames = SubResource("SpriteFrames_5jmtt")
-animation = &"diying"
+animation = &"idle"
 autoplay = "idle"
-frame = 10
-frame_progress = 1.0
 offset = Vector2(4, 0)
 
 [node name="Sword" type="Area2D" parent="."]
@@ -841,7 +845,7 @@ collision_mask = 4
 script = ExtResource("8_8qjxp")
 
 [node name="SwordBox" type="CollisionShape2D" parent="Sword"]
-position = Vector2(13, -37)
+position = Vector2(13, -16)
 shape = SubResource("RectangleShape2D_he03s")
 debug_color = Color(0, 0.65098, 0, 0.419608)
 
@@ -859,3 +863,22 @@ damage = 150
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_v64vu")
 debug_color = Color(0, 0.65098, 0, 0.419608)
+
+[node name="StateMachine" type="Node" parent="."]
+unique_name_in_owner = true
+script = ExtResource("10_mh7vu")
+
+[node name="JumpState" type="Node" parent="StateMachine"]
+script = ExtResource("11_k5grt")
+
+[node name="IdleState" type="Node" parent="StateMachine"]
+script = ExtResource("12_qloii")
+
+[node name="FallState" type="Node" parent="StateMachine"]
+script = ExtResource("13_k42dt")
+
+[node name="RunState" type="Node" parent="StateMachine"]
+script = ExtResource("14_yrwt2")
+
+[node name="AttackState" type="Node" parent="StateMachine"]
+script = ExtResource("15_i56dd")
