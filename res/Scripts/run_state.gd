@@ -1,14 +1,15 @@
 class_name RunState
 extends State
 
+
 func enter() -> void:
 	super.enter()
 	print("Entered Run State")
 
 func process_input(event: InputEvent) -> State:
-	if event.is_action_just_pressed("jump") and parent.is_on_floor():
+	if event.is_action_pressed(INPUT_ACTIONS.JUMP) and parent.is_on_floor():
 		return states.get("jump")
-	if event.is_action_just_pressed("attack"):
+	if event.is_action_pressed(INPUT_ACTIONS.ATTACK):
 		return states.get("attack")
 	return null
 
@@ -17,7 +18,7 @@ func process_physics(delta: float) -> State:
 	parent.velocity.y += gravity * delta
 
 	# Get input direction
-	var direction = Input.get_axis("move_left", "move_right")
+	var direction = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
 
 	if direction != 0:
 		# Movement with acceleration envelope
@@ -37,7 +38,7 @@ func process_physics(delta: float) -> State:
 				parent.acceleration * delta)
 
 		# Update sprite direction
-		parent.sprtite.flip_h = direction < 0
+		parent.sprite.flip_h = direction < 0
 	else:
 		# No input - apply deceleration
 		parent.velocity.x = move_toward(
