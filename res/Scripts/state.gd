@@ -10,6 +10,7 @@ var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
 var parent: Player
 var states: Dictionary = {} # Populated by StateMachine
 
+
 func enter() -> void:
 	if animation_name != "" and parent and parent.sprite:
 		parent.sprite.play(animation_name)
