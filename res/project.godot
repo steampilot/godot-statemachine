@@ -24,6 +24,7 @@ buses/default_bus_layout="res://Resources/AudioBusLayout/default_bus_layout.tres
 Audio="*res://Globals/AUDIO.gd"
 MusicPlayer="*res://Globals/MUSIC_PLAYER.tscn"
 LevelLoader="*res://Globals/LEVEL_LOADER.gd"
+InputActions="*res://Globals/INPUT_ACTIONS.gd"
 
 [display]
 
