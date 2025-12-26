@@ -49,7 +49,7 @@ func process_physics(delta: float) -> State:
 		# Check if on floor to determine next state
 		if parent.is_on_floor():
 			# Check if player is moving
-			var direction = Input.get_axis("move_left", "move_right")
+			var direction = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
 			if direction != 0:
 				return states.get("run")
 			return states.get("idle")

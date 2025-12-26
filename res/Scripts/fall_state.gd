@@ -19,7 +19,7 @@ func enter() -> void:
 
 func process_input(event: InputEvent) -> State:
 	# Buffer jump input while falling
-	if event.is_action_pressed("jump"):
+	if event.is_action_pressed(INPUT_ACTIONS.JUMP):
 		jump_buffer_timer = jump_buffer_time
 
 	return null
@@ -31,7 +31,7 @@ func process_physics(delta: float) -> State:
 
 	# Determine gravity multiplier based on jump button state
 	var gravity_multiplier = 1.0
-	if not Input.is_action_pressed("jump"):
+	if not Input.is_action_pressed(INPUT_ACTIONS.JUMP):
 		gravity_multiplier = parent.down_gravity_multiplier
 
 	# Apply gravity with multiplier
@@ -41,9 +41,9 @@ func process_physics(delta: float) -> State:
 	parent.velocity.y = min(parent.velocity.y, max_fall_speed)
 
 	# Handle horizontal movement while falling
-	var movement = Input.get_axis("move_left", "move_right") * move_speed
+	var movement = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT) * move_speed
 	if movement != 0:
-		parent.sprtite.flip_h = movement < 0
+		parent.sprite.flip_h = movement < 0
 	parent.velocity.x = movement
 	parent.move_and_slide()
 

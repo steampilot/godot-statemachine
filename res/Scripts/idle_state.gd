@@ -7,11 +7,12 @@ func enter() -> void:
 	parent.velocity.y = 0
 
 func process_input(event: InputEvent) -> State:
-	if event.is_action_just_pressed("jump") and parent.is_on_floor():
+	if event.is_action_pressed(INPUT_ACTIONS.JUMP) and parent.is_on_floor():
 		return states.get("jump")
-	if event.is_action_just_pressed("move_left") or event.is_action_just_pressed("move_right"):
+	if event.is_action_pressed(
+		INPUT_ACTIONS.MOVE_LEFT) or event.is_action_pressed(INPUT_ACTIONS.MOVE_RIGHT):
 		return states.get("run")
-	if event.is_action_just_pressed("attack"):
+	if event.is_action_pressed(INPUT_ACTIONS.ATTACK):
 		return states.get("attack")
 	return null
 

@@ -16,7 +16,7 @@ func process_input(_event: InputEvent) -> State:
 
 func process_physics(delta: float) -> State:
 	# Check if jump button released early -> switch to fall state for faster descent
-	if not Input.is_action_pressed("jump"):
+	if not Input.is_action_pressed(INPUT_ACTIONS.JUMP):
 		return states.get("fall")
 
 	# Apply gravity over time (normal gravity while button held)
@@ -27,9 +27,9 @@ func process_physics(delta: float) -> State:
 		return states.get("fall")
 
 	# Handle horizontal movement while jumping
-	var movement = Input.get_axis("move_left", "move_right") * move_speed
+	var movement = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT) * move_speed
 	if movement != 0:
-		parent.sprtite.flip_h = movement < 0
+		parent.sprite.flip_h = movement < 0
 	parent.velocity.x = movement
 	parent.move_and_slide()
 
