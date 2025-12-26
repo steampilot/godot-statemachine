@@ -6,24 +6,27 @@ Arbeite nach diesen Best Practices für dieses Projekt.
 
 ## 🎯 Projekt-Ziele
 
-1. **Minimales funktionierendes Spiel** (Walking Skeleton)
-   - Player bewegt sich
-   - Physics/Gravity funktionieren
-   - Keine komplexe Architecture am Anfang
+**Aktueller Stand:** Intermediate Skill Level - State Machine Implementation
 
-2. **Framework-Integration später**
-   - State Machine
-   - Game Controller
-   - Global Singletons
-   - Erst wenn Basis läuft!
+1. **State Machine Architektur**
+   - Player State Machine implementiert
+   - States: Idle, Run, Jump, Fall, Attack
+   - Base State Class mit process_input, process_physics, process_frame
+   - State transitions über Rückgabewerte
+   - Movement envelope mit acceleration/deceleration
+
+2. **Player Controller Features**
+   - Variable Jump Height (button hold vs release)
+   - Smooth movement mit acceleration curves
+   - Attack State mit Hitbox Management
+   - Gravity multiplier für kontrollierten Fall
 
 3. **Clean Architecture**
    - `res/` = nur aktiver Spielecode
    - `src/` = Framework-Referenz (nicht von Godot geparst)
-   - `.scratch/` = Unsortierte nicht importierte Assets und Codes zur vorbereitung
-   - `doc/` = Dokumentation, Konzepte, 
-
-   - Komponenten-basiertes Design
+   - `.scratch/` = Unsortierte nicht importierte Assets und Codes
+   - `doc/` = Dokumentation, Konzepte
+   - State-basiertes Design Pattern
 
 ## 📝 Sprache & Lokalisation
 
@@ -92,14 +95,63 @@ Vor `create_file` oder `replace_string_in_file`:
 ## 🚫 Anti-Patterns (NICHT machen!)
 
 ```gdscript
-# ❌ Zu komplex für Phase 1
-@onready var game_state_machine = GameStateMachine.new()
-@onready var health = HealthComponent.new()
+# ❌ Verschachtelte Funktionen
+func outer():
+    func inner():  # NIEMALS!
+        pass
 
-Codestyle zeichenlänge pro zeile nicht mehr als 100
-keine verschachtelten funktionen, möglichst sprechender code
-Keine inline kommentare
-Kommentare als zeile über dem code
+# ❌ Else statements verwenden
+if condition:
+    do_something()
+else:  # VERMEIDEN!
+    do_other()
+
+# ❌ Trailing whitespaces oder tabs in leeren Zeilen
+func example():␣␣
+␣␣␣␣  # Leere Zeile mit tabs - FALSCH!
+    return
+```
+
+## 🎨 Code-Stil Regeln
+
+### Formatting
+- **Maximale Zeilenlänge:** 100 Zeichen
+- **Keine trailing whitespaces** am Zeilenende
+- **Keine unused tabs** in leeren Zeilen (leere Zeilen bleiben leer)
+- **Keine else statements** verwenden
+
+### Kontrollfluss ohne else
+```gdscript
+# ✅ RICHTIG - Early return statt else
+func check_state() -> void:
+    if not is_valid:
+        return
+
+    # Weiterer Code auf gleicher Indentationsebene
+    process_data()
+
+# ✅ RICHTIG - Guard clauses
+func update(delta: float) -> State:
+    if is_jumping:
+        return jump_state
+
+    if is_falling:
+        return fall_state
+
+    return idle_state
+
+# ❌ FALSCH - else vermeiden
+func check_state() -> void:
+    if is_valid:
+        process_data()
+    else:
+        return
+```
+
+### Weitere Regeln
+- Keine verschachtelten Funktionen, möglichst sprechender Code
+- Keine inline Kommentare
+- Kommentare als Zeile über dem Code
 
 ## 📝 Kommentar-Regeln (WICHTIG!)
 
@@ -127,20 +179,24 @@ func move_player(delta: float) -> void:
 - # ist der Standard für alle Kommentare
 - Konsistenz im gesamten Projekt
 
-# ✅ Stattdessen: Direkt in Script
-func _ready() -> void:
-    velocity = Vector2.ZERO
-    print("Game läuft!")
-```
-
-**Phase 1:** Funktionalität > Architecture  
-**Phase 2+:** Dann refactoren in Components
+## 📂 Projekt-Struktur
 
 ```
 res/                    ← Godot parst NUR das!
 ├── project.godot       ← Config hier
 ├── Scenes/
+│   ├── player.tscn    ← Player mit State Machine
+│   ├── level_*.tscn
+│   └── ...
 ├── Scripts/
+│   ├── player.gd      ← Player Controller
+│   ├── state_machine.gd
+│   ├── state.gd       ← Base State Class
+│   ├── idle_state.gd
+│   ├── run_state.gd
+│   ├── jump_state.gd
+│   ├── fall_state.gd
+│   └── attack_state.gd
 └── Assets/
 
 src/                    ← Framework-Referenz (wird NICHT geparst)
@@ -181,7 +237,8 @@ var player_velocity  # Präfix schlecht
 - `var/func` = snake_case
 - Typen explicit: `var speed: float`
 - Signals & Events klar benennen
-- Components für Wiederverwendbarkeit
+- State Machine Pattern für komplexe Logik
+- Early returns statt else statements
 
 ### Dateinamen
 - **Scripts:** `snake_case.gd`
@@ -232,19 +289,50 @@ func take_damage(amount: int) -> void:
 ### @onready & _ready()
 ```gdscript
 @onready var collision = $CollisionShape2D
+@onready var state_machine: StateMachine = %StateMachine
 
 func _ready() -> void:
+    # State Machine initialisieren
+    state_machine.init(self)
     # Connections hier
     signal_name.connect(_on_signal)
 ```
 
+### State Machine Pattern
+```gdscript
+# Base State Class
+class_name State
+extends Node
+
+func enter() -> void:
+    pass
+
+func exit() -> void:
+    pass
+
+func process_input(event: InputEvent) -> State:
+    return null
+
+func process_physics(delta: float) -> State:
+    return null
+
+# Konkrete State Implementation
+class_name IdleState
+extends State
+
+func process_input(event: InputEvent) -> State:
+    if event.is_action_just_pressed("jump"):
+        return jump_state
+    return null
+```
+
 ## 🧪 Testing & Debugging
 
-- Minimal erste, dann erweitern
-- Print-Debugging ok für Phase 1
-- Tests später (wenn Framework ready)
+- Print-Debugging für State transitions
+- Teste Edge Cases (Kanten, Sprung-Release, etc.)
+- State Machine States einzeln testen
 
 ---
 
-**Gültig ab:** 20. Dezember 2025  
-**Version:** 2.0
+**Gültig ab:** 26. Dezember 2025
+**Version:** 2.1 - State Machine Implementation
