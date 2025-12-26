@@ -1,0 +1,21 @@
+{
+  // Hide .uid files in Explorer view (less clutter)
+  "files.exclude": {
+    "**/*.uid": true
+  },
+  
+  // DO NOT exclude from search - you can still find them when needed
+  // "search.exclude": {} - intentionally left empty
+  
+  // Show all files in search results, including .uid
+  "search.useIgnoreFiles": false,
+  
+  // File nesting: visually group .uid files with their parent files
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "*.gd": "${capture}.gd.uid",
+    "*.tscn": "${capture}.tscn.uid",
+    "*.tres": "${capture}.tres.uid",
+    "*.gdshader": "${capture}.gdshader.uid"
+  }
+}
