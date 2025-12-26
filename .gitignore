@@ -42,6 +42,13 @@ bin/
 build/
 dist/
 
+# Archive files (backups)
+*.rar
+*.zip
+*.7z
+*.tar
+*.tar.gz
+
 # Editor temporary files
 *.tmp
 
