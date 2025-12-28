@@ -100,27 +100,46 @@ func outer():
     func inner():  # NIEMALS!
         pass
 
-# ❌ Else statements verwenden
+# ❌ KRITISCH: else nach return - GDScript Syntax Error!
 if condition:
-    do_something()
-else:  # VERMEIDEN!
-    do_other()
+    return value
+else:  # SYNTAX ERROR in GDScript!
+    return other
 
-# ❌ Trailing whitespaces oder tabs in leeren Zeilen
-func example():␣␣
-␣␣␣␣  # Leere Zeile mit tabs - FALSCH!
-    return
+# ✅ RICHTIG: Kein else nach return
+if condition:
+    return value
+return other
+
+# ❌ KRITISCH: Trailing whitespaces oder tabs in leeren Zeilen
+# Leere Zeilen mit tabs/spaces verhindern Godot-Start!
+func example():
+    var x = 1
+    ␣␣␣␣  # Leere Zeile mit tabs - SYNTAX ERROR!
+    return x
+
+# ✅ RICHTIG: Leere Zeilen sind komplett leer (keine Zeichen)
+func example():
+    var x = 1
+
+    return x
 ```
+
+**KRITISCH - Diese Fehler stoppen Godot komplett:**
+1. `else:` nach `return` Statement
+2. Tabs oder Spaces in leeren Zeilen
 
 ## 🎨 Code-Stil Regeln
 
 ### Formatting
 - **Maximale Zeilenlänge:** 100 Zeichen
 - **Keine trailing whitespaces** am Zeilenende
-- **Keine unused tabs** in leeren Zeilen (leere Zeilen bleiben leer)
-- **Keine else statements** verwenden
+- **KRITISCH: Leere Zeilen MÜSSEN komplett leer sein** - keine Tabs, keine Spaces!
+- **Keine else statements** nach return (GDScript Syntax Error)
 
 ### Kontrollfluss ohne else
+**KRITISCH: `else:` nach `return` verursacht GDScript Syntax Error und verhindert Godot-Start!**
+
 ```gdscript
 # ✅ RICHTIG - Early return statt else
 func check_state() -> void:
@@ -140,12 +159,20 @@ func update(delta: float) -> State:
 
     return idle_state
 
-# ❌ FALSCH - else vermeiden
-func check_state() -> void:
-    if is_valid:
-        process_data()
-    else:
-        return
+# ✅ RICHTIG - Mehrere Returns ohne else
+func get_state() -> State:
+    if parent.is_on_floor():
+        if direction != 0:
+            return states.get("run")
+        return states.get("idle")
+    return states.get("fall")
+
+# ❌ SYNTAX ERROR - else nach return stoppt Godot!
+func bad_example() -> State:
+    if parent.is_on_floor():
+        return states.get("idle")
+    else:  # FEHLER! Godot startet nicht!
+        return states.get("fall")
 ```
 
 ### Weitere Regeln
