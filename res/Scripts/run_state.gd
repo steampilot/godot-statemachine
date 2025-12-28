@@ -5,18 +5,24 @@ extends State
 func enter() -> void:
 	super.enter()
 	print("Entered Run State")
+	
+	# Reset air dash when landing
+	parent.can_air_dash = true
 
 func process_input(event: InputEvent) -> State:
-	if event.is_action_pressed(INPUT_ACTIONS.JUMP) and parent.is_on_floor():
-		return states.get("jump")
+	# Check dash input (Jump + any direction on D-Pad)
+	if event.is_action_pressed(INPUT_ACTIONS.JUMP):
+		var dash_dir = parent.get_dash_direction()
+		if dash_dir.length_squared() > 0:
+			return states.get("dash")
+		# Normal jump if no dash direction
+		if parent.is_on_floor():
+			return states.get("jump")
 	if event.is_action_pressed(INPUT_ACTIONS.ATTACK):
 		return states.get("attack")
 	return null
 
 func process_physics(delta: float) -> State:
-	# Apply gravity
-	parent.velocity.y += gravity * delta
-
 	# Get input direction
 	var direction = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
 
@@ -29,13 +35,15 @@ func process_physics(delta: float) -> State:
 
 		if is_turning:
 			# Faster direction change with turn_speed
-			var turn_accel = (parent.deceleration + parent.acceleration) * parent.turn_speed
+			var turn_accel = (
+				parent.deceleration + parent.acceleration
+				) * parent.max_speed * parent.turn_speed
 			parent.velocity.x = move_toward(parent.velocity.x, target_speed, turn_accel * delta)
 		else:
 			# Normal acceleration
 			parent.velocity.x = move_toward(
 				parent.velocity.x, target_speed,
-				parent.acceleration * delta)
+				parent.acceleration * parent.max_speed * delta)
 
 		# Update sprite direction
 		parent.sprite.flip_h = direction < 0
@@ -43,7 +51,7 @@ func process_physics(delta: float) -> State:
 		# No input - apply deceleration
 		parent.velocity.x = move_toward(
 			parent.velocity.x, 0.0,
-			parent.deceleration * delta
+			parent.deceleration * parent.max_speed * delta
 			)
 
 		# Transition to idle when stopped
@@ -55,6 +63,8 @@ func process_physics(delta: float) -> State:
 
 	# Check if falling off edge
 	if !parent.is_on_floor():
+		# Start coyote timer when leaving ground
+		parent.coyote_timer = parent.coyote_time
 		return states.get("fall")
 
 	return null

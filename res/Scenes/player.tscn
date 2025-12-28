@@ -1,20 +1,21 @@
 [gd_scene load_steps=121 format=3 uid="uid://dkeo345qq555v"]
 
-[ext_resource type="Script" path="res://Scripts/player.gd" id="1_ridw5"]
+[ext_resource type="Script" uid="uid://dbuuihnb8sl0j" path="res://Scripts/player.gd" id="1_ridw5"]
 [ext_resource type="Texture2D" uid="uid://4mmcrmda1g43" path="res://Assets/Sprites/Player/Warrior_Death_Centered.png" id="5_qfe86"]
 [ext_resource type="Texture2D" uid="uid://n6qw6tru3jfc" path="res://Assets/Sprites/Player/Warrior_Attack_Centered_80-48.png" id="5_xoy6b"]
 [ext_resource type="Texture2D" uid="uid://bak62b7aadaqy" path="res://Assets/Sprites/Player/Warrior_Dash-Attack_Centered.png" id="6_d41cc"]
 [ext_resource type="Texture2D" uid="uid://bjaa7keronlre" path="res://Assets/Sprites/Player/Warrior_Sheet_32x48.png" id="7_inhbu"]
-[ext_resource type="Script" path="res://Scripts/hit_box.gd" id="8_8qjxp"]
+[ext_resource type="Script" uid="uid://ofxfyp5yf2j4" path="res://Scripts/hit_box.gd" id="8_8qjxp"]
 [ext_resource type="Texture2D" uid="uid://dns3td635mfpc" path="res://Assets/Sprites/Player/Warior_Sneet_Edge_64x48.png" id="8_gtg3t"]
 [ext_resource type="PackedScene" uid="uid://buqqexwjp2j4i" path="res://Scenes/hit_box.tscn" id="8_vwsrv"]
 [ext_resource type="PackedScene" uid="uid://d0kq8ragktfnn" path="res://Scenes/hurt_box.tscn" id="9_5nh85"]
-[ext_resource type="Script" path="res://Scripts/state_machine.gd" id="10_mh7vu"]
-[ext_resource type="Script" path="res://Scripts/jump_state.gd" id="11_k5grt"]
-[ext_resource type="Script" path="res://Scripts/idle_state.gd" id="12_qloii"]
-[ext_resource type="Script" path="res://Scripts/fall_state.gd" id="13_k42dt"]
-[ext_resource type="Script" path="res://Scripts/run_state.gd" id="14_yrwt2"]
-[ext_resource type="Script" path="res://Scripts/attack_state.gd" id="15_i56dd"]
+[ext_resource type="Script" uid="uid://csm1aeccmpgp5" path="res://Scripts/state_machine.gd" id="10_mh7vu"]
+[ext_resource type="Script" uid="uid://bueeh46bbxtrj" path="res://Scripts/jump_state.gd" id="11_k5grt"]
+[ext_resource type="Script" uid="uid://pbf5vt1qi74h" path="res://Scripts/idle_state.gd" id="12_qloii"]
+[ext_resource type="Script" uid="uid://bq6mvmy8worid" path="res://Scripts/fall_state.gd" id="13_k42dt"]
+[ext_resource type="Script" uid="uid://d23q1opygi8lv" path="res://Scripts/run_state.gd" id="14_yrwt2"]
+[ext_resource type="Script" uid="uid://b7ywtss82qi2" path="res://Scripts/attack_state.gd" id="15_i56dd"]
+[ext_resource type="Script" uid="uid://ddgrulfddgvff" path="res://Scripts/dash_state.gd" id="16_fd4e3"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
 radius = 5.0
@@ -107,10 +108,6 @@ region = Rect2(768, 0, 96, 44)
 [sub_resource type="AtlasTexture" id="AtlasTexture_6i25v"]
 atlas = ExtResource("6_d41cc")
 region = Rect2(864, 0, 96, 44)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_srkgh"]
-atlas = ExtResource("7_inhbu")
-region = Rect2(64, 0, 32, 48)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_wcwvq"]
 atlas = ExtResource("7_inhbu")
@@ -461,7 +458,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"attack",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -500,9 +497,6 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
-"texture": SubResource("AtlasTexture_srkgh")
-}, {
-"duration": 1.0,
 "texture": SubResource("AtlasTexture_wcwvq")
 }, {
 "duration": 1.0,
@@ -525,7 +519,7 @@ animations = [{
 }],
 "loop": false,
 "name": &"dash",
-"speed": 8.0
+"speed": 16.0
 }, {
 "frames": [{
 "duration": 1.0,
@@ -835,7 +829,7 @@ shape = SubResource("CapsuleShape2D_aysp5")
 unique_name_in_owner = true
 position = Vector2(-4, -24)
 sprite_frames = SubResource("SpriteFrames_5jmtt")
-animation = &"idle"
+animation = &"dash"
 autoplay = "idle"
 offset = Vector2(4, 0)
 
@@ -847,14 +841,14 @@ script = ExtResource("8_8qjxp")
 [node name="SwordBox" type="CollisionShape2D" parent="Sword"]
 position = Vector2(13, -16)
 shape = SubResource("RectangleShape2D_he03s")
-debug_color = Color(0, 0.65098, 0, 0.419608)
+debug_color = Color(0, 0.6509804, 0, 0.41960785)
 
 [node name="HurtBox" parent="." instance=ExtResource("9_5nh85")]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="HurtBox"]
 position = Vector2(0, -16)
 shape = SubResource("RectangleShape2D_m01h4")
-debug_color = Color(1, 0, 0, 0.419608)
+debug_color = Color(1, 0, 0, 0.41960785)
 
 [node name="Stomp" parent="." instance=ExtResource("8_vwsrv")]
 damage = 150
@@ -862,7 +856,7 @@ damage = 150
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Stomp"]
 position = Vector2(0, -1)
 shape = SubResource("RectangleShape2D_v64vu")
-debug_color = Color(0, 0.65098, 0, 0.419608)
+debug_color = Color(0, 0.6509804, 0, 0.41960785)
 
 [node name="StateMachine" type="Node" parent="."]
 unique_name_in_owner = true
@@ -870,15 +864,24 @@ script = ExtResource("10_mh7vu")
 
 [node name="JumpState" type="Node" parent="StateMachine"]
 script = ExtResource("11_k5grt")
+animation_name = "jump_up"
 
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("12_qloii")
+animation_name = "idle"
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_k42dt")
+animation_name = "jump_down"
 
 [node name="RunState" type="Node" parent="StateMachine"]
 script = ExtResource("14_yrwt2")
+animation_name = "run"
 
 [node name="AttackState" type="Node" parent="StateMachine"]
 script = ExtResource("15_i56dd")
+animation_name = "attack"
+
+[node name="DashState" type="Node" parent="StateMachine"]
+script = ExtResource("16_fd4e3")
+animation_name = "dash"

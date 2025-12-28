@@ -40,20 +40,14 @@ func process_input(_event: InputEvent) -> State:
 	return null
 
 func process_physics(delta: float) -> State:
-	# Apply gravity
-	parent.velocity.y += gravity * delta
 	parent.move_and_slide()
 
 	# Wait for animation to finish
 	if attack_finished:
-		# Check if on floor to determine next state
+		# Always transition to idle on ground (never run) for stronger feeling
 		if parent.is_on_floor():
-			# Check if player is moving
-			var direction = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
-			if direction != 0:
-				return states.get("run")
 			return states.get("idle")
-			# In air - transition to fall state
+		# In air - transition to fall state
 		return states.get("fall")
 
 	# Check if fell off edge during attack
@@ -63,6 +57,6 @@ func process_physics(delta: float) -> State:
 	return null
 
 func _on_attack_animation_finished() -> void:
-	# Only trigger if current animation is "attack"
-	if parent.sprite and parent.sprite.animation == "attack":
+	# Only trigger if current animation matches our animation_name
+	if parent.sprite and parent.sprite.animation == animation_name:
 		attack_finished = true

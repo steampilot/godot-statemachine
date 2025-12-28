@@ -3,7 +3,8 @@ extends Node
 
 @export var animation_name: String = ""
 
-@export var move_speed: float = 400
+# Gravity multiplier for this state (1.0 = normal, higher = faster fall)
+var gravity_multiplier: float = 1.0
 
 var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
 
@@ -12,7 +13,12 @@ var states: Dictionary = {} # Populated by StateMachine
 
 
 func enter() -> void:
-	if animation_name != "" and parent and parent.sprite:
+	# Validate that animation_name is set
+	if animation_name == "":
+		push_error("%s: animation_name is not set! Please set it in the Inspector." % get_class())
+		return
+
+	if parent and parent.sprite:
 		parent.sprite.play(animation_name)
 
 func exit() -> void:

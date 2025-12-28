@@ -4,11 +4,21 @@ extends State
 func enter() -> void:
 	super.enter()
 	print("Entered Idle State")
+	parent.velocity.x = 0
 	parent.velocity.y = 0
 
+	# Reset air dash when landing
+	parent.can_air_dash = true
+
 func process_input(event: InputEvent) -> State:
-	if event.is_action_pressed(INPUT_ACTIONS.JUMP) and parent.is_on_floor():
-		return states.get("jump")
+	# Check dash input (Jump + any direction on D-Pad)
+	if event.is_action_pressed(INPUT_ACTIONS.JUMP):
+		var dash_dir = parent.get_dash_direction()
+		if dash_dir.length_squared() > 0:
+			return states.get("dash")
+		# Normal jump if no dash direction
+		if parent.is_on_floor():
+			return states.get("jump")
 	if event.is_action_pressed(
 		INPUT_ACTIONS.MOVE_LEFT) or event.is_action_pressed(INPUT_ACTIONS.MOVE_RIGHT):
 		return states.get("run")
@@ -17,8 +27,7 @@ func process_input(event: InputEvent) -> State:
 	return null
 
 
-func process_physics(delta: float) -> State:
-	parent.velocity.y += gravity * delta
+func process_physics(_delta: float) -> State:
 	parent.move_and_slide()
 
 	if !parent.is_on_floor():

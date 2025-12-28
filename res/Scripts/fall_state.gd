@@ -18,10 +18,19 @@ func enter() -> void:
 	jump_buffer_timer = 0.0
 
 func process_input(event: InputEvent) -> State:
-	# Buffer jump input while falling
+	# Check air dash input (Jump + any direction while falling)
 	if event.is_action_pressed(INPUT_ACTIONS.JUMP):
+		var dash_dir = parent.get_dash_direction()
+		if dash_dir.length_squared() > 0 and parent.can_air_dash:
+			return states.get("dash")
+		# Normal jump buffer and coyote time
 		jump_buffer_timer = jump_buffer_time
-
+		if parent.coyote_timer > 0:
+			return states.get("jump")
+	
+	# Attack input
+	if event.is_action_pressed(INPUT_ACTIONS.ATTACK):
+		return states.get("attack")
 	return null
 
 func process_physics(delta: float) -> State:
@@ -29,22 +38,27 @@ func process_physics(delta: float) -> State:
 	if jump_buffer_timer > 0:
 		jump_buffer_timer -= delta
 
-	# Determine gravity multiplier based on jump button state
-	var gravity_multiplier = 1.0
-	if not Input.is_action_pressed(INPUT_ACTIONS.JUMP):
-		gravity_multiplier = parent.down_gravity_multiplier
+	# Update coyote timer
+	if parent.coyote_timer > 0:
+		parent.coyote_timer -= delta
 
-	# Apply gravity with multiplier
-	parent.velocity.y += gravity * gravity_multiplier * delta
+	# Set gravity multiplier based on jump button state (Celeste-style)
+	# Button held = normal fall, button released = faster fall for precise control
+	if Input.is_action_pressed(INPUT_ACTIONS.JUMP):
+		gravity_multiplier = 1.0
+	else:
+		gravity_multiplier = parent.jump_release_gravity_multiplier
 
 	# Clamp fall speed to prevent falling too fast
 	parent.velocity.y = min(parent.velocity.y, max_fall_speed)
 
-	# Handle horizontal movement while falling
-	var movement = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT) * move_speed
-	if movement != 0:
-		parent.sprite.flip_h = movement < 0
-	parent.velocity.x = movement
+	# Handle horizontal movement while falling (with air control)
+	var direction = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
+	if direction != 0:
+		var target_speed = direction * parent.max_speed
+		var air_accel = parent.acceleration * parent.max_speed * parent.air_control
+		parent.velocity.x = move_toward(parent.velocity.x, target_speed, air_accel * delta)
+		parent.sprite.flip_h = direction < 0
 	parent.move_and_slide()
 
 	# Transition to ground states when landing
@@ -53,7 +67,7 @@ func process_physics(delta: float) -> State:
 		if jump_buffer_timer > 0:
 			return states.get("jump")
 
-		if movement != 0:
+		if direction != 0:
 			return states.get("run")
 		return states.get("idle")
 
