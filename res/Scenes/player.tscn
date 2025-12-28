@@ -1,4 +1,4 @@
-[gd_scene load_steps=121 format=3 uid="uid://dkeo345qq555v"]
+[gd_scene load_steps=123 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" uid="uid://dbuuihnb8sl0j" path="res://Scripts/player.gd" id="1_ridw5"]
 [ext_resource type="Texture2D" uid="uid://4mmcrmda1g43" path="res://Assets/Sprites/Player/Warrior_Death_Centered.png" id="5_qfe86"]
@@ -16,6 +16,8 @@
 [ext_resource type="Script" uid="uid://d23q1opygi8lv" path="res://Scripts/run_state.gd" id="14_yrwt2"]
 [ext_resource type="Script" uid="uid://b7ywtss82qi2" path="res://Scripts/attack_state.gd" id="15_i56dd"]
 [ext_resource type="Script" uid="uid://ddgrulfddgvff" path="res://Scripts/dash_state.gd" id="16_fd4e3"]
+[ext_resource type="Script" uid="uid://1k5ip308v8ia" path="res://Scripts/hurt_state.gd" id="17_qqcod"]
+[ext_resource type="PackedScene" uid="uid://xo4nh18b40pd" path="res://Scenes/dying_state.tscn" id="18_igrcy"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
 radius = 5.0
@@ -556,7 +558,7 @@ animations = [{
 "texture": SubResource("AtlasTexture_ttl03")
 }],
 "loop": false,
-"name": &"diying",
+"name": &"dying",
 "speed": 5.0
 }, {
 "frames": [{
@@ -829,8 +831,7 @@ shape = SubResource("CapsuleShape2D_aysp5")
 unique_name_in_owner = true
 position = Vector2(-4, -24)
 sprite_frames = SubResource("SpriteFrames_5jmtt")
-animation = &"dash"
-autoplay = "idle"
+animation = &"dying"
 offset = Vector2(4, 0)
 
 [node name="Sword" type="Area2D" parent="."]
@@ -885,3 +886,11 @@ animation_name = "attack"
 [node name="DashState" type="Node" parent="StateMachine"]
 script = ExtResource("16_fd4e3")
 animation_name = "dash"
+
+[node name="HurtState" type="Node" parent="StateMachine"]
+script = ExtResource("17_qqcod")
+knockback_force = 100.0
+knockback_duration = 0.2
+animation_name = "hurt"
+
+[node name="DyingState" parent="StateMachine" instance=ExtResource("18_igrcy")]

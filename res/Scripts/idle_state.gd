@@ -28,6 +28,11 @@ func process_input(event: InputEvent) -> State:
 
 
 func process_physics(_delta: float) -> State:
+	# Check for held movement input (continuous check)
+	var direction = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
+	if direction != 0:
+		return states.get("run")
+
 	parent.move_and_slide()
 
 	if !parent.is_on_floor():

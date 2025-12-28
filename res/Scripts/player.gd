@@ -3,7 +3,7 @@ extends CharacterBody2D
 
 @export var max_health: int = 100
 
-## Jump Release Gravity Multiplikator - 
+## Jump Release Gravity Multiplikator
 ## erhöhte Fallgeschwindigkeit wenn Jump-Button losgelassen wird
 ## Ermöglicht präzise Jump-Stomp-Attacken (höher = schnellerer Fall)
 @export var jump_release_gravity_multiplier: float = 3.0
@@ -27,6 +27,10 @@ var coyote_timer: float = 0.0
 # Air dash limiter - can only dash once per air time
 var can_air_dash: bool = true
 
+# Invincibility frames (i-frames)
+var is_invincible: bool = false
+var invincibility_timer: float = 0.0
+
 
 var health: int = max_health
 
@@ -40,37 +44,63 @@ func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
 
 func _physics_process(delta: float) -> void:
+	# Update invincibility timer
+	if invincibility_timer > 0:
+		invincibility_timer -= delta
+		if invincibility_timer <= 0:
+			is_invincible = false
+			sprite.modulate.a = 1.0
+		# Blinking effect during i-frames
+		else:
+			sprite.modulate.a = 0.5 if int(invincibility_timer * 10) % 2 == 0 else 1.0
+
 	# Apply gravity centrally (Celeste-style)
 	# States control gravity_multiplier for variable fall speed
 	var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
-	var grav_mult = state_machine.current_state.gravity_multiplier if state_machine.current_state else 1.0
+	var grav_mult = (
+		state_machine.current_state.gravity_multiplier
+		if state_machine.current_state
+		else 1.0
+	)
 	velocity.y += gravity * grav_mult * delta
-	
+
 	state_machine.process_physics(delta)
 
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
 
 func receive_damage(amount: int) -> void:
+	# Ignore damage during invincibility frames
+	if is_invincible:
+		return
+
 	print("%s received %d damage!" % [self.name, amount])
 	health -= amount
 	print("%s Is now at health: %d of %d" % [self.name, health, max_health])
-	sprite.play("hurt")
+
 	if health <= 0:
 		print("%s has been defeated!" % [self.name])
+		# Trigger dying state - NEVER queue_free!
+		if state_machine and state_machine.states.has("dying"):
+			state_machine.change_state(state_machine.states.get("dying"))
+		return
+
+	# Trigger hurt state for knockback
+	if state_machine and state_machine.states.has("hurt"):
+		state_machine.change_state(state_machine.states.get("hurt"))
 
 ## Get dash direction based on current input state
 ## Returns normalized Vector2 or Vector2.ZERO if no valid dash input
 func get_dash_direction() -> Vector2:
 	var dir := Vector2.ZERO
-	
+
 	# Get horizontal input
 	var h_input = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
 	# Get vertical input (Godot: Y negative = up, Y positive = down)
 	var v_up = -1.0 if Input.is_action_pressed(INPUT_ACTIONS.MOVE_UP) else 0.0
 	var v_down = 1.0 if Input.is_action_pressed(INPUT_ACTIONS.MOVE_DOWN) else 0.0
 	var v_input = v_up + v_down
-	
+
 	# On ground: Only horizontal or down dash allowed
 	if is_on_floor():
 		if v_input > 0: # Down pressed (positive Y)
@@ -78,16 +108,16 @@ func get_dash_direction() -> Vector2:
 			dir.x = 1.0 if not sprite.flip_h else -1.0
 			dir.y = 0.0
 		return dir
-	
+
 	# In air: All 8 directions possible
 	if can_air_dash:
 		dir.x = h_input
 		dir.y = v_input
-		
+
 		# If no direction at all, dash in sprite direction (horizontal)
 		if dir.length_squared() == 0:
 			dir.x = 1.0 if not sprite.flip_h else -1.0
-		
+
 		return dir.normalized()
-	
+
 	return Vector2.ZERO

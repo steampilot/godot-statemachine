@@ -1,0 +1,197 @@
+[gd_scene load_steps=18 format=3 uid="uid://xo4nh18b40pd"]
+
+[ext_resource type="Script" uid="uid://06rqi30xi3cq" path="res://Scripts/dying_state.gd" id="1_dh64t"]
+[ext_resource type="Texture2D" uid="uid://4mmcrmda1g43" path="res://Assets/Sprites/Player/Warrior_Death_Centered.png" id="2_xxsp7"]
+
+[sub_resource type="Animation" id="Animation_l4e8t"]
+resource_name = "dying"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/ColorRect:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 2, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/ColorRect:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 2, 3),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 0, 0, 0), Color(1, 0, 0, 0), Color(1, 0, 0, 1)]
+}
+tracks/2/type = "method"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(3),
+"transitions": PackedFloat32Array(1),
+"values": [{
+"args": [],
+"method": &"reset_level"
+}]
+}
+
+[sub_resource type="Animation" id="Animation_xxsp7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Control/ColorRect:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Control/ColorRect:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_o8qx4"]
+_data = {
+&"RESET": SubResource("Animation_xxsp7"),
+&"death_sequence": SubResource("Animation_l4e8t")
+}
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_u4e4k"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(0, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_w4777"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(64, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_0id0t"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(128, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fox6o"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(192, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_16df6"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(256, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_108if"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(320, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_pirss"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(384, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1em8w"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(448, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xgwsy"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(512, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_d6qtv"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(576, 0, 64, 44)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n2idj"]
+atlas = ExtResource("2_xxsp7")
+region = Rect2(640, 0, 64, 44)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_se7xx"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_u4e4k")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_w4777")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_0id0t")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fox6o")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_16df6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_108if")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_pirss")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1em8w")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xgwsy")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_d6qtv")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n2idj")
+}],
+"loop": false,
+"name": &"dying",
+"speed": 5.0
+}]
+
+[node name="DyingState" type="Node"]
+script = ExtResource("1_dh64t")
+animation_name = "dying"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_o8qx4")
+}
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="AnimationPlayer"]
+position = Vector2(0, -22)
+sprite_frames = SubResource("SpriteFrames_se7xx")
+animation = &"dying"
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+visible = false
+modulate = Color(1, 0, 0, 0)
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(1, 0, 0, 1)

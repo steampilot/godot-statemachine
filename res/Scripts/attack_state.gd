@@ -39,7 +39,7 @@ func process_input(_event: InputEvent) -> State:
 	# No state changes during attack animation
 	return null
 
-func process_physics(delta: float) -> State:
+func process_physics(_delta: float) -> State:
 	parent.move_and_slide()
 
 	# Wait for animation to finish
