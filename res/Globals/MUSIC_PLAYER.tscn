@@ -1,10 +1,10 @@
 [gd_scene load_steps=3 format=3 uid="uid://bg1mvgxydn4w2"]
 
-[ext_resource type="Script" path="res://Globals/MUSIC_PLAYER.gd" id="1_music_script"]
-[ext_resource type="AudioStream" uid="uid://bc3f717jqtnhs" path="res://Assets/Audio/Music/Have_I_Learned_Anything/Ambient.ogg" id="1_o1guv"]
+[ext_resource type="Script" uid="uid://bnhkehwkkl5ra" path="res://Globals/MUSIC_PLAYER.gd" id="1_music_script"]
+[ext_resource type="AudioStream" uid="uid://dqt0t2g61r2g" path="res://Assets/Audio/Music/Have_I_Learned_Anything/Have a seat! (Remastered) (Cover) (Edit) (Cover).wav" id="1_ni72a"]
 
 [node name="MUSIC_PLAYER" type="AudioStreamPlayer"]
-stream = ExtResource("1_o1guv")
+stream = ExtResource("1_ni72a")
 autoplay = true
 bus = &"Music"
 script = ExtResource("1_music_script")
