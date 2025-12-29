@@ -131,6 +131,74 @@ func example():
 
 ## 🎨 Code-Stil Regeln
 
+### GDScript Deklarations-Reihenfolge
+**Folge IMMER dieser Reihenfolge (wichtig für Lesbarkeit und Godot):**
+
+```gdscript
+# 1. extends (falls vorhanden)
+extends Node
+
+# 2. class_name (falls vorhanden)
+class_name MyClass
+
+# 3. Docstring (## Kommentare)
+## Beschreibung der Klasse
+## Weitere Dokumentation
+
+# 4. Signals
+signal state_changed(new_state: State)
+signal health_changed(value: int)
+
+# 5. Enums
+enum States { IDLE, RUNNING, JUMPING }
+
+# 6. Constants
+const MAX_SPEED: float = 200.0
+const GRAVITY: float = 980.0
+
+# 7. @export Variables
+@export var speed: float = 100.0
+@export var max_health: int = 100
+
+# 8. Public Variables
+var current_state: State
+var velocity: Vector2
+
+# 9. Private Variables (_prefix)
+var _internal_counter: int = 0
+
+# 10. @onready Variables
+@onready var sprite: Sprite2D = $Sprite2D
+@onready var collision: CollisionShape2D = $CollisionShape2D
+
+# 11. Lifecycle Methods (_ready, _process, etc.)
+func _ready() -> void:
+	pass
+
+func _process(delta: float) -> void:
+	pass
+
+# 12. Public Methods
+func do_something() -> void:
+	pass
+
+# 13. Private Methods (_prefix)
+func _internal_logic() -> void:
+	pass
+```
+
+**❌ FALSCH:**
+```gdscript
+class_name MyClass  # Falsch - kommt VOR extends
+extends Node
+```
+
+**✅ RICHTIG:**
+```gdscript
+extends Node
+class_name MyClass
+```
+
 ### Formatting
 - **Maximale Zeilenlänge:** 100 Zeichen
 - **Keine trailing whitespaces** am Zeilenende

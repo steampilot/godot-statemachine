@@ -1,0 +1,13 @@
+[
+    {
+        "key": "alt+f",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Format GDScript (Current File)",
+        "when": "editorLangId == gdscript"
+    },
+    {
+        "key": "ctrl+shift+alt+f",
+        "command": "workbench.action.tasks.runTask",
+        "args": "Format GDScript (All Files)"
+    }
+]

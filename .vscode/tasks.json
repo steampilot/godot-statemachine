@@ -1,0 +1,51 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Format GDScript (Current File)",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}/gdscript_formatter.py",
+                "${file}"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Format GDScript (All Files)",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}/gdscript_formatter.py",
+                "${workspaceFolder}"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": false
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Format GDScript (Highlight Else)",
+            "type": "shell",
+            "command": "python",
+            "args": [
+                "${workspaceFolder}/gdscript_formatter.py",
+                "${file}",
+                "--highlight-else"
+            ],
+            "presentation": {
+                "reveal": "always",
+                "panel": "new",
+                "focus": false
+            },
+            "problemMatcher": []
+        }
+    ]
+}
