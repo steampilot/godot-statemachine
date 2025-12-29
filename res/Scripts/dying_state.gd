@@ -14,8 +14,8 @@ func enter() -> void:
 	parent.velocity = Vector2.ZERO
 
 	# Disable collisions (ignored by enemies)
-	parent.set_collision_layer_value(1, false)
-	parent.set_collision_mask_value(1, false)
+	parent.set_collision_layer_value(1, false) # Layer 1 = "World"
+	parent.set_collision_mask_value(1, false) # Layer 1 = "World"
 
 	# Reset color rect
 	if color_rect:
@@ -45,8 +45,8 @@ func exit() -> void:
 		color_rect.modulate.a = 0.0
 
 	# Re-enable collisions
-	parent.set_collision_layer_value(1, true)
-	parent.set_collision_mask_value(1, true)
+	parent.set_collision_layer_value(1, true) # Layer 1 = "World"
+	parent.set_collision_mask_value(1, true) # Layer 1 = "World"
 
 	# Reset player opacity
 	parent.sprite.modulate.a = 1.0
