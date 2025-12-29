@@ -1,22 +1,8 @@
-extends Node
 class_name HEALTH
+extends Node
+
 ## Global Singleton für Entity Health Management
 ## Verwaltet Gesundheit für beliebige Entities: Player, Enemies, Doors, Locks, Barrels, etc.
-
-# Entity Health Data Struktur
-class HealthData:
-	var entity_id: String
-	var entity_ref: Node  # Referenz zum Objekt
-	var current_health: int
-	var max_health: int
-	var is_alive: bool = true
-	var on_death_callback: Callable = Callable()  # Optional callback bei Tod
-	var damage_reduction: float = 0.0  # 0.0 - 1.0 Faktor
-	var invulnerable: bool = false
-	var invulnerability_timer: float = 0.0
-
-# Registry aller Entities mit Health
-var entities: Dictionary = {}  # entity_id -> HealthData
 
 # Signals (generisch für alle Entities)
 signal health_changed(entity_id: String, current: int, max_val: int)
@@ -25,6 +11,9 @@ signal entity_healed(entity_id: String, amount: int, new_health: int)
 signal entity_died(entity_id: String, entity_ref: Node)
 signal entity_registered(entity_id: String)
 signal entity_unregistered(entity_id: String)
+
+# Registry aller Entities mit Health
+var entities: Dictionary = {} # entity_id -> HealthData
 
 func _ready() -> void:
 	set_name("HEALTH")
@@ -40,18 +29,13 @@ func _process(delta: float) -> void:
 				health_data.invulnerable = false
 
 ## Registriert eine neue Entity mit Health
-func register_entity(entity_id: String, entity_ref: Node, max_health: int, on_death: Callable = Callable()) -> void:
+func register_entity(entity_id: String, entity_ref: Node, max_health: int,
+	on_death: Callable = Callable()) -> void:
 	if entities.has(entity_id):
 		push_warning("Entity %s existiert bereits" % entity_id)
 		return
 
-	var health_data = HealthData.new()
-	health_data.entity_id = entity_id
-	health_data.entity_ref = entity_ref
-	health_data.max_health = max_health
-	health_data.current_health = max_health
-	health_data.on_death_callback = on_death
-
+	var health_data = HealthData.new(entity_id, entity_ref, max_health, on_death)
 	entities[entity_id] = health_data
 	entity_registered.emit(entity_id)
 
@@ -173,4 +157,3 @@ func debug_print_entities() -> void:
 		var status = "ALIVE" if hd.is_alive else "DEAD"
 		print("  %s: %d/%d HP [%s]" % [entity_id, hd.current_health, hd.max_health, status])
 	print("================================\n")
-
