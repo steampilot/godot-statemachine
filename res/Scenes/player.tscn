@@ -1,4 +1,4 @@
-[gd_scene load_steps=123 format=3 uid="uid://dkeo345qq555v"]
+[gd_scene load_steps=124 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" uid="uid://dbuuihnb8sl0j" path="res://Scripts/player.gd" id="1_ridw5"]
 [ext_resource type="Texture2D" uid="uid://4mmcrmda1g43" path="res://Assets/Sprites/Player/Warrior_Death_Centered.png" id="5_qfe86"]
@@ -18,6 +18,7 @@
 [ext_resource type="Script" uid="uid://ddgrulfddgvff" path="res://Scripts/dash_state.gd" id="16_fd4e3"]
 [ext_resource type="Script" uid="uid://1k5ip308v8ia" path="res://Scripts/hurt_state.gd" id="17_qqcod"]
 [ext_resource type="PackedScene" uid="uid://xo4nh18b40pd" path="res://Scenes/dying_state.tscn" id="18_igrcy"]
+[ext_resource type="Script" uid="uid://e144abrw837y" path="res://Scripts/ladder_grab_state.gd" id="19_fs7ks"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
 radius = 5.0
@@ -821,6 +822,7 @@ size = Vector2(6, 3)
 
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 8
+collision_mask = 97
 script = ExtResource("1_ridw5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
@@ -894,3 +896,7 @@ knockback_duration = 0.2
 animation_name = "hurt"
 
 [node name="DyingState" parent="StateMachine" instance=ExtResource("18_igrcy")]
+
+[node name="LadderGrabState" type="Node" parent="StateMachine"]
+script = ExtResource("19_fs7ks")
+animation_name = "ladder_grab"

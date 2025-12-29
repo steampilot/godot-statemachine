@@ -69,6 +69,13 @@ func _physics_process(delta: float) -> void:
 func _process(delta: float) -> void:
 	state_machine.process_frame(delta)
 
+## Toggle OneWayPlatform collision for ladder climbing through platforms
+func toggle_oneway_platforms(enabled: bool) -> void:
+	var platforms = get_tree().get_nodes_in_group("OneWayPlatforms")
+	for platform in platforms:
+		if platform is TileMapLayer:
+			platform.collision_enabled = enabled
+
 func receive_damage(amount: int) -> void:
 	# Ignore damage during invincibility frames
 	if is_invincible:
