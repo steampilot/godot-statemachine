@@ -20,6 +20,7 @@ func enter() -> void:
 		parent.sprite.animation_finished.connect(_on_attack_animation_finished)
 
 	# Enable sword hitbox
+	# Sword is on Layer 2 "Hitboxes" and detects Layer 3 "Hurtboxes"
 	var sword = parent.get_node_or_null("Sword")
 	if sword:
 		sword.monitoring = true

@@ -1,5 +1,7 @@
 @tool
 # Shape that defines the area that receives damage.
+# Collision Layer: Layer 3 = "Hurtboxes" (set in Inspector)
+# Collision Mask: Layer 2 = "Hitboxes" (detects hit boxes)
 class_name HurtBox
 extends Area2D
 

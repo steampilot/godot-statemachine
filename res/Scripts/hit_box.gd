@@ -1,5 +1,7 @@
 @tool
 # Shape that defines the area that deals damage.
+# Collision Layer: Layer 2 = "Hitboxes" (set in Inspector)
+# Collision Mask: Layer 3 = "Hurtboxes" (detects hurt boxes)
 class_name HitBox
 extends Area2D
 @export var active: bool = true
