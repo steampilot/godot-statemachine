@@ -27,7 +27,7 @@ func process_input(event: InputEvent) -> State:
 		jump_buffer_timer = jump_buffer_time
 		if parent.coyote_timer > 0:
 			return states.get("jump")
-	
+
 	# Attack input
 	if event.is_action_pressed(INPUT_ACTIONS.ATTACK):
 		return states.get("attack")

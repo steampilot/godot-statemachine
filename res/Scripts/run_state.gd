@@ -5,7 +5,7 @@ extends State
 func enter() -> void:
 	super.enter()
 	print("Entered Run State")
-	
+
 	# Reset air dash when landing
 	parent.can_air_dash = true
 

@@ -37,7 +37,7 @@ func _ready() -> void:
 	sfx_slider.value_changed.connect(_on_sfx_changed)
 	dialog_slider.value_changed.connect(_on_dialog_changed)
 	back_button.pressed.connect(_on_back_pressed)
-	
+
 	# Music selection radio buttons
 	music_track1.toggled.connect(_on_music_track1_toggled)
 	music_track2.toggled.connect(_on_music_track2_toggled)
@@ -56,7 +56,7 @@ func _load_audio_settings() -> void:
 	music_slider.value = Audio.get_music_volume()
 	sfx_slider.value = Audio.get_sfx_volume()
 	dialog_slider.value = Audio.get_dialog_volume()
-	
+
 	# Load current music track selection
 	var current_track = Audio.get_music_track()
 	music_track1.button_pressed = (current_track == 1)
@@ -108,6 +108,6 @@ func _select_music_track(track_number: int) -> void:
 	music_track1.button_pressed = (track_number == 1)
 	music_track2.button_pressed = (track_number == 2)
 	music_track3.button_pressed = (track_number == 3)
-	
+
 	# Use global music manager
 	Audio.set_music_track(track_number)

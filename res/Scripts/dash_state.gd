@@ -19,24 +19,24 @@ func enter() -> void:
 
 	# Get 8-directional dash direction from Player
 	dash_direction = parent.get_dash_direction()
-	
+
 	# If no valid direction, default to sprite direction
 	if dash_direction.length_squared() == 0:
 		dash_direction.x = 1.0 if not parent.sprite.flip_h else -1.0
 		dash_direction = dash_direction.normalized()
-	
+
 	# Consume air dash if airborne
 	if was_airborne:
 		parent.can_air_dash = false
-	
+
 	# Set dash velocity in both directions
 	parent.velocity = dash_direction * dash_speed
-	
+
 	# Enable floor snap for ground dashes to stick to slopes
 	if not was_airborne:
 		parent.floor_stop_on_slope = false
 		parent.floor_constant_speed = true
-	
+
 	print("Dash direction: %s (airborne: %s)" % [dash_direction, was_airborne])
 
 func exit() -> void:

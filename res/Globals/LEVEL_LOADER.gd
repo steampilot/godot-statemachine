@@ -19,14 +19,14 @@ func load_level(scene_path: String) -> void:
 	if not FileAccess.file_exists(scene_path):
 		push_error("Level-Szene nicht gefunden: %s" % scene_path)
 		return
-	
+
 	level_load_started.emit(scene_path)
 	print("→ Lade Level: %s" % scene_path)
-	
+
 	# Alte Level-Szene entladen
 	if current_level_scene:
 		unload_current_level()
-	
+
 	# Neue Szene laden
 	var error = get_tree().change_scene_to_file(scene_path)
 	if error == OK:
@@ -41,15 +41,15 @@ func load_level_packed(scene: PackedScene) -> void:
 	if not scene:
 		push_error("PackedScene ist null!")
 		return
-	
+
 	var scene_path = scene.resource_path
 	level_load_started.emit(scene_path)
 	print("→ Lade Level: %s" % scene_path)
-	
+
 	# Alte Level-Szene entladen
 	if current_level_scene:
 		unload_current_level()
-	
+
 	# Neue Szene laden
 	var error = get_tree().change_scene_to_packed(scene)
 	if error == OK:
@@ -78,6 +78,6 @@ func reload_current_level() -> void:
 	if current_level_path.is_empty():
 		push_warning("Kein Level zum Neuladen vorhanden")
 		return
-	
+
 	var path = current_level_path
 	load_level(path)

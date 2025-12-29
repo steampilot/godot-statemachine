@@ -1,5 +1,6 @@
-extends CharacterBody2D
 class_name Enemy
+
+extends CharacterBody2D
 ## Beispiel Enemy mit HealthComponent und VelocityComponent
 ## Enemy CAN queue_free bei Death (nicht wie Player)
 
@@ -33,6 +34,6 @@ func _on_health_depleted() -> void:
 	print("Enemy defeated! DeathComponent wird queue_free aufrufen...")
 	# DeathComponent handelt Death + queue_free
 
-func _on_velocity_changed(new_velocity: Vector2) -> void:
+func _on_velocity_changed(_new_velocity: Vector2) -> void:
 	# Optional: Animation, Sound, etc.
 	pass
