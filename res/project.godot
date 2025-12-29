@@ -35,6 +35,7 @@ window/size/viewport_height=480
 
 Enemy=""
 Player=""
+OneWayPlatforms=""
 
 [gui]
 
