@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://b2ibswhcwe8fo"]
 
-[ext_resource type="Script" path="res://Scripts/main.gd" id="1_bypvg"]
+[ext_resource type="Script" uid="uid://cfxsg3ubuqpns" path="res://Scripts/main.gd" id="1_bypvg"]
 [ext_resource type="PackedScene" uid="uid://bffa5qax302xi" path="res://Scenes/level_1_1.tscn" id="3_7wi8j"]
 [ext_resource type="PackedScene" uid="uid://dkeo345qq555v" path="res://Scenes/player.tscn" id="3_qavgu"]
 
@@ -10,7 +10,7 @@ script = ExtResource("1_bypvg")
 [node name="Level_1-1" parent="." instance=ExtResource("3_7wi8j")]
 
 [node name="Player" parent="." instance=ExtResource("3_qavgu")]
-position = Vector2(128, 192)
+position = Vector2(889, 286)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -16)
