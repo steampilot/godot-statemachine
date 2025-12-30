@@ -44,5 +44,5 @@ func _load_target_scene() -> void:
 		push_error("Doorway '%s': Keine target_scene definiert!" % name)
 		return
 
-	print("→ Doorway aktiviert, lade Szene via LevelLoader")
-	LevelLoader.load_level_packed(target_scene)
+	print("→ Doorway aktiviert, lade Szene via LEVEL_LOADER")
+	LEVEL_LOADER.load_level_packed(target_scene)
