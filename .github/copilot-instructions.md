@@ -130,7 +130,8 @@ Use VS Code tasks: "Format GDScript (Current File)" or "(All Files)".
 | Input handling | `src/player/intent_emitter.gd` |
 | Game state machine | `src/game/game_state_machine.gd` |
 | Puppeteer interface | `src/puppeteer.gd` |
-| Architecture docs | `doc/ARCHITECTURE.md`, `doc/COMPONENTS.md` |
+| Portal system | `res/Scripts/portal.gd`, `res/Scripts/spawn_point.gd` |
+| Architecture docs | `doc/ARCHITECTURE.md`, `doc/COMPONENTS.md`, `doc/PORTAL_SYSTEM.md` |
 
 ## Conventions & Patterns
 
