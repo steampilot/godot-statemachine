@@ -49,16 +49,16 @@ func _setup_slider(slider: HSlider, min_val: float, max_val: float, step: float)
 	slider.step = step
 
 func _load_audio_settings() -> void:
-	if not Audio:
+	if not AUDIO:
 		return
 
-	master_slider.value = Audio.get_master_volume()
-	music_slider.value = Audio.get_music_volume()
-	sfx_slider.value = Audio.get_sfx_volume()
-	dialog_slider.value = Audio.get_dialog_volume()
+	master_slider.value = AUDIO.get_master_volume()
+	music_slider.value = AUDIO.get_music_volume()
+	sfx_slider.value = AUDIO.get_sfx_volume()
+	dialog_slider.value = AUDIO.get_dialog_volume()
 
 	# Load current music track selection
-	var current_track = Audio.get_music_track()
+	var current_track = AUDIO.get_music_track()
 	music_track1.button_pressed = (current_track == 1)
 	music_track2.button_pressed = (current_track == 2)
 	music_track3.button_pressed = (current_track == 3)
@@ -72,19 +72,19 @@ func _update_labels() -> void:
 	dialog_label.text = "%d%%" % int(dialog_slider.value * 100)
 
 func _on_master_changed(value: float) -> void:
-	Audio.set_master_volume(value)
+	AUDIO.set_master_volume(value)
 	master_label.text = "%d%%" % int(value * 100)
 
 func _on_music_changed(value: float) -> void:
-	Audio.set_music_volume(value)
+	AUDIO.set_music_volume(value)
 	music_label.text = "%d%%" % int(value * 100)
 
 func _on_sfx_changed(value: float) -> void:
-	Audio.set_sfx_volume(value)
+	AUDIO.set_sfx_volume(value)
 	sfx_label.text = "%d%%" % int(value * 100)
 
 func _on_dialog_changed(value: float) -> void:
-	Audio.set_dialog_volume(value)
+	AUDIO.set_dialog_volume(value)
 	dialog_label.text = "%d%%" % int(value * 100)
 
 func _on_back_pressed() -> void:
@@ -110,4 +110,4 @@ func _select_music_track(track_number: int) -> void:
 	music_track3.button_pressed = (track_number == 3)
 
 	# Use global music manager
-	Audio.set_music_track(track_number)
+	AUDIO.set_music_track(track_number)
