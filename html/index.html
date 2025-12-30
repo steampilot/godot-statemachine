@@ -1,0 +1,1403 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapricaGame - Master Design Guide</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #e0e0e0;
+            line-height: 1.6;
+        }
+
+        /* Header & Navigation */
+        header {
+            background: linear-gradient(90deg, #0f3460 0%, #16213e 100%);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .header-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: #e74c3c;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
+        }
+
+        nav {
+            display: flex;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        nav a {
+            color: #e0e0e0;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: color 0.3s;
+            cursor: pointer;
+        }
+
+        nav a:hover {
+            color: #e74c3c;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.1) 0%, rgba(52, 152, 219, 0.1) 100%);
+            padding: 60px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            align-items: center;
+        }
+
+        .hero-text h1 {
+            font-size: 48px;
+            color: #e74c3c;
+            margin-bottom: 20px;
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+        }
+
+        .hero-text p {
+            font-size: 18px;
+            color: #bdc3c7;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        .hero-image {
+            display: flex;
+            justify-content: center;
+        }
+
+        .hero-image img {
+            max-width: 100%;
+            height: auto;
+            max-height: 500px;
+            filter: drop-shadow(0 10px 30px rgba(231, 76, 60, 0.3));
+        }
+
+        @media (max-width: 768px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+            }
+            .hero-text h1 {
+                font-size: 32px;
+            }
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Tabs Navigation */
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            border-bottom: 2px solid #0f3460;
+            padding-bottom: 20px;
+        }
+
+        .tab-btn {
+            padding: 12px 24px;
+            background: rgba(52, 152, 219, 0.1);
+            border: 2px solid #3498db;
+            color: #e0e0e0;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 4px;
+            transition: all 0.3s;
+        }
+
+        .tab-btn:hover {
+            background: rgba(231, 76, 60, 0.2);
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+
+        .tab-btn.active {
+            background: #e74c3c;
+            border-color: #e74c3c;
+            color: #fff;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            animation: fadeIn 0.4s ease-in;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Section Styles */
+        section h2 {
+            font-size: 36px;
+            color: #e74c3c;
+            margin-bottom: 30px;
+            border-left: 4px solid #e74c3c;
+            padding-left: 15px;
+        }
+
+        section h3 {
+            font-size: 22px;
+            color: #3498db;
+            margin-top: 25px;
+            margin-bottom: 15px;
+        }
+
+        section p {
+            font-size: 16px;
+            margin-bottom: 15px;
+            color: #bdc3c7;
+        }
+
+        section ul {
+            list-style: none;
+            margin-left: 0;
+            margin-bottom: 20px;
+        }
+
+        section ul li {
+            padding: 10px 0 10px 30px;
+            position: relative;
+            color: #bdc3c7;
+        }
+
+        section ul li:before {
+            content: "▶";
+            position: absolute;
+            left: 0;
+            color: #e74c3c;
+        }
+
+        /* Cards Grid */
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .card {
+            background: rgba(52, 152, 219, 0.1);
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            padding: 25px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .card:hover {
+            background: rgba(231, 76, 60, 0.15);
+            border-color: #e74c3c;
+            transform: translateY(-5px);
+        }
+
+        .card h4 {
+            color: #e74c3c;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .card p {
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        /* Tables */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 25px 0;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        table th {
+            background: rgba(52, 152, 219, 0.3);
+            color: #e74c3c;
+            padding: 15px;
+            text-align: left;
+            border-bottom: 2px solid rgba(231, 76, 60, 0.3);
+        }
+
+        table td {
+            padding: 12px 15px;
+            border-bottom: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        table tr:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+
+        /* Roadmap Timeline */
+        .timeline {
+            position: relative;
+            padding: 20px 0;
+        }
+
+        .timeline-item {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .timeline-marker {
+            width: 40px;
+            height: 40px;
+            background: #e74c3c;
+            border-radius: 50%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #fff;
+            font-weight: bold;
+            z-index: 2;
+        }
+
+        .timeline-content {
+            margin-left: 60px;
+            padding: 20px;
+            background: rgba(52, 152, 219, 0.1);
+            border-left: 3px solid #e74c3c;
+            border-radius: 4px;
+        }
+
+        .timeline-content h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        /* Images in Content */
+        .image-showcase {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .image-item {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 2px solid rgba(52, 152, 219, 0.3);
+            transition: all 0.3s;
+        }
+
+        .image-item:hover {
+            border-color: #e74c3c;
+            transform: scale(1.02);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        .image-caption {
+            padding: 12px;
+            background: rgba(52, 152, 219, 0.15);
+            color: #bdc3c7;
+            font-size: 13px;
+            text-align: center;
+        }
+
+        /* Feature List */
+        .features-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin: 30px 0;
+        }
+
+        .feature-item {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(52, 152, 219, 0.15), rgba(231, 76, 60, 0.1));
+            border-radius: 8px;
+            border-left: 4px solid #e74c3c;
+        }
+
+        .feature-item h4 {
+            color: #e74c3c;
+            margin-bottom: 10px;
+        }
+
+        .feature-item p {
+            font-size: 14px;
+            color: #bdc3c7;
+        }
+
+        /* Footer */
+        footer {
+            background: #0f3460;
+            color: #bdc3c7;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+            border-top: 2px solid #e74c3c;
+        }
+
+        footer p {
+            margin-bottom: 10px;
+        }
+
+        footer a {
+            color: #e74c3c;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        /* Code Block */
+        .code-block {
+            background: #0a0e27;
+            border: 1px solid rgba(231, 76, 60, 0.3);
+            border-radius: 4px;
+            padding: 15px;
+            margin: 20px 0;
+            font-family: 'Courier New', monospace;
+            color: #2ecc71;
+            overflow-x: auto;
+            font-size: 13px;
+        }
+
+        /* Highlight Box */
+        .highlight-box {
+            background: linear-gradient(135deg, rgba(231, 76, 60, 0.15), rgba(52, 152, 219, 0.1));
+            border-left: 4px solid #e74c3c;
+            padding: 20px;
+            border-radius: 4px;
+            margin: 20px 0;
+        }
+
+        .highlight-box p {
+            color: #e0e0e0;
+            font-size: 16px;
+            font-weight: 500;
+        }
+
+        /* Scroll To Top */
+        .scroll-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 20px;
+            display: none;
+            z-index: 99;
+            transition: all 0.3s;
+        }
+
+        .scroll-top:hover {
+            background: #c0392b;
+            transform: scale(1.1);
+        }
+
+        .scroll-top.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="header-content">
+            <div class="logo">🎸 CAPRICA GAME</div>
+            <nav>
+                <a onclick="scrollToTab('vision')">Vision</a>
+                <a onclick="scrollToTab('gameplay')">Gameplay</a>
+                <a onclick="scrollToTab('combat')">Combat</a>
+                <a onclick="scrollToTab('studio')">Home Studio</a>
+                <a onclick="scrollToTab('animation')">Animation</a>
+                <a onclick="scrollToTab('roadmap')">Roadmap</a>
+                <a href="../doc/" target="_blank">📚 Docs</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>Caprica Game</h1>
+                <p><strong>Ein Musik-zentrierter Action-Platformer</strong></p>
+                <p>Caprica kämpft zu ihrer Musik. Die Beats sind nicht nur Audio – sie sind Gameplay.</p>
+                <p style="font-size: 14px; color: #95a5a6; margin-top: 30px;">
+                    🎵 Music IS Mechanic • 🎮 Intent-Based Combat • 🏠 Creative Empowerment
+                </p>
+            </div>
+            <div class="hero-image">
+                <img src="../doc/Concept Art/Caprica Character Concept Art.png" alt="Caprica Character Concept">
+            </div>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Navigation Tabs -->
+        <div class="tabs">
+            <button class="tab-btn active" onclick="showTab('vision')">WER IST CAPRICA?</button>
+            <button class="tab-btn" onclick="showTab('concept')">DAS SPIEL</button>
+            <button class="tab-btn" onclick="showTab('gameplay')">WIE WIRD GESPIELT</button>
+            <button class="tab-btn" onclick="showTab('message')">MESSAGE & LORE</button>
+            <button class="tab-btn" onclick="showTab('inspiration')">INSPIRATIONEN</button>
+            <button class="tab-btn" onclick="showTab('animation')">ANIMATION</button>
+            <button class="tab-btn" onclick="showTab('roadmap')">ROADMAP</button>
+        </div>
+
+        <!-- TAB 1: WHO IS CAPRICA -->
+        <div id="vision" class="tab-content active">
+            <section>
+                <h2>🎸 Wer ist Caprica?</h2>
+
+                <div class="image-showcase">
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Pixelart Caprica At Home.png" alt="Caprica at Home">
+                        <div class="image-caption">Caprica zu Hause</div>
+                    </div>
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Concept Art Caprica on Balcony.png" alt="Caprica on Balcony">
+                        <div class="image-caption">Caprica on Balcony</div>
+                    </div>
+                </div>
+
+                <p><strong>Caprica</strong> ist eine <strong>Rockstar</strong>, die auf ihrem Weg nach Hause von <strong>SLOB Zombies</strong> angegriffen wird – von Musik infizierte Kreaturen, die als Waffe gegen musikalische Künstler eingesetzt werden.</p>
+
+                <h3>Die Essenz von Caprica</h3>
+                <div class="feature-item">
+                    <h4>🎵 Musikerin im Kern</h4>
+                    <p>Sie ist nicht einfach eine Kriegerin – sie ist eine Musikerin, die kämpft, während sie ihre eigene Musik hört. Ihre demonialen Flügel sind keine Mutation – sie sind <strong>musikalische Energie-Manifestationen</strong>, die entstehen, wenn sie ihre Kraft kanalisiert.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>🏠 Persönliche Mission</h4>
+                    <p>Caprica will nicht "die Welt retten" – sie will einfach <strong>nach Hause</strong>. Das macht ihre Geschichte menschlich, intim, relatable.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>✨ Celestine als Ally</h4>
+                    <p>Im Universum gibt es auch <strong>Celestine</strong>, einen musikalischen Engel, der hinter den Kulissen wirkt. Sie erschafft Portale, verbindet Level, und ermöglicht letztendlich Capricas kreative Transformation.</p>
+                </div>
+
+                <h3>Visual Identity</h3>
+                <div class="image-showcase">
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Confident gamer in cool attire.png" alt="Confident Gamer">
+                        <div class="image-caption">Cool Attire Concept</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 2: THE GAME CONCEPT -->
+        <div id="concept" class="tab-content">
+            <section>
+                <h2>🎵 Das Spiel: Musik ist Mechanik</h2>
+
+                <div class="highlight-box">
+                    <p>💡 <strong>Core Insight:</strong> CapricaGame ist NICHT "Action-Spiel mit Musik-Soundtrack" – es ist ein Audio-First Game, wo <strong>Musik das Spielmechanik-System selbst ist</strong>.</p>
+                </div>
+
+                <h3>Konzept: Wave System mit Musik-Layering</h3>
+                <p>Das Spiel funktioniert nach diesem Principle:</p>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h4>🥁 Welle 1</h4>
+                        <p>Drums + Bass</p>
+                        <p style="color: #95a5a6; font-size: 13px; margin-top: 10px;">Grundrhythmus etablieren</p>
+                    </div>
+                    <div class="card">
+                        <h4>🎸 Welle 2</h4>
+                        <p>+Gitarre</p>
+                        <p style="color: #95a5a6; font-size: 13px; margin-top: 10px;">Aggression einleiten</p>
+                    </div>
+                    <div class="card">
+                        <h4>🎤 Welle 3</h4>
+                        <p>+Vocals</p>
+                        <p style="color: #95a5a6; font-size: 13px; margin-top: 10px;">Climax erreichen</p>
+                    </div>
+                    <div class="card">
+                        <h4>👑 Boss-Battle</h4>
+                        <p>Vollständiger Song</p>
+                        <p style="color: #95a5a6; font-size: 13px; margin-top: 10px;">Crescendo im finalen Kampf</p>
+                    </div>
+                </div>
+
+                <p><strong>Jede Welle ist ein Feind-Spawning-Event.</strong> Die Musik wird komplexer → der Kampf wird intensiver → das Gefühl baut sich zu einem épischen Moment auf.</p>
+
+                <h3>Was macht es besonders?</h3>
+                <ul>
+                    <li><strong>Musik als Unsichtbare Mechanik:</strong> Der Spieler <em>fühlt</em> die Beats, ohne darüber nachzudenken</li>
+                    <li><strong>Snap-to-Beat Synchronisierung:</strong> 50ms unsichtbare Verzögerung synchronisiert Angriffe mit Musik-Beats</li>
+                    <li><strong>Empowerment durch Kreativität:</strong> Nach jedem Boss-Kampf: Home Recording Studio (Spieler arrangiert besiegte Song-Samples)</li>
+                    <li><strong>Kohärente Worldbuilding:</strong> Musik als magisches System – nicht nur Storytelling, sondern Universum-Fundament</li>
+                </ul>
+
+                <h3>Game-Szenen</h3>
+                <div class="image-showcase">
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Pixelart Caprica Level 1 Intro scene walking home from work.webp" alt="Walking Home">
+                        <div class="image-caption">Level 1: Walking Home</div>
+                    </div>
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Pixelart Caprica Level 1 Intro scene zombi encounter.webp" alt="Zombie Encounter">
+                        <div class="image-caption">Erste Zombie-Begegnung</div>
+                    </div>
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Pixelart Caprica Level 1 Intro scene guitar Powerchord area effect.webp" alt="Power-up Effect">
+                        <div class="image-caption">Guitar Power-up Area Effect</div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- TAB 3: GAMEPLAY -->
+        <div id="gameplay" class="tab-content">
+            <section>
+                <h2>🎮 Wie wird das Game gespielt?</h2>
+
+                <h3>Input (NES-Controller kompatibel)</h3>
+                <div class="code-block">
+D-Pad (Links/Rechts)    = Bewegung
+A-Button                = Sprung (Hold für Höhe)
+B-Button                = Angriff (ATTACK Intent)
+                </div>
+
+                <h3>Gameplay Loop: 5 Phasen</h3>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">1</div>
+                        <div class="timeline-content">
+                            <h4>Exploration Phase</h4>
+                            <p>Bewege Caprica durch Level, sammle Coins & Kassetten (Story-Fragmente), finde Türen/Portale zur nächsten Area.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker">2</div>
+                        <div class="timeline-content">
+                            <h4>Combat Arena Phase – Welle 1</h4>
+                            <p>Musik startet (Drums+Bass). Enemies spawnen progressiv. B-Button drücken = ATTACK Intent → Spiel auto-dasht zu nächstem Feind.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker">3</div>
+                        <div class="timeline-content">
+                            <h4>Combo System & Hit Registration</h4>
+                            <p>Hit-Registration synchronisiert mit Beat (Snap-to-Beat). <strong>Beat-Timing Bonus:</strong> +50% Schaden wenn auf Beat getroffen. Kick → Jump → Stomp-Combo-Chains möglich.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker">4</div>
+                        <div class="timeline-content">
+                            <h4>Boss-Battle Phase</h4>
+                            <p>Finale Welle mit Boss. Song erreicht Crescendo (alle Instrumente). Beat-Timing wird kritischer. Victory führt zum nächsten Abschnitt.</p>
+                        </div>
+                    </div>
+
+                    <div class="timeline-item">
+                        <div class="timeline-marker">5</div>
+                        <div class="timeline-content">
+                            <h4>Home Recording Studio Phase</h4>
+                            <p>Spieler arrangiert Song-Samples der besiegten Bosses in Grid-basiertem Interface. Ziel: "Mama, I made music!" – Empowerment durch Kreativität.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Guitar Power-ups</h3>
+                <div class="image-showcase">
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Desperado Guitar Powerup.webp" alt="Desperado Guitar">
+                        <div class="image-caption">Desperado Guitar</div>
+                    </div>
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Disco Star Guitar Powerup.webp" alt="Disco Star Guitar">
+                        <div class="image-caption">Disco Star Guitar</div>
+                    </div>
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Gibson Guitar Powerup.webp" alt="Gibson Guitar">
+                        <div class="image-caption">Gibson Guitar</div>
+                    </div>
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Stratocaster Guitar Powerup.webp" alt="Stratocaster Guitar">
+                        <div class="image-caption">Stratocaster Guitar</div>
+                    </div>
+                </div>
+
+                <h3>Attack Types</h3>
+                <table>
+                    <tr>
+                        <th>Attack</th>
+                        <th>Beschreibung</th>
+                        <th>Damage</th>
+                        <th>Speed</th>
+                    </tr>
+                    <tr>
+                        <td>Kick</td>
+                        <td>Schneller Frontal-Tritt</td>
+                        <td>Low</td>
+                        <td>⚡⚡⚡</td>
+                    </tr>
+                    <tr>
+                        <td>Punch</td>
+                        <td>Durchschnittlicher Schlag</td>
+                        <td>Medium</td>
+                        <td>⚡⚡</td>
+                    </tr>
+                    <tr>
+                        <td>Stomp</td>
+                        <td>Jump-basierter Grounded Attack</td>
+                        <td>High</td>
+                        <td>⚡</td>
+                    </tr>
+                    <tr>
+                        <td>Guitar Power-ups</td>
+                        <td>Verschiedene Effekte (Axe, Chord, Flamethrower, MG)</td>
+                        <td>Very High</td>
+                        <td>Variable</td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+
+        <!-- TAB 4: MESSAGE & LORE -->
+        <div id="message" class="tab-content">
+            <section>
+                <h2>💬 Die Message des Games</h2>
+
+                <div class="highlight-box">
+                    <p><strong>"Musik ist Kraft. Musik ist Heilung. Musik ist Schöpfung."</strong></p>
+                </div>
+
+                <h3>Kernbotschaften</h3>
+
+                <div class="feature-item">
+                    <h4>1️⃣ Künstlerische Empowerment</h4>
+                    <p>Caprica ist nicht einfach eine Kriegerin – sie ist eine Musikerin. Sie kämpft mit ihrer eigenen Kraft (ihre Musik), nicht mit fremder Waffe. POST-GAME: Spieler wird selbst Creator (Home Studio) → "Ich habe Musik gemacht"</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>2️⃣ Musik als Resistenz</h4>
+                    <p>SLOB Zombies sind "Musik-infiziert" → verdrehte Version musikalischer Kraft. Caprica kämpft nicht gegen Musik, sondern gegen deren Missbrauch. Ihr Song besiegt verdorbene Songs. Metapher: Künstler vs. Zensur / Kreativität vs. Kontrolle</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>3️⃣ Schnittstellenlosigkeit der Musik</h4>
+                    <p>Musik durchdringt alles: Combat, Story, Level-Design, Worldbuilding, Empowerment. Nicht Musik im Spiel, sondern Musik als Spiel. Spieler erlebt Musik nicht als Zuschauer, sondern als aktiver Partizipant.</p>
+                </div>
+
+                <div class="feature-item">
+                    <h4>4️⃣ Heimkehr & Familie</h4>
+                    <p>Caprica will nicht die Welt retten – sie will nach Hause. Home Studio-Ending: Sie zeigt ihrer Mama "Ich habe Musik gemacht". Intimität statt Apokalypse. Menschliche Motivation: Familie, Kreativität, Anerkennung.</p>
+                </div>
+
+                <h3>Worldbuilding: Musik als Universum-Fundament</h3>
+                <div class="image-showcase">
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/Musik Maker Concept Art.png" alt="Music Maker Interface">
+                        <div class="image-caption">Home Studio: Music Maker Interface</div>
+                    </div>
+                    <div class="image-item">
+                        <img src="../doc/Concept Art/World Building Level Select Screen.png" alt="Level Select">
+                        <div class="image-caption">Level Select Screen</div>
+                    </div>
+                </div>
+
+                <p>Im CapricaGame-Universum ist Musik nicht einfach Storytelling – es ist das <strong>magische System selbst</strong>:</p>
+                <ul>
+                    <li><strong>Celestine:</strong> Musikischer Engel, formt die Welt durch Songs</li>
+                    <li><strong>Portale:</strong> Nicht technisch, sondern musik-manifestiert (Celestine's Macht)</li>
+                    <li><strong>SLOB Zombies:</strong> Musik-infizierte Kreaturen (verdrehte musikalische Energie)</li>
+                    <li><strong>Capricas Flügel:</strong> Visuelle Manifestation ihrer musikalischen Kraft</li>
+                    <li><strong>Home Studio:</strong> Ort wo Caprica ihre Kreativität mit dem Universum teilt</li>
+                </ul>
+            </section>
+        </div>
+
+        <!-- TAB 5: INSPIRATION -->
+        <div id="inspiration" class="tab-content">
+            <section>
+                <h2>🎼 Inspirationsquellen</h2>
+
+                <h3>Game Design Inspirationen</h3>
+                <table>
+                    <tr>
+                        <th>Quelle</th>
+                        <th>Element</th>
+                        <th>Wie wir es nutzen</th>
+                    </tr>
+                    <tr>
+                        <td><strong>Celeste</strong></td>
+                        <td>Präzisions-Movement</td>
+                        <td>Dash, Double-Jump, Wall-Grab als Movement Foundation</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Bayonetta / GGC</strong></td>
+                        <td>Knockback-Leverage Mechanic</td>
+                        <td>Multi-Enemy Chaos, Knockback-Leveraging für Combat-Flow</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Warhammer 40K: Shootas Blood & Teef</strong></td>
+                        <td>Beat-Timed Attacks, Wave-Spawning</td>
+                        <td>Progressive Enemy Waves, Musik-Crescendo</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Crypt of the NecroDancer</strong></td>
+                        <td>Rhythm-Game Philosophy</td>
+                        <td>Beat-Synchronized Hit Registration, Flow-State</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Music Maker / GarageBand</strong></td>
+                        <td>Creative Interface</td>
+                        <td>Post-Boss Sample Arrangement Grid (Home Studio)</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Portal Series</strong></td>
+                        <td>Portal Mechanics</td>
+                        <td>Portal System mit Puppet-Manager für Level-Transitions</td>
+                    </tr>
+                </table>
+
+                <h3>Audio Design Philosophy</h3>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h4>❌ QTE (Quick-Time-Event)</h4>
+                        <p>Spiel überrascht Spieler → Panik, Reactive</p>
+                        <p style="color: #e74c3c; font-weight: bold; margin-top: 10px;">Nicht unser Weg!</p>
+                    </div>
+                    <div class="card">
+                        <h4>✅ Rhythm-Based Timing</h4>
+                        <p>Spieler antizipiert Beats → Flow-State, Proactive</p>
+                        <p style="color: #2ecc71; font-weight: bold; margin-top: 10px;">Das ist CapricaGame!</p>
+                    </div>
+                </div>
+
+                <p>Der Spieler <strong>hört den Beat kommen und bereitet sich vor</strong>. Das ist psychologisch befriedigender als überraschte Reaktion.</p>
+            </section>
+        </div>
+
+        <!-- TAB 6: ANIMATION -->
+        <div id="animation" class="tab-content">
+            <section>
+                <h2>🎨 Animation Architecture: Paperdoll-System</h2>
+
+                <div class="highlight-box">
+                    <p>💡 <strong>Design-Entscheidung:</strong> Weg von klassischem Animated Sprite Sheet → zu <strong>Bone2D Paperdoll Animation</strong></p>
+                </div>
+
+                <h3>Warum Paperdoll?</h3>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h4>❌ Sprite Sheets</h4>
+                        <p>Jede Animation = neue PNG mit allen Frames</p>
+                        <p style="color: #e74c3c; font-size: 12px; margin-top: 10px;">Memory-intensiv, schwer zu variieren</p>
+                    </div>
+                    <div class="card">
+                        <h4>✅ Paperdoll (Bones)</h4>
+                        <p>PNG-Teile werden via Godot zusammengefügt</p>
+                        <p style="color: #2ecc71; font-size: 12px; margin-top: 10px;">Reusable, Asset-effizient, flexibel</p>
+                    </div>
+                </div>
+
+                <h3>Vorteile für CapricaGame</h3>
+
+                <div class="features-list">
+                    <div class="feature-item">
+                        <h4>🔄 Reusable Rigs</h4>
+                        <p>Ein Animations-Rig für Caprica, Zombies, NPCs → maximale Code-Reuse</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>💾 Asset-Effizient</h4>
+                        <p>Body-Parts sind einzelne PNG-Dateien (80% weniger Memory als Sprite Sheets)</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🎨 Artist-Friendly</h4>
+                        <p>Keine perfekte Pixel-Art-Animation nötig – nur saubere Grafiken</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>🛠️ Flexible Equipment</h4>
+                        <p>Caprica's Outfit/Skins ohne neue Animationen (nur andere Body-Parts)</p>
+                    </div>
+                    <div class="feature-item">
+                        <h4>📦 Godot-Native</h4>
+                        <p>Skeleton2D + Bone2D sind eingebaut – keine Plugins nötig</p>
+                    </div>
+                </div>
+
+                <h3>Wie funktioniert es?</h3>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">1</div>
+                        <div class="timeline-content">
+                            <h4>Assets</h4>
+                            <p>Caprica wird aus einzelnen PNG-Teilen zusammengesetzt: Head, Torso, Arme, Beine</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">2</div>
+                        <div class="timeline-content">
+                            <h4>Bone Hierarchy</h4>
+                            <p>Godot Skeleton2D mit Bone-Hierarchie (wie eine Marionette)</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">3</div>
+                        <div class="timeline-content">
+                            <h4>Animation Curves</h4>
+                            <p>Curves bestimmen Bone-Rotation über Zeit (Idle, Walk, Jump, Attack)</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">4</div>
+                        <div class="timeline-content">
+                            <h4>Reuse</h4>
+                            <p>Gleicher Rig mit anderen Body-Parts = neuer Character (Zombie, NPC, etc.)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>Bone-Hierarchie Beispiel</h3>
+                <div class="code-block">
+CharacterRoot
+├── Skeleton2D
+│   ├── Root
+│   │   ├── Torso
+│   │   │   ├── ArmUpper_L
+│   │   │   │   └── ArmLower_L
+│   │   │   │       └── Hand_L
+│   │   │   ├── ArmUpper_R
+│   │   │   │   └── ArmLower_R
+│   │   │   │       └── Hand_R
+│   │   │   ├── Head
+│   │   │   └── HipPelvis
+│   │   │       ├── LegUpper_L
+│   │   │       │   └── LegLower_L
+│   │   │       │       └── Foot_L
+│   │   │       └── LegUpper_R
+│   │   │           └── LegLower_R
+│   │   │               └── Foot_R
+                </div>
+
+                <h3>Animation Beispiele</h3>
+
+                <table>
+                    <tr>
+                        <th>Animation</th>
+                        <th>Dauer</th>
+                        <th>Bones bewegt sich</th>
+                        <th>Zweck</th>
+                    </tr>
+                    <tr>
+                        <td>Idle</td>
+                        <td>2.0s</td>
+                        <td>Head (breathing), Torso (subtil)</td>
+                        <td>Caprica steht relaxt</td>
+                    </tr>
+                    <tr>
+                        <td>Walk</td>
+                        <td>1.2s loop</td>
+                        <td>Legs (gegenphasig), Arms, Torso</td>
+                        <td>Laufen vorwärts/rückwärts</td>
+                    </tr>
+                    <tr>
+                        <td>Jump</td>
+                        <td>0.8s</td>
+                        <td>Legs (startup→extend→land), Arms</td>
+                        <td>Sprung-Bewegung</td>
+                    </tr>
+                    <tr>
+                        <td>Kick</td>
+                        <td>0.6s</td>
+                        <td>Leg_L (60°→90°), Torso, Arms</td>
+                        <td>Attack-Animation [HITBOX 0.3s]</td>
+                    </tr>
+                </table>
+
+                <h3>Mercury 0: Paperdoll Foundation</h3>
+                <p><strong>Das ist die erste Mission!</strong> Bevor wir Combat-Logik bauen, müssen wir verstehen wie Godot Bone2D Animation funktioniert.</p>
+
+                <div style="background: rgba(231, 76, 60, 0.15); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #e74c3c;">
+                    <p style="margin-bottom: 10px;"><strong>🎯 Ziel nach Mercury 0:</strong></p>
+                    <ul style="margin-left: 20px; color: #bdc3c7;">
+                        <li>Caprica kann idle rumstehen mit subtler Breathing-Animation</li>
+                        <li>Walk-Cycle sieht natürlich aus (forward + backward)</li>
+                        <li>Jump-Animation funktoniert</li>
+                        <li>Kick-Animation mit Hitbox-Timing</li>
+                        <li>Bone-Rig ist modular (Head/Arm/Leg unabhängig einsetzbar)</li>
+                        <li>Eine NPC-Zombie hat das gleiche Rig-System</li>
+                    </ul>
+                </div>
+
+                → <strong>Siehe:</strong> <a href="../doc/PAPERDOLL_ANIMATION.md" target="_blank">PAPERDOLL_ANIMATION.md</a>, <a href="../doc/ARTEMIS_MISSIONS.md" target="_blank">ARTEMIS_MISSIONS.md (Mercury 0)</a>
+            </section>
+        </div>
+
+        <!-- TAB 7: ROADMAP -->
+        <div id="roadmap" class="tab-content">
+            <section>
+                <h2>📋 Development Roadmap: Mercury Phase (JETZT)</h2>
+
+                <div class="highlight-box">
+                    <p><strong>Status: 🔵 WIR SIND HIER</strong></p>
+                    <p>Mercury Phase: Learning Our Firsts – Eine Sache nach der anderen</p>
+                </div>
+
+                <h3>Mercury Phase Philosophie</h3>
+                <p><strong>Slogan:</strong> <em>"One System at a Time"</em></p>
+                <p>Jede Mercury-Mission meistert <strong>exakt ein Core-System in vollständiger Isolation.</strong> Keine Ablenkung, keine Feature-Creep. Fertig machen. Nächste.</p>
+
+                <h3>Mercury 0-6 Übersicht</h3>
+                <table>
+                    <tr>
+                        <th>Mission</th>
+                        <th>Fokus</th>
+                        <th>Dauer</th>
+                        <th>Ziel</th>
+                    </tr>
+                    <tr>
+                        <td><strong>0</strong></td>
+                        <td>Bone2D Animation</td>
+                        <td>1-2 Tage</td>
+                        <td>Caprica Idle/Walk/Jump</td>
+                    </tr>
+                    <tr>
+                        <td><strong>1</strong></td>
+                        <td>Beat Detection</td>
+                        <td>2-3 Tage</td>
+                        <td>Beat-Signal zuverlässig</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2</strong></td>
+                        <td>Intent System</td>
+                        <td>1-2 Tage</td>
+                        <td>Input → Intent funktioniert</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3</strong></td>
+                        <td>First Enemy</td>
+                        <td>2-3 Tage</td>
+                        <td>Zombie spawnt & stirbt</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4</strong></td>
+                        <td>Attack & Combo</td>
+                        <td>3-4 Tage</td>
+                        <td>Kick + Beat-Bonus funktioniert</td>
+                    </tr>
+                    <tr>
+                        <td><strong>5</strong></td>
+                        <td>Boss & Waves</td>
+                        <td>3-4 Tage</td>
+                        <td>Boss-Encounter mit Musik</td>
+                    </tr>
+                    <tr>
+                        <td><strong>6</strong></td>
+                        <td>Level Navigation</td>
+                        <td>2-3 Tage</td>
+                        <td>Portal funktioniert</td>
+                    </tr>
+                    <tr>
+                        <td colspan="2"><strong>TOTAL MERCURY</strong></td>
+                        <td><strong>~2-3 Wochen</strong></td>
+                        <td><strong>Spielbare 1-Level-Demo</strong></td>
+                    </tr>
+                </table>
+
+                <h3>🔵 Mercury 0: Dein ERSTES - Bone2D Animation</h3>
+                <p><strong>Learning Goal:</strong> Wie funktioniert Godot Skeleton2D + Bone2D?</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <p style="margin-bottom: 10px;"><strong>Konkrete Milestones:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ Caprica Idle-Animation (steht rum, atmet subtil)</p>
+                    <p style="margin-bottom: 8px;">✅ Caprica Walk-Cycle (läuft vorwärts und rückwärts)</p>
+                    <p style="margin-bottom: 8px;">✅ Caprica Jump-Animation (startup → airborne → landing)</p>
+                    <p style="margin-bottom: 8px;">✅ Zombie mit gleichem Rig testen (Animation wiederverwendbar!)</p>
+                </div>
+
+                <p><strong>DoD (Definition of Done):</strong> Nach Mercury 0 spielst du einfach <code>caprica.play_animation("walk")</code> und sie läuft!</p>
+
+                → <strong>Siehe:</strong> <a href="../doc/MERCURY_PHASE.md" target="_blank">MERCURY_PHASE.md (detailliert)</a>, <a href="../doc/PAPERDOLL_ANIMATION.md" target="_blank">PAPERDOLL_ANIMATION.md (Anleitung)</a>
+
+                <h3>🔵 Mercury 1: Dein ERSTES - Beat Detection</h3>
+                <p><strong>Learning Goal:</strong> Wie bekomme ich aus Audio Beat-Informationen?</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <p style="margin-bottom: 10px;"><strong>Konkrete Milestones:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ AudioBus-Analysis Setup</p>
+                    <p style="margin-bottom: 8px;">✅ BPM aus Sample-Song bestimmen</p>
+                    <p style="margin-bottom: 8px;">✅ Beat-Pulse-Signal emittieren</p>
+                    <p style="margin-bottom: 8px;">✅ Visueller Debug-Indicator (Beat auf Screen)</p>
+                </div>
+
+                <p><strong>DoD:</strong> Wenn der Beat kommt, flasht der Screen / ein Signal wird emittiert.</p>
+
+                <h3>🔵 Mercury 2: Dein ERSTES - Intent Input System</h3>
+                <p><strong>Learning Goal:</strong> Wie entkopple ich Input von Game-Logic?</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <p style="margin-bottom: 10px;"><strong>Konkrete Milestones:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ IntentEmitter-Klasse</p>
+                    <p style="margin-bottom: 8px;">✅ MOVE, JUMP, ATTACK Intents</p>
+                    <p style="margin-bottom: 8px;">✅ D-Pad → Intent funktioniert</p>
+                    <p style="margin-bottom: 8px;">✅ Signale für jede Intent</p>
+                </div>
+
+                <p><strong>DoD:</strong> Game antwortet auf Intent, nicht auf Raw-Input.</p>
+
+                <h3>🔵 Mercury 3: Dein ERSTES - Gegner</h3>
+                <p><strong>Learning Goal:</strong> Wie mache ich einen Gegner mit Health, Damage, Death?</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <p style="margin-bottom: 10px;"><strong>Konkrete Milestones:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ SLOB-Zombie Paperdoll-Rig</p>
+                    <p style="margin-bottom: 8px;">✅ HealthComponent (take_damage, Signals)</p>
+                    <p style="margin-bottom: 8px;">✅ Zombie spawnt in Level</p>
+                    <p style="margin-bottom: 8px;">✅ Zombie stirbt mit Animation</p>
+                </div>
+
+                <p><strong>DoD:</strong> <code>zombie.health.take_damage(5)</code> funktioniert, Zombie verliert HP und stirbt.</p>
+
+                <h3>🔵 Mercury 4: Dein ERSTES - Attack & Combo</h3>
+                <p><strong>Learning Goal:</strong> Wie funktioniert Hit-Registration + Beat-Timing?</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <p style="margin-bottom: 10px;"><strong>Konkrete Milestones:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ Caprica Kick-Animation</p>
+                    <p style="margin-bottom: 8px;">✅ Kick-Hitbox spawnt während Animation</p>
+                    <p style="margin-bottom: 8px;">✅ Hit auf Zombie registrieren</p>
+                    <p style="margin-bottom: 8px;">✅ Beat-Timing Bonus (+50% Damage auf Beat)</p>
+                    <p style="margin-bottom: 8px;">✅ Combo-Fenster (Punch nach Kick möglich)</p>
+                </div>
+
+                <p><strong>DoD:</strong> Kick-Attack funktioniert, macht Damage, und bonus ist spürbar wenn auf Beat.</p>
+
+                <h3>🔵 Mercury 5: Dein ERSTES - Boss & Wave System</h3>
+                <p><strong>Learning Goal:</strong> Wie funktioniert progressive Musik + Boss?</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <p style="margin-bottom: 10px;"><strong>Konkrete Milestones:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ Boss-Zombie (stärkerer Gegner)</p>
+                    <p style="margin-bottom: 8px;">✅ Music Wave 1: Drums + Bass</p>
+                    <p style="margin-bottom: 8px;">✅ Music Wave 2: +Gitarre (nach 20s)</p>
+                    <p style="margin-bottom: 8px;">✅ Music Wave 3: +Vocals (nach weiteren 20s)</p>
+                    <p style="margin-bottom: 8px;">✅ Boss-Defeat = Nächster Level</p>
+                </div>
+
+                <p><strong>DoD:</strong> Boss-Encounter spielt sich durch 3 Musik-Wellen und wird intensiver.</p>
+
+                <h3>🔵 Mercury 6: Dein ERSTES - Level Navigation</h3>
+                <p><strong>Learning Goal:</strong> Wie funktioniert Level-Wechsel?</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #3498db;">
+                    <p style="margin-bottom: 10px;"><strong>Konkrete Milestones:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ Portal am Ende Level 1</p>
+                    <p style="margin-bottom: 8px;">✅ Spawn-Point in Level 2</p>
+                    <p style="margin-bottom: 8px;">✅ Fade-to-Black Transition</p>
+                    <p style="margin-bottom: 8px;">✅ Caprica spawnt korrekt in Level 2</p>
+                </div>
+
+                <p><strong>DoD:</strong> Gehen durch Portal → Fade → Level 2 startet mit Caprica am Spawn-Point.</p>
+
+                <h3>🎮 Nach Mercury: Spielbar!</h3>
+                <div style="background: rgba(231, 76, 60, 0.1); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #e74c3c;">
+                    <p style="margin-bottom: 10px;"><strong>Das hast du nach Mercury 0-6:</strong></p>
+                    <p style="margin-bottom: 8px;">✅ Caprica kann laufen, springen, doppeljumpen</p>
+                    <p style="margin-bottom: 8px;">✅ Erste Attack (Kick) funktioniert</p>
+                    <p style="margin-bottom: 8px;">✅ Erster Gegner (Zombie) spawnt & stirbt</p>
+                    <p style="margin-bottom: 8px;">✅ Beat-Detektion funktioniert</p>
+                    <p style="margin-bottom: 8px;">✅ Beat-Timing Bonus gibt Extra-Schaden</p>
+                    <p style="margin-bottom: 8px;">✅ Boss-Encounter mit Music-Waves</p>
+                    <p style="margin-bottom: 8px;">✅ Level-Wechsel funktioniert</p>
+                    <p style="margin-top: 15px; color: #95a5a6;"><em>Das ist kein komplettes Spiel, aber ein funktionierendes System-Demo!</em></p>
+                </div>
+
+                <h3>⚠️ Mercury Regel: Isolation</h3>
+                <p><strong>Jede Mercury-Mission macht EINE Sache und macht sie gut.</strong></p>
+
+                <div style="background: rgba(231, 76, 60, 0.15); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <p style="margin-bottom: 10px;"><strong>❌ NICHT machen:</strong></p>
+                    <p style="margin-bottom: 8px;">• Mehrere Systeme gleichzeitig</p>
+                    <p style="margin-bottom: 8px;">• "Schnell fertig" machen und Qualität opfern</p>
+                    <p style="margin-bottom: 8px;">• Features aus späteren Phases hinzufügen</p>
+                </div>
+
+                <div style="background: rgba(46, 204, 113, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0;">
+                    <p style="margin-bottom: 10px;"><strong>✅ JA machen:</strong></p>
+                    <p style="margin-bottom: 8px;">• Mercury 0 komplett fertig</p>
+                    <p style="margin-bottom: 8px;">• DANN Mercury 1 starten</p>
+                    <p style="margin-bottom: 8px;">• Eine nach der anderen</p>
+                </div>
+
+                <p style="margin-top: 30px; font-size: 18px; color: #e74c3c;"><strong>One System at a Time.</strong></p>
+
+                <h3 style="margin-top: 40px;">🔜 Nach Mercury?</h3>
+                <p><strong>Das ist SPÄTER relevant!</strong> Aber zur Info:</p>
+
+                <div class="cards-grid">
+                    <div class="card">
+                        <h4>🟢 Gemini</h4>
+                        <p>Integration: Multiple Enemy-Types, Home Studio, Audio-Refinement</p>
+                        <p style="color: #95a5a6; font-size: 12px; margin-top: 10px;"><strong>Nach Mercury</strong></p>
+                    </div>
+                    <div class="card">
+                        <h4>🟡 Apollo</h4>
+                        <p>Production: Story, Visual-Polish, Boss-Variety</p>
+                        <p style="color: #95a5a6; font-size: 12px; margin-top: 10px;"><strong>Nach Gemini</strong></p>
+                    </div>
+                    <div class="card">
+                        <h4>🔴 Artemis</h4>
+                        <p>Expansion: Advanced-Mixing, Community</p>
+                        <p style="color: #95a5a6; font-size: 12px; margin-top: 10px;"><strong>Parallel Apollo</strong></p>
+                    </div>
+                </div>
+
+                <p style="margin-top: 30px; color: #95a5a6;"><strong>Fokus JETZT:</strong> Mercury 0 → Mercury 1 → ... → Spielbar.</p>
+            </section>
+        </div>
+
+                <h3>🔵 Mercury 0 (Woche 1, Foundation)</h3>
+                <p><strong>Paperdoll Animation Fundamentals</strong></p>
+                <p>Bevor wir Game-Logic bauen, müssen wir verstehen wie Godot Bone2D Animation funktioniert.</p>
+
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 15px; border-radius: 8px; margin: 15px 0; border-left: 3px solid #e74c3c;">
+                    <p style="margin-bottom: 8px;">✅ Caprica Bone-Rig aufsetzen</p>
+                    <p style="margin-bottom: 8px;">✅ Idle-Animation (Breathing)</p>
+                    <p style="margin-bottom: 8px;">✅ Walk-Cycle (forward + backward)</p>
+                    <p style="margin-bottom: 8px;">✅ Jump-Animation</p>
+                    <p style="margin-bottom: 8px;">✅ NPC-Zombie mit gleichem Rig testen</p>
+                </div>
+
+                <h3>🔵 Mercury 1-6 (Woche 2-3)</h3>
+                <p><strong>Kernziel:</strong> Fundamentals: Core Systems Basics</p>
+                <p><strong>Deliverable:</strong> Spielbare 1-Level-Demo mit kompletten Combat-Loop</p>
+
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-marker">1</div>
+                        <div class="timeline-content">
+                            <h4>Beat Detection & Audio-Bus Setup</h4>
+                            <p>Godot AudioBus-Analyse, Beat-Berechnung (BPM → Sekunden), Beat-Detection Signal-System</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">2</div>
+                        <div class="timeline-content">
+                            <h4>Intent Emitter Foundation</h4>
+                            <p>Input Decoupling System, ATTACK Intent, MOVE Intent</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">3</div>
+                        <div class="timeline-content">
+                            <h4>First Enemy (Basic SLOB Zombie)</h4>
+                            <p>Gegner-Spawning, Health-System, Death-Animation</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">4</div>
+                        <div class="timeline-content">
+                            <h4>Attack System & First Combo</h4>
+                            <p>Hit-Registration, Beat-Timing Bonus (+50%), Kick→Punch Combo</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">5</div>
+                        <div class="timeline-content">
+                            <h4>First Boss & Music Wave System</h4>
+                            <p>Progressive Musik-Layering (Drums → +Guitar → +Vocals), Boss-Kampf-Integration</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-marker">6</div>
+                        <div class="timeline-content">
+                            <h4>Level Loading & Portal Navigation</h4>
+                            <p>Scene-Transitions, Portal-System Basis, Spawn-Points</p>
+                        </div>
+                    </div>
+                </div>
+
+                <h3>🟢 Gemini Mission (Woche 4-7)</h3>
+                <p><strong>Kernziel:</strong> Integration: Systeme verbinden & verfeinern</p>
+                <p><strong>Deliverable:</strong> 3-Level Campaign mit funktionierendem Post-Boss-Studio</p>
+                <ul>
+                    <li>Home Studio UI Prototype</li>
+                    <li>Sample Arrangement System</li>
+                    <li>Multiple Enemy Types & Behaviors</li>
+                    <li>Combo System Polish & Variations</li>
+                    <li>Level Design & Environmental Storytelling</li>
+                    <li>Audio System Full Integration (Snap-to-Beat Fine-Tuning)</li>
+                </ul>
+
+                <h3>🟡 Apollo Mission (Woche 8-10)</h3>
+                <p><strong>Kernziel:</strong> Production: Vollständiges Game mit Polish</p>
+                <p><strong>Deliverable:</strong> Fertig spielbarer Vertical Slice (4-5 Level + 2-3 Boss Encounters)</p>
+                <ul>
+                    <li>Story Integration (Cassette Collection, Dialogue)</li>
+                    <li>Visual Polish (Animations, Effects, Screen Transitions)</li>
+                    <li>Boss Variety & Escalation</li>
+                    <li>Difficulty Balancing</li>
+                    <li>Final Polish & Performance Optimization</li>
+                </ul>
+
+                <h3>🔴 Artemis Mission (Parallel mit Apollo, Woche 8-10)</h3>
+                <p><strong>Kernziel:</strong> Expansion: Home Studio als Creative Experience</p>
+                <p><strong>Deliverable:</strong> Komplettes Creative-Gaming-Erlebnis auf Augenhöhe mit Combat</p>
+                <ul>
+                    <li>Advanced Sample Mixing (Multiple Tracks, Effects)</li>
+                    <li>Community Features (Share Arrangements?, Leaderboards?)</li>
+                    <li>Extended Music Selection & Boss-Sample Library</li>
+                </ul>
+
+                <h3>Timeline Übersicht</h3>
+                <div style="background: rgba(52, 152, 219, 0.1); padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #e74c3c;">
+                    <p style="margin-bottom: 10px;"><strong>📅 Woche 1-3:</strong> Mercury (Fundamentals)</p>
+                    <p style="margin-bottom: 10px;"><strong>📅 Woche 4-7:</strong> Gemini (Integration)</p>
+                    <p style="margin-bottom: 10px;"><strong>📅 Woche 8-10:</strong> Apollo (Production) + Artemis (Creative)</p>
+                    <p style="color: #95a5a6; font-size: 13px; margin-top: 15px;">Total: ~10 Wochen für spielbaren Vertical Slice</p>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <p><strong>🎸 CapricaGame</strong> – Ein Musik-zentrierter Action-Platformer</p>
+        <p style="color: #95a5a6; font-size: 13px; margin-top: 10px;">
+            <a href="../doc/CAPRICA_MASTER_GUIDE.md" target="_blank">📖 Master Guide (Markdown)</a> •
+            <a href="../doc/" target="_blank">📚 Dokumentation</a>
+        </p>
+        <p style="margin-top: 20px; color: #95a5a6; font-size: 12px;">
+            © 2025 CapricaGame Development • Made with ❤️ and 🎵
+        </p>
+    </footer>
+
+    <!-- Scroll to Top Button -->
+    <button class="scroll-top" onclick="scrollToTop()">↑</button>
+
+    <script>
+        // Tab Navigation
+        function showTab(tabName) {
+            // Hide all tabs
+            const tabs = document.querySelectorAll('.tab-content');
+            tabs.forEach(tab => tab.classList.remove('active'));
+
+            // Remove active class from buttons
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => btn.classList.remove('active'));
+
+            // Show selected tab
+            document.getElementById(tabName).classList.add('active');
+
+            // Add active class to clicked button
+            event.target.classList.add('active');
+        }
+
+        // Scroll to Tab
+        function scrollToTab(tabName) {
+            const buttons = document.querySelectorAll('.tab-btn');
+            buttons.forEach(btn => {
+                if (btn.getAttribute('onclick').includes(tabName)) {
+                    btn.click();
+                }
+            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Scroll to Top Button
+        window.addEventListener('scroll', () => {
+            const scrollTop = document.querySelector('.scroll-top');
+            if (window.pageYOffset > 300) {
+                scrollTop.classList.add('show');
+            } else {
+                scrollTop.classList.remove('show');
+            }
+        });
+
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // Mobile Menu Toggle
+        document.addEventListener('DOMContentLoaded', () => {
+            // Smooth scrolling for nav links
+            document.querySelectorAll('nav a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (link.getAttribute('onclick')) {
+                        e.preventDefault();
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
