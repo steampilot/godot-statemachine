@@ -14,8 +14,8 @@ func init(parent: Player) -> void:
 	# First pass: collect all states
 	for child in get_children():
 		if child is State:
-			# Use node name as key (convert to lowercase for consistency)
-			var state_name = child.name.to_lower().replace("state", "")
+			# Convert PascalCase to snake_case properly
+			var state_name = child.name.to_snake_case().replace("_state", "")
 			states[state_name] = child
 
 	# Second pass: initialize states with parent and states dict
