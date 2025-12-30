@@ -11,12 +11,14 @@ func enter() -> void:
 	parent.can_air_dash = true
 
 func process_input(event: InputEvent) -> State:
-	# Check for ladder grabbing (UP or DOWN while on ladder)
 	if parent.on_ladder:
 		if event.is_action_pressed(
 			INPUT_ACTIONS.MOVE_UP) or event.is_action_pressed(
 				INPUT_ACTIONS.MOVE_DOWN):
-			return states.get("ladder_grab")
+			print("DEBUG: on_ladder=true, UP/DOWN pressed, returning ladder_grab state")
+			var ladder_state = states.get("ladder_grab")
+			print("DEBUG: ladder_grab state = %s" % ladder_state)
+			return ladder_state
 
 	# Check dash input (Jump + any direction on D-Pad)
 	if event.is_action_pressed(INPUT_ACTIONS.JUMP):

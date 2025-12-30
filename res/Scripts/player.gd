@@ -20,6 +20,8 @@ extends CharacterBody2D
 @export var jump_height: float = 80.0
 ## Coyote time - Zeit nach Verlassen der Plattform, in der noch gesprungen werden kann (Sekunden)
 @export var coyote_time: float = 0.15
+## Climb speed as multiplier of max_speed for ladder movement
+@export var climb_speed: float = 0.8
 
 # Internal timer for coyote time
 var coyote_timer: float = 0.0
@@ -31,14 +33,40 @@ var can_air_dash: bool = true
 var is_invincible: bool = false
 var invincibility_timer: float = 0.0
 
-
 var health: int = max_health
+
+## Track if player is currently overlapping a ladder area
+var on_ladder: bool = false
 
 @onready var sprite: AnimatedSprite2D = %Sprite
 @onready var state_machine: StateMachine = %StateMachine
+@onready var ladder_detector: Area2D = %LadderDetector
 
 func _ready() -> void:
 	state_machine.init(self)
+
+	# Connect LadderDetector signals to track ladder overlap
+	if ladder_detector:
+		ladder_detector.area_entered.connect(_on_ladder_area_entered)
+		ladder_detector.area_exited.connect(_on_ladder_area_exited)
+		ladder_detector.body_entered.connect(_on_ladder_body_entered)
+		ladder_detector.body_exited.connect(_on_ladder_body_exited)
+
+func _on_ladder_area_entered(area: Area2D) -> void:
+	print("Ladder Area entered: %s" % area.name)
+	on_ladder = true
+
+func _on_ladder_area_exited(area: Area2D) -> void:
+	print("Ladder Area exited: %s" % area.name)
+	on_ladder = false
+
+func _on_ladder_body_entered(body: Node2D) -> void:
+	print("Ladder Body entered: %s" % body.name)
+	on_ladder = true
+
+func _on_ladder_body_exited(body: Node2D) -> void:
+	print("Ladder Body exited: %s" % body.name)
+	on_ladder = false
 
 func _unhandled_input(event: InputEvent) -> void:
 	state_machine.process_input(event)
