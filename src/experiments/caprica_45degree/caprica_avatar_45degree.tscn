@@ -1,0 +1,435 @@
+[gd_scene load_steps=5 format=3 uid="uid://df1pmdhmmi4ix"]
+
+[ext_resource type="Texture2D" uid="uid://cudrs0k7ndcs5" path="res://Assets/Characters/Paperdolls/Caprica/CapricaPaperDoll.png" id="1_5wldm"]
+
+[sub_resource type="Animation" id="Animation_5wldm"]
+resource_name = "Idle"
+length = 2.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(4.5385933, -159.93564), Vector2(12.233673, -159.97758), Vector2(6.868968, -145.10413), Vector2(4.5385933, -159.93564)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 1.5, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.047959145, -0.0045304373, 0.12803242, 0.047959145]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/Neck:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.9949823, 1.5031149, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Vector2(-37.24589, -114.2924), Vector2(-36.7903, -111.101974), Vector2(-37.020645, -112.715034), Vector2(-37.24589, -114.2924)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/Neck:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.9949823, 1.5031149, 2),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [0.0, 0.09215319, -0.008734502, 0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-144.03984, -71.858795)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="Animation" id="Animation_3t4cf"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(4.5385933, -159.93564)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.047959145]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/Neck:position")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-37.24589, -114.2924)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/Neck:rotation")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm:position")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-142.79868, -79.14096)]
+}
+tracks/5/type = "value"
+tracks/5/imported = false
+tracks/5/enabled = true
+tracks/5/path = NodePath("Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm:rotation")
+tracks/5/interp = 1
+tracks/5/loop_wrap = true
+tracks/5/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [-0.2633478]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_vgrxt"]
+_data = {
+&"Idle": SubResource("Animation_5wldm"),
+&"RESET": SubResource("Animation_3t4cf")
+}
+
+[node name="CapricaAvatar" type="Node2D"]
+scale = Vector2(0.2, 0.2)
+metadata/_edit_horizontal_guides_ = [-146.0]
+metadata/_edit_vertical_guides_ = [-35.0]
+
+[node name="Skeleton2D" type="Skeleton2D" parent="."]
+
+[node name="Root" type="Bone2D" parent="Skeleton2D"]
+rest = Transform2D(1, 0, 0, 1, 0, 0)
+editor_settings/show_bone_gizmo = false
+
+[node name="Pelvis" type="Bone2D" parent="Skeleton2D/Root"]
+position = Vector2(9, -681)
+rotation = 0.0958289
+rest = Transform2D(0.99541193, 0.0956823, -0.0956823, 0.99541193, 9, -681)
+editor_settings/show_bone_gizmo = false
+
+[node name="Hip" type="Bone2D" parent="Skeleton2D/Root/Pelvis"]
+position = Vector2(-0.071314335, -90.022194)
+rotation = -0.0057938267
+scale = Vector2(0.99999994, 0.99999994)
+rest = Transform2D(0.9999832, -0.005793794, 0.005793794, 0.9999832, -0.071314335, -90.022194)
+
+[node name="Skirt" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Hip"]
+z_index = 10
+position = Vector2(-32.058937, 73.54742)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(85.4868, 928.8716, 411.1795, 288.41016)
+
+[node name="Spine" type="Bone2D" parent="Skeleton2D/Root/Pelvis"]
+position = Vector2(-1.3319683, -94.07563)
+rotation = -0.1202444
+rest = Transform2D(0.9927794, -0.11995485, 0.11995485, 0.9927794, -1.3319683, -94.07563)
+
+[node name="Midriff" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine"]
+z_as_relative = false
+position = Vector2(-12.372064, -84.68728)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(1166.4863, 382.0511, 240.11243, 196.18945)
+
+[node name="Chest" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine"]
+position = Vector2(4.5385933, -159.93564)
+rotation = 0.047959145
+scale = Vector2(0.99999976, 0.99999976)
+rest = Transform2D(0.99885017, 0.04794076, -0.04794076, 0.99885017, 4.5385933, -159.93564)
+
+[node name="TorsoBack" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest"]
+z_index = -10
+position = Vector2(24.138954, 30.697098)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(896.15436, 357.89783, 183.1795, 140.30768)
+
+[node name="Torso" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest"]
+z_index = 5
+position = Vector2(-48.41974, -56.396187)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(1088.719, 34.31532, 346.25977, 304.3865)
+
+[node name="Neck" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest"]
+position = Vector2(-37.24589, -114.2924)
+rest = Transform2D(1, 0, 0, 1, -37.24589, -114.2924)
+
+[node name="Sprite2D" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/Neck"]
+z_index = 10
+position = Vector2(-2.4859324, -38.652473)
+rotation = -0.0075631132
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(704.87823, 369.0301, 115.797, 127.77606)
+
+[node name="Head" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/Neck"]
+position = Vector2(-6.585251, -85.22112)
+rest = Transform2D(1, 0, 0, 1, -6.585251, -85.22112)
+
+[node name="Head" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/Neck/Head"]
+z_index = 20
+position = Vector2(-49.965076, -72.44642)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(652.5128, 68.28206, 401.4359, 272.8205)
+
+[node name="HairBack" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/Neck/Head"]
+position = Vector2(-96.251785, -27.74146)
+rotation = -1.1923532
+rest = Transform2D(0.36947417, -0.929241, 0.929241, 0.36947417, -96.251785, -27.74146)
+
+[node name="HairBack" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/Neck/Head/HairBack"]
+z_index = -20
+position = Vector2(-104.956894, -15.558037)
+rotation = 1.5707964
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(46.511322, 1225.0759, 358.5641, 436.51294)
+
+[node name="HairFront" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/Neck/Head"]
+position = Vector2(80.925476, -66.73126)
+rotation = 0.046881523
+scale = Vector2(0.99999994, 0.99999994)
+rest = Transform2D(0.99890125, 0.04686435, -0.04686435, 0.99890125, 80.925476, -66.73126)
+editor_settings/show_bone_gizmo = false
+
+[node name="HairFront" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/Neck/Head/HairFront"]
+z_index = -5
+z_as_relative = false
+position = Vector2(2.2113192, 63.08816)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(583.62463, 1230.9288, 137.09308, 195.6571)
+
+[node name="LeftUpperArm" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest"]
+z_index = -11
+position = Vector2(28.525158, -75.57323)
+rest = Transform2D(1, 0, 0, 1, 28.525158, -75.57323)
+
+[node name="LeftUpperArm" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/LeftUpperArm"]
+z_index = -20
+position = Vector2(38, 56)
+texture = ExtResource("1_5wldm")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(925.38416, 589.8461, 200.71802, 229.94873)
+
+[node name="LeftLowerArm" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/LeftUpperArm"]
+position = Vector2(93.01886, 153.20737)
+rest = Transform2D(1, 0, 0, 1, 93.01886, 153.20737)
+
+[node name="LeftLowerArm" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/LeftUpperArm/LeftLowerArm"]
+z_index = -5
+position = Vector2(47, 31)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(1207.9484, 860.66644, 163.69226, 134.46149)
+
+[node name="LeftHand" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/LeftUpperArm/LeftLowerArm"]
+position = Vector2(106, 74)
+rest = Transform2D(1, 0, 0, 1, 106, 74)
+
+[node name="LeftHand" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/LeftUpperArm/LeftLowerArm/LeftHand"]
+z_index = -5
+position = Vector2(54, 32)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(1219.4639, 1068.2048, 180.69934, 145.26807)
+
+[node name="RightUpperArm" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest"]
+z_index = 20
+position = Vector2(-142.79868, -79.14096)
+rotation = -0.2633478
+rest = Transform2D(1, 0, 0, 1, -141.54018, -77.24232)
+
+[node name="RightUpperArm" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm"]
+z_index = 5
+position = Vector2(-150.84843, -55.251648)
+texture = ExtResource("1_5wldm")
+centered = false
+region_enabled = true
+region_rect = Rect2(919.5381, 593.6921, 192.9231, 241.64105)
+
+[node name="RightLowerArm" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm"]
+position = Vector2(-96, 147)
+rotation = -2.0810037
+rest = Transform2D(1, 0, 0, 1, -96, 147)
+
+[node name="RightLowerArm" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm/RightLowerArm"]
+z_index = 5
+position = Vector2(-45.71965, 33.02594)
+texture = ExtResource("1_5wldm")
+flip_h = true
+region_enabled = true
+region_rect = Rect2(1207.9484, 860.66644, 163.69226, 134.46149)
+
+[node name="RightHand" type="Bone2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm/RightLowerArm"]
+position = Vector2(-106, 84)
+rotation = 2.5034919
+scale = Vector2(0.99999994, 0.99999994)
+rest = Transform2D(-0.836863, 0.5474124, -0.5474124, -0.836863, -106, 84)
+
+[node name="RightHand" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm/RightLowerArm/RightHand"]
+visible = false
+z_index = 5
+position = Vector2(50.391674, -5.3523574)
+rotation = -2.5855849
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(943.1002, 1087.6919, 145.26807, 124.0094)
+
+[node name="RightHandInside" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/Spine/Chest/RightUpperArm/RightLowerArm/RightHand"]
+position = Vector2(68.428635, -13.9934845)
+rotation = -0.7300461
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(1227.95, 1084.095, 160.93005, 116.160034)
+
+[node name="LeftUpperLeg" type="Bone2D" parent="Skeleton2D/Root/Pelvis"]
+position = Vector2(68, -21)
+rest = Transform2D(1, 0, 0, 1, 68, -21)
+editor_settings/show_bone_gizmo = false
+
+[node name="LeftUpperLeg" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/LeftUpperLeg"]
+z_index = -20
+position = Vector2(-3.9736023, 193.62143)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(451.84445, 92.8739, 189.02567, 284.51282)
+
+[node name="LeftLowerLeg" type="Bone2D" parent="Skeleton2D/Root/Pelvis/LeftUpperLeg"]
+position = Vector2(32, 315)
+rest = Transform2D(1, 0, 0, 1, 32, 315)
+editor_settings/show_bone_gizmo = false
+
+[node name="LeftLowerLeg" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/LeftUpperLeg/LeftLowerLeg"]
+position = Vector2(16.999996, 103)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(149.96255, 493.80066, 162.98367, 315.33795)
+
+[node name="LeftFoot" type="Bone2D" parent="Skeleton2D/Root/Pelvis/LeftUpperLeg/LeftLowerLeg"]
+position = Vector2(49, 214)
+rotation = 1.5707964
+rest = Transform2D(-4.371139e-08, 1, -1, -4.371139e-08, 49, 214)
+editor_settings/show_bone_gizmo = false
+
+[node name="LeftFoot" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/LeftUpperLeg/LeftLowerLeg/LeftFoot"]
+position = Vector2(67.60045, -23.878483)
+rotation = -1.5707964
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(673.8229, 561.5381, 173.61304, 189.55713)
+
+[node name="RightupperLeg" type="Bone2D" parent="Skeleton2D/Root/Pelvis"]
+position = Vector2(-83, -17)
+rest = Transform2D(1, 0, 0, 1, -83, -17)
+editor_settings/show_bone_gizmo = false
+
+[node name="RightUpperLeg" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/RightupperLeg"]
+z_index = -5
+position = Vector2(-18, 206)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(115.84616, 61.487183, 183.17947, 335.17947)
+
+[node name="RightLowerLeg" type="Bone2D" parent="Skeleton2D/Root/Pelvis/RightupperLeg"]
+position = Vector2(-35, 332)
+rest = Transform2D(1, 0, 0, 1, -35, 332)
+editor_settings/show_bone_gizmo = false
+
+[node name="RightLowerLeg" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/RightupperLeg/RightLowerLeg"]
+position = Vector2(-18, 124)
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(434.65918, 497.75726, 139.95337, 301.16547)
+
+[node name="RightFoot" type="Bone2D" parent="Skeleton2D/Root/Pelvis/RightupperLeg/RightLowerLeg"]
+position = Vector2(-20, 236)
+rotation = 1.5707964
+rest = Transform2D(-4.371139e-08, 1, -1, -4.371139e-08, -20, 236)
+editor_settings/show_bone_gizmo = false
+
+[node name="RightFoot" type="Sprite2D" parent="Skeleton2D/Root/Pelvis/RightupperLeg/RightLowerLeg/RightFoot"]
+position = Vector2(58, -28.000006)
+rotation = -1.5707964
+texture = ExtResource("1_5wldm")
+region_enabled = true
+region_rect = Rect2(654.3357, 908.7642, 168.29834, 209.04425)
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_vgrxt")
+}
