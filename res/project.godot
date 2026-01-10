@@ -30,6 +30,7 @@ INPUT_ACTIONS="*res://Globals/INPUT_ACTIONS.gd"
 
 window/size/viewport_width=640
 window/size/viewport_height=480
+window/size/initial_position_type=3
 
 [global_group]
 
