@@ -235,11 +235,19 @@ func _internal_logic() -> void:
 	pass
 ```
 
+**Naming Convention (Godot-Standard):**
+- **Variables & Functions:** snake_case (z.B. `current_state`, `do_something()`)
+- **Classes:** PascalCase (Player, HealthComponent, GameState)
+- **Constants:** UPPER_SNAKE_CASE (MAX_SPEED, LEVEL_WIDTH)
+- **Signals:** snake_case (state_changed, health_depleted)
+- **Private/Internal:** _prefix (z.B. `_internal_counter`, `_process_data()`)
+
 ### Formatting & Syntax Rules
 - **Maximum line length:** 100 characters
 - **No trailing whitespaces** (Godot syntax error!)
 - **CRITICAL: Empty lines MUST be completely empty** - no tabs, no spaces!
-- **No else statements after return** (GDScript Syntax Error)
+- **NO else statements after return** (GDScript Syntax Error)
+- **Naming:** snake_case für Variables/Functions, _prefix für private, PascalCase für Classes
 
 ```gdscript
 # ✅ CORRECT - Early return instead of else
@@ -293,6 +301,14 @@ func example():
     var x = 1
     ␣␣␣␣  # Empty line with tabs - SYNTAX ERROR!
     return x
+
+# ❌ camelCase variables - Use snake_case!
+var myVariable: int = 5  # WRONG
+var my_variable: int = 5   # CORRECT
+
+# ❌ Missing _prefix for private - Use underscore!
+var privateVar: int = 10  # WRONG
+var _private_var: int = 10   # CORRECT
 ```
 
 ## Dateinamen
