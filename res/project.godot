@@ -21,12 +21,12 @@ buses/default_bus_layout="res://Resources/AudioBusLayout/default_bus_layout.tres
 
 [autoload]
 
-AUDIO_MANAGER  ="*res://Globals/AUDIO.gd"
-MUSIC_PLAYER   ="*res://Globals/MUSIC_PLAYER.tscn"
-LEVEL_LOADER   ="*res://Globals/LEVEL_LOADER.gd"
-INPUT_ACTIONS  ="*res://Globals/INPUT_ACTIONS.gd"
-SCENE_MANAGER  ="*res://Globals/SCENE_MANAGER.gd"
-LOADING_SCREEN ="*res://Globals/LOADING_SCREEN.tscn"
+AUDIO="*res://Globals/AUDIO.gd"
+MUSIC_PLAYER="*res://Globals/MUSIC_PLAYER.tscn"
+LEVEL_LOADER="*res://Globals/LEVEL_LOADER.gd"
+INPUT_ACTIONS="*res://Globals/INPUT_ACTIONS.gd"
+SCENE_MANAGER="*res://Globals/SCENE_MANAGER.gd"
+AUDIO_MANAGER="*res://Globals/AUDIO.gd"
 
 [display]
 

@@ -1,0 +1,23 @@
+[gd_scene load_steps=6 format=3 uid="uid://rm4pyfg8knu"]
+
+[ext_resource type="PackedScene" uid="uid://cjiix4j5j0q7k" path="res://Scenes/Levels/zelda_level_center.tscn" id="1_f2sv7"]
+[ext_resource type="PackedScene" uid="uid://b78ufxiwtppk0" path="res://Scenes/Levels/zelda_level_west.tscn" id="2_22f48"]
+[ext_resource type="PackedScene" uid="uid://c2ss3sl157qe0" path="res://Scenes/Levels/zelda_level_north.tscn" id="3_w7yha"]
+[ext_resource type="PackedScene" uid="uid://ggtfj7vkc0l7" path="res://Scenes/Levels/zelda_level_east.tscn" id="4_1dksc"]
+[ext_resource type="PackedScene" uid="uid://bm0ikstao8t2u" path="res://Scenes/Levels/zelda_level_south.tscn" id="5_r8gma"]
+
+[node name="ZedaMap" type="Node2D"]
+
+[node name="Zelda_Level_Center" parent="." instance=ExtResource("1_f2sv7")]
+
+[node name="Zelda_Level_WEST" parent="." instance=ExtResource("2_22f48")]
+position = Vector2(-288, 0)
+
+[node name="Zelda_Level_NORTH" parent="." instance=ExtResource("3_w7yha")]
+position = Vector2(0, -160)
+
+[node name="Zelda_Level_EAST" parent="." instance=ExtResource("4_1dksc")]
+position = Vector2(288, 0)
+
+[node name="Zelda_Level_SOUTH" parent="." instance=ExtResource("5_r8gma")]
+position = Vector2(0, 160)

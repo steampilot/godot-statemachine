@@ -1,0 +1,22 @@
+[gd_scene load_steps=3 format=3 uid="uid://w5pw5826b0i5"]
+
+[ext_resource type="PackedScene" uid="uid://qnh6bkm4vfgd" path="res://Scenes/player_zelda.tscn" id="1_gckg6"]
+[ext_resource type="PackedScene" uid="uid://cjiix4j5j0q7k" path="res://Scenes/Levels/zelda_level_center.tscn" id="2_8rh4k"]
+
+[node name="ZeldaMain" type="Node2D"]
+
+[node name="PlayerZelda" parent="." instance=ExtResource("1_gckg6")]
+unique_name_in_owner = true
+z_index = 10
+position = Vector2(-64, -32)
+metadata/_edit_group_ = true
+
+[node name="Camera" type="Camera2D" parent="."]
+unique_name_in_owner = true
+zoom = Vector2(2, 2)
+
+[node name="LevelContainer" type="Node2D" parent="."]
+unique_name_in_owner = true
+
+[node name="Level" parent="LevelContainer" instance=ExtResource("2_8rh4k")]
+position = Vector2(-152, -112)

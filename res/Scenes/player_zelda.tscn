@@ -1,0 +1,16 @@
+[gd_scene load_steps=4 format=3 uid="uid://qnh6bkm4vfgd"]
+
+[ext_resource type="Script" uid="uid://bjomqidc50gqf" path="res://Scripts/player_zelda.gd" id="1_yemw2"]
+[ext_resource type="Texture2D" uid="uid://bvwtt8beef8rk" path="res://Assets/Characters/Zelda/wizard.png" id="2_3yp7y"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_djl8t"]
+radius = 7.0
+
+[node name="Player_Zelda" type="CharacterBody2D"]
+script = ExtResource("1_yemw2")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_djl8t")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_3yp7y")
