@@ -3,6 +3,7 @@
 GDScript Code Formatter
 ------------------------
 Formatiert GDScript-Dateien:
+- Konvertiert Tabs zu 4 Spaces
 - Entfernt trailing whitespaces
 - Entfernt leere Zeilen mit Whitespace/Tabs
 - Bricht lange Zeilen um (max 100 Zeichen)
@@ -24,6 +25,7 @@ class GDScriptFormatter:
         self.remove_else = remove_else
         self.highlight_only = highlight_only
         self.stats = {
+            'tabs_converted': 0,
             'trailing_spaces': 0,
             'empty_lines_with_indent': 0,
             'else_statements': 0,
@@ -38,13 +40,16 @@ class GDScriptFormatter:
         original_content = content
         lines = content.split('\n')
         
-        # 1. Trailing whitespaces entfernen
+        # 1. Tabs zu Spaces konvertieren
+        lines = self._convert_tabs_to_spaces(lines)
+        
+        # 2. Trailing whitespaces entfernen
         lines = self._remove_trailing_whitespace(lines)
         
-        # 2. Leere Zeilen mit Whitespace bereinigen
-        lines = self._clean_empty_lines(lines)
+        # 4. Lange Zeilen umbrechen
+        lines = self._wrap_long_lines(lines)
         
-        # 3. Lange Zeilen umbrechen
+        # 5. Lange Zeilen umbrechen
         lines = self._wrap_long_lines(lines)
         
         # 4. Else-Statements behandeln (nur wenn aktiviert)
@@ -53,6 +58,18 @@ class GDScriptFormatter:
         
         formatted_content = '\n'.join(lines)
         return formatted_content, formatted_content != original_content
+    
+    def _convert_tabs_to_spaces(self, lines: List[str]) -> List[str]:
+        """Konvertiert alle Tabs zu 4 Spaces."""
+        result = []
+        for line in lines:
+            if '\t' in line:
+                converted = line.replace('\t', '    ')
+                self.stats['tabs_converted'] += line.count('\t')
+                result.append(converted)
+            else:
+                result.append(line)
+        return result
     
     def _remove_trailing_whitespace(self, lines: List[str]) -> List[str]:
         """Entfernt trailing whitespaces von allen Zeilen."""
@@ -293,6 +310,7 @@ class GDScriptFormatter:
         print(f"Statistik:")
         print(f"  Dateien verarbeitet: {files_processed}")
         print(f"  Dateien geändert: {files_changed}")
+        print(f"  Tabs → Spaces: {self.stats['tabs_converted']}")
         print(f"  Trailing Spaces entfernt: {self.stats['trailing_spaces']}")
         print(f"  Leere Zeilen bereinigt: {self.stats['empty_lines_with_indent']}")
         print(f"  Zeilen umgebrochen: {self.stats['line_breaks']}")
