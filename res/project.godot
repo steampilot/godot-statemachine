@@ -25,6 +25,7 @@ AUDIO="*res://Globals/AUDIO.gd"
 MUSIC_PLAYER="*res://Globals/MUSIC_PLAYER.tscn"
 LEVEL_LOADER="*res://Globals/LEVEL_LOADER.gd"
 INPUT_ACTIONS="*res://Globals/INPUT_ACTIONS.gd"
+PLAYER="*res://Globals/ANIMATIONS.gd"
 SCENE_MANAGER="*res://Globals/SCENE_MANAGER.gd"
 AUDIO_MANAGER="*res://Globals/AUDIO.gd"
 

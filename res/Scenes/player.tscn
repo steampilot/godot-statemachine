@@ -1,4 +1,4 @@
-[gd_scene load_steps=165 format=3 uid="uid://dkeo345qq555v"]
+[gd_scene load_steps=166 format=3 uid="uid://dkeo345qq555v"]
 
 [ext_resource type="Script" uid="uid://dbuuihnb8sl0j" path="res://Scripts/player.gd" id="1_ridw5"]
 [ext_resource type="Texture2D" uid="uid://dgonf3oigidkx" path="res://Assets/Characters/Caprica_Sprites/animations/front-flip/east/frame_000-sheet.png" id="2_36dho"]
@@ -34,6 +34,7 @@
 [ext_resource type="Texture2D" uid="uid://drq6jgvsc6sw8" path="res://Assets/Characters/Caprica_Sprites/animations/walk/north/frame_000-sheet.png" id="19_8eeqe"]
 [ext_resource type="Script" uid="uid://e144abrw837y" path="res://Scripts/ladder_grab_state.gd" id="19_fs7ks"]
 [ext_resource type="Texture2D" uid="uid://cp332q8j7kyro" path="res://Assets/Characters/Caprica_Sprites/animations/sad-walk/south-east/frame_000-sheet.png" id="19_nv4vc"]
+[ext_resource type="Script" uid="uid://dicy26aslt3uo" path="res://Scripts/state.gd" id="27_nv4vc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
 radius = 5.0
@@ -1113,9 +1114,13 @@ animation_name = "jump_down"
 script = ExtResource("14_yrwt2")
 animation_name = "run"
 
+[node name="RunSlideState" type="Node" parent="StateMachine/RunState"]
+script = ExtResource("27_nv4vc")
+metadata/_custom_type_script = "uid://dicy26aslt3uo"
+
 [node name="AttackState" type="Node" parent="StateMachine"]
 script = ExtResource("15_i56dd")
-animation_name = "attack"
+animation_name = "punch"
 
 [node name="DashState" type="Node" parent="StateMachine"]
 script = ExtResource("16_fd4e3")
@@ -1167,3 +1172,10 @@ script = ExtResource("8_8qjxp")
 position = Vector2(15, -17)
 shape = SubResource("RectangleShape2D_he03s")
 debug_color = Color(0, 0.6509804, 0, 0.41960785)
+
+[node name="SlideSensor" type="RayCast2D" parent="CollisionDetectors"]
+unique_name_in_owner = true
+position = Vector2(0, -21)
+rotation = -1.5707964
+target_position = Vector2(0, 9)
+collision_mask = 21
