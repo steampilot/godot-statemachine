@@ -42,49 +42,51 @@ const DYING = "dying"
 
 # Animation metadata for advanced usage
 const METADATA = {
-	IDLE: {"frames": 4, "fps": 4, "loop": true, "source": "breathing-idle"},
-	IDLE_FIGHT_STANCE: {"frames": 8, "fps": 8, "loop": true, "source": "fight-stance-idle-8-frames"},
-	WALK: {"frames": 6, "fps": 8, "loop": true, "source": "walking-10/east"},
-	WALK_ANGRY: {"frames": 8, "fps": 8, "loop": true, "source": "sad-walk/east"},
-	WALK_HURT: {"frames": 8, "fps": 5, "loop": true, "source": "sad-walk/south-east"},
-	WALK_NORTH: {"frames": 6, "fps": 8, "loop": true, "source": "walk/north"},
-	WALK_SOUTH: {"frames": 6, "fps": 5, "loop": true, "source": "walk/south"},
-	RUN: {"frames": 8, "fps": 8, "loop": true, "source": "running-8-frames/east"},
-	RUN_SLIDE: {"frames": 6, "fps": 5, "loop": false, "source": "running-slide/south-east"},
-	JUMP_UP: {"frames": 3, "fps": 8, "loop": false, "source": "jumping-1/east"},
-	JUMP_TOP: {"frames": 2, "fps": 2, "loop": false, "source": "jumping-1/east"},
-	JUMP_DOWN: {"frames": 2, "fps": 2, "loop": false, "source": "jumping-1/east"},
-	JUMP_LAND: {"frames": 3, "fps": 4, "loop": false, "source": "jumping-1/east"},
-	KICK_HIGH: {"frames": 7, "fps": 8, "loop": false, "source": "high-kick/east"},
-	KICK_MID: {"frames": 6, "fps": 6, "loop": false, "source": "flying-kick/east"},
-	KICK_LOW: {"frames": 7, "fps": 8, "loop": false, "source": "leg-sweep/east"},
-	PUNCH: {"frames": 6, "fps": 8, "loop": false, "source": "lead-jab/east"},
-	PUNCH_UP: {"frames": 7, "fps": 5, "loop": true, "source": "surprise-uppercut/east"},
-	DASH: {"frames": 6, "fps": 6, "loop": false, "source": "front-flip/east"},
-	LADDER_GRAB: {"frames": 7, "fps": 8, "loop": true, "source": "two-footed-jump/north"},
-	GUITAR_STRUM: {"frames": 8, "fps": 8, "loop": false, "source": "pull-heavy-object/south (PowerChord)"},
-	HURT: {"frames": 6, "fps": 6, "loop": true, "source": "taking-punch/east"},
-	DYING: {"frames": 7, "fps": 8, "loop": false, "source": "falling-back-death/east"}
+    IDLE: {"frames": 4, "fps": 4, "loop": true, "source": "breathing-idle"},
+    IDLE_FIGHT_STANCE: {"frames": 8, "fps": 8, "loop": true,
+    	"source": "fight-stance-idle-8-frames"},
+    WALK: {"frames": 6, "fps": 8, "loop": true, "source": "walking-10/east"},
+    WALK_ANGRY: {"frames": 8, "fps": 8, "loop": true, "source": "sad-walk/east"},
+    WALK_HURT: {"frames": 8, "fps": 5, "loop": true, "source": "sad-walk/south-east"},
+    WALK_NORTH: {"frames": 6, "fps": 8, "loop": true, "source": "walk/north"},
+    WALK_SOUTH: {"frames": 6, "fps": 5, "loop": true, "source": "walk/south"},
+    RUN: {"frames": 8, "fps": 8, "loop": true, "source": "running-8-frames/east"},
+    RUN_SLIDE: {"frames": 6, "fps": 5, "loop": false, "source": "running-slide/south-east"},
+    JUMP_UP: {"frames": 3, "fps": 8, "loop": false, "source": "jumping-1/east"},
+    JUMP_TOP: {"frames": 2, "fps": 2, "loop": false, "source": "jumping-1/east"},
+    JUMP_DOWN: {"frames": 2, "fps": 2, "loop": false, "source": "jumping-1/east"},
+    JUMP_LAND: {"frames": 3, "fps": 4, "loop": false, "source": "jumping-1/east"},
+    KICK_HIGH: {"frames": 7, "fps": 8, "loop": false, "source": "high-kick/east"},
+    KICK_MID: {"frames": 6, "fps": 6, "loop": false, "source": "flying-kick/east"},
+    KICK_LOW: {"frames": 7, "fps": 8, "loop": false, "source": "leg-sweep/east"},
+    PUNCH: {"frames": 6, "fps": 8, "loop": false, "source": "lead-jab/east"},
+    PUNCH_UP: {"frames": 7, "fps": 5, "loop": true, "source": "surprise-uppercut/east"},
+    DASH: {"frames": 6, "fps": 6, "loop": false, "source": "front-flip/east"},
+    LADDER_GRAB: {"frames": 7, "fps": 8, "loop": true, "source": "two-footed-jump/north"},
+    GUITAR_STRUM: {"frames": 8, "fps": 8, "loop": false,
+    	"source": "pull-heavy-object/south (PowerChord)"},
+    HURT: {"frames": 6, "fps": 6, "loop": true, "source": "taking-punch/east"},
+    DYING: {"frames": 7, "fps": 8, "loop": false, "source": "falling-back-death/east"}
 }
 
 # Helper function to check if animation loops
 static func is_looping(animation_name: String) -> bool:
-	if METADATA.has(animation_name):
-		return METADATA[animation_name]["loop"]
-	return false
+    if METADATA.has(animation_name):
+        return METADATA[animation_name]["loop"]
+    return false
 
 # Helper function to get animation duration in seconds
 static func get_duration(animation_name: String) -> float:
-	if METADATA.has(animation_name):
-		var meta = METADATA[animation_name]
-		return float(meta["frames"]) / float(meta["fps"])
-	return 0.0
+    if METADATA.has(animation_name):
+        var meta = METADATA[animation_name]
+        return float(meta["frames"]) / float(meta["fps"])
+    return 0.0
 
 # Helper function to get frame count
 static func get_frame_count(animation_name: String) -> int:
-	if METADATA.has(animation_name):
-		return METADATA[animation_name]["frames"]
-	return 0
+    if METADATA.has(animation_name):
+        return METADATA[animation_name]["frames"]
+    return 0
 
 # Animation groups for easier management
 const MOVEMENT_ANIMATIONS = [WALK, WALK_ANGRY, WALK_HURT, WALK_NORTH, WALK_SOUTH, RUN, RUN_SLIDE]

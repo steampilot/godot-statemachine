@@ -41,10 +41,10 @@ func unlock_tile(tile_name: String) -> void:
     if not has_tile(tile_name):
         push_error("Cannot unlock tile that doesn't exist: %s" % tile_name)
         return
-    
+
     if tile_name in unlocked_tiles:
         return
-    
+
     unlocked_tiles.append(tile_name)
     tile_unlocked.emit(tile_name)
     print("🎵 Unlocked music tile: %s" % tile_name)

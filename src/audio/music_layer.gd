@@ -17,12 +17,12 @@ var _current_beat: int = 0
 
 func _ready() -> void:
     finished.connect(_on_playback_finished)
-    
+
     _beat_timer = Timer.new()
     _beat_timer.one_shot = false
     add_child(_beat_timer)
     _beat_timer.timeout.connect(_on_beat)
-    
+
     _stop_timer = Timer.new()
     _stop_timer.one_shot = true
     add_child(_stop_timer)
@@ -32,35 +32,35 @@ func play_tile(atlas: MusicAtlas, tile_name: String, start_on_beat: bool = false
     if not atlas.has_tile(tile_name):
         push_error("Tile not found: %s" % tile_name)
         return
-    
+
     if not atlas.is_tile_unlocked(tile_name):
         push_error("Tile not unlocked: %s" % tile_name)
         return
-    
+
     _current_atlas = atlas
     current_tile_name = tile_name
-    
+
     var tile = atlas.get_tile(tile_name)
     stream = atlas.audio_stream
-    
+
     if start_on_beat:
         # TODO: Wait for next beat to start playback
         # For now, just play immediately
         pass
-    
+
     play(tile.offset)
     is_playing_tile = true
-    
+
     # Setup beat timer
     _beat_timer.wait_time = atlas.get_beat_length()
     _beat_timer.start()
     _current_beat = 0
-    
+
     # Setup stop timer if tile doesn't loop
     if not tile.get("loop", false):
         _stop_timer.wait_time = tile.length
         _stop_timer.start()
-    
+
     layer_started.emit(tile_name)
     print("🎵 Layer playing tile: %s" % tile_name)
 
