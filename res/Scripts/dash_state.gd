@@ -5,9 +5,17 @@ extends State
 @export var dash_speed: float = 400.0
 @export var dash_duration: float = 0.2
 
+# Ghost trail properties
+@export var ghost_spawn_interval: float = 0.03
+@export var ghost_enabled: bool = true
+
 var dash_timer: float = 0.0
 var dash_direction: Vector2 = Vector2.ZERO
 var was_airborne: bool = false
+var ghost_timer: float = 0.0
+
+# Ghost sprite scene
+const GHOST_SCENE = preload("res://Scenes/ghost_sprite.tscn")
 
 
 func enter() -> void:
@@ -15,7 +23,12 @@ func enter() -> void:
     print("Entered Dash State")
 
     dash_timer = dash_duration
+    ghost_timer = 0.0
     was_airborne = not parent.is_on_floor()
+
+    # Spawn initial ghost at starting position
+    if ghost_enabled:
+        _spawn_ghost()
 
     # Get 8-directional dash direction from Player
     dash_direction = parent.get_dash_direction()
@@ -51,6 +64,13 @@ func process_physics(delta: float) -> State:
     # Update dash timer
     dash_timer -= delta
 
+    # Spawn ghost trail during dash
+    if ghost_enabled:
+        ghost_timer -= delta
+        if ghost_timer <= 0:
+            _spawn_ghost()
+            ghost_timer = ghost_spawn_interval
+
     # Maintain dash velocity (no friction during dash)
     parent.velocity = dash_direction * dash_speed
 
@@ -74,3 +94,29 @@ func process_physics(delta: float) -> State:
         return states.get("fall")
 
     return null
+
+# Spawn a ghost sprite at current player position
+func _spawn_ghost() -> void:
+    if not parent or not parent.sprite:
+        return
+
+    var ghost = GHOST_SCENE.instantiate() as Sprite2D
+    if not ghost:
+        return
+
+    # Get the current scene root to add ghost as sibling
+    var scene_root = parent.get_tree().current_scene
+    if scene_root:
+        scene_root.add_child(ghost)
+
+    # Copy sprite properties
+    ghost.global_position = parent.sprite.global_position
+    ghost.texture = parent.sprite.sprite_frames.get_frame_texture(
+        parent.sprite.animation,
+        parent.sprite.frame
+    )
+    ghost.flip_h = parent.sprite.flip_h
+    ghost.offset = parent.sprite.offset
+
+    # Dash ghosts: cyan/white tint for speed effect
+    ghost.modulate = Color(0.7, 1.0, 1.0, 0.6)
