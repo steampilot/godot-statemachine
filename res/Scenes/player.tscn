@@ -17,6 +17,7 @@
 [ext_resource type="Script" uid="uid://bueeh46bbxtrj" path="res://Scripts/jump_state.gd" id="11_k5grt"]
 [ext_resource type="Texture2D" uid="uid://gvg67nh7l6gm" path="res://Assets/Characters/Caprica_Sprites/animations/flying-kick/east/frame_000-sheet.png" id="11_xwi16"]
 [ext_resource type="Script" uid="uid://pbf5vt1qi74h" path="res://Scripts/idle_state.gd" id="12_qloii"]
+[ext_resource type="Script" path="res://Scripts/idle_fight_state.gd" id="12_fight"]
 [ext_resource type="Texture2D" uid="uid://uy50w3k051un" path="res://Assets/Characters/Caprica_Sprites/animations/two-footed-jump/north/frame_000-sheet.png" id="12_sweqm"]
 [ext_resource type="Script" uid="uid://bq6mvmy8worid" path="res://Scripts/fall_state.gd" id="13_k42dt"]
 [ext_resource type="Texture2D" uid="uid://qelrueg4bxm" path="res://Assets/Characters/Caprica_Sprites/animations/lead-jab/east/frame_000-sheet.png" id="13_ph33w"]
@@ -1105,6 +1106,10 @@ animation_name = "jump_up"
 [node name="IdleState" type="Node" parent="StateMachine"]
 script = ExtResource("12_qloii")
 animation_name = "idle"
+
+[node name="IdleFightState" type="Node" parent="StateMachine"]
+script = ExtResource("12_fight")
+animation_name = "idle_fight_stance"
 
 [node name="FallState" type="Node" parent="StateMachine"]
 script = ExtResource("13_k42dt")

@@ -127,11 +127,8 @@ func process_physics(delta: float) -> State:
     if should_exit:
         print("Slide ended: %s (distance: %.1f)" % [exit_reason, slide_distance_traveled])
 
-        # Transition based on input
-        var direction = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
-        if direction != 0:
-            return states.get("run")
-        return states.get("idle")
+        # Always transition to fight stance after slide
+        return states.get("idle_fight")
 
     return null
 

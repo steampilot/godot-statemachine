@@ -41,13 +41,16 @@ func process_input(_event: InputEvent) -> State:
     return null
 
 func process_physics(_delta: float) -> State:
+    # Maintain zero velocity during attack (Castlevania style)
+    parent.velocity.x = 0
+
     parent.move_and_slide()
 
     # Wait for animation to finish
     if attack_finished:
-        # Always transition to idle on ground (never run) for stronger feeling
+        # Transition to fight stance for tactical positioning
         if parent.is_on_floor():
-            return states.get("idle")
+            return states.get("idle_fight")
         # In air - transition to fall state
         return states.get("fall")
 
