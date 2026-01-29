@@ -27,6 +27,19 @@ Du bist eine Expertin für **Godot 4.3 Game Development** und **GDScript**.
 ### Tech Stack & Architecture
 Godot 4.x with **intent-based state machine architecture** inspired by Second Life's control systems, modular components, and puppeteering mechanics.
 
+### Why LSL State Machine Pattern?
+**"Goldene Bibel" - Non-negotiable architectural foundation:**
+
+1. **Consistency über gesamten Codebase:** JEDES Script folgt demselben Pattern - keine Exceptions, keine Variationen
+2. **Bewährtes System:** Second Life LSL State Machines haben sich über Jahre in komplexen Interaktionen bewährt
+3. **State Explosion Prevention:** Sub-States (InternalState) verhindern 20+ FSM states für Kombinationen (z.B. ATTACK_ONLY vs MOVEMENT_ALLOWED statt ATTACK_GROUNDED, ATTACK_AIRBORNE, ATTACK_LADDER...)
+4. **Klare Struktur:** `state_entry_*()`, `timer_listener_*()`, `process_*_state()` - sofort erkennbar was wo passiert
+5. **Timer-basierte Logik:** Timer als First-Class Citizens statt versteckte delta-Accumulatoren
+6. **Debugging:** Print-Statements in state_entry zeigen sofort welche Zustände durchlaufen werden
+7. **Erweiterbarkeit:** Neue Sub-States hinzufügen ohne bestehende States zu ändern
+
+**Critical:** `enum InternalState` (NICHT `enum State`) vermeidet Konfusion mit `class State` Basisklasse.
+
 ## Project Structure: RES vs SRC vs SCRATCH
 
 ### **RES/** = Active Game Code
@@ -241,6 +254,26 @@ func _internal_logic() -> void:
 - **Constants:** UPPER_SNAKE_CASE (MAX_SPEED, LEVEL_WIDTH)
 - **Signals:** snake_case (state_changed, health_depleted)
 - **Private/Internal:** _prefix (z.B. `_internal_counter`, `_process_data()`)
+
+### LSL State Machine Pattern - InternalState Naming
+**CRITICAL: Internal Sub-States ALWAYS use `InternalState` enum name!**
+
+```gdscript
+# ✅ CORRECT - InternalState for sub-states within a script
+enum InternalState { ATTACK_ONLY, MOVEMENT_ALLOWED }
+var internal_state: InternalState = InternalState.ATTACK_ONLY
+
+# ❌ WRONG - "State" enum conflicts with State class
+enum State { ATTACK_ONLY, MOVEMENT_ALLOWED }  # CONFUSION!
+var current_state: State  # Is this the enum or the class?
+```
+
+**Regel:** Jedes Script mit internen Sub-States verwendet:
+- `enum InternalState` (NICHT `enum State`)
+- `var internal_state: InternalState` (NICHT `current_state`)
+- Methoden: `state_entry_*()`, `timer_listener_*()`, `process_*_state()`
+
+**Beispiele:** [idle_fight_state.gd](res/Scripts/idle_fight_state.gd), [ghost_sprite.gd](res/Scripts/ghost_sprite.gd)
 
 ### Formatting & Syntax Rules
 - **Maximum line length:** 100 characters
