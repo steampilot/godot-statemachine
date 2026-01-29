@@ -41,118 +41,119 @@ var on_ladder: bool = false
 @onready var sprite: AnimatedSprite2D = %Sprite
 @onready var state_machine: StateMachine = %StateMachine
 @onready var ladder_detector: Area2D = %LadderDetector
+@onready var slide_sensor: RayCast2D = %SlideSensor
 
 func _ready() -> void:
-	state_machine.init(self)
+    state_machine.init(self )
 
-	# Connect LadderDetector signals to track ladder overlap
-	if ladder_detector:
-		ladder_detector.area_entered.connect(_on_ladder_area_entered)
-		ladder_detector.area_exited.connect(_on_ladder_area_exited)
-		ladder_detector.body_entered.connect(_on_ladder_body_entered)
-		ladder_detector.body_exited.connect(_on_ladder_body_exited)
+    # Connect LadderDetector signals to track ladder overlap
+    if ladder_detector:
+        ladder_detector.area_entered.connect(_on_ladder_area_entered)
+        ladder_detector.area_exited.connect(_on_ladder_area_exited)
+        ladder_detector.body_entered.connect(_on_ladder_body_entered)
+        ladder_detector.body_exited.connect(_on_ladder_body_exited)
 
 func _on_ladder_area_entered(area: Area2D) -> void:
-	print("Ladder Area entered: %s" % area.name)
-	on_ladder = true
+    print("Ladder Area entered: %s" % area.name)
+    on_ladder = true
 
 func _on_ladder_area_exited(area: Area2D) -> void:
-	print("Ladder Area exited: %s" % area.name)
-	on_ladder = false
+    print("Ladder Area exited: %s" % area.name)
+    on_ladder = false
 
 func _on_ladder_body_entered(body: Node2D) -> void:
-	print("Ladder Body entered: %s" % body.name)
-	on_ladder = true
+    print("Ladder Body entered: %s" % body.name)
+    on_ladder = true
 
 func _on_ladder_body_exited(body: Node2D) -> void:
-	print("Ladder Body exited: %s" % body.name)
-	on_ladder = false
+    print("Ladder Body exited: %s" % body.name)
+    on_ladder = false
 
 func _unhandled_input(event: InputEvent) -> void:
-	state_machine.process_input(event)
+    state_machine.process_input(event)
 
 func _physics_process(delta: float) -> void:
-	# Update invincibility timer
-	if invincibility_timer > 0:
-		invincibility_timer -= delta
-		if invincibility_timer <= 0:
-			is_invincible = false
-			sprite.modulate.a = 1.0
-		# Blinking effect during i-frames
-		else:
-			sprite.modulate.a = 0.5 if int(invincibility_timer * 10) % 2 == 0 else 1.0
+    # Update invincibility timer
+    if invincibility_timer > 0:
+        invincibility_timer -= delta
+        if invincibility_timer <= 0:
+            is_invincible = false
+            sprite.modulate.a = 1.0
+        # Blinking effect during i-frames
+        else:
+            sprite.modulate.a = 0.5 if int(invincibility_timer * 10) % 2 == 0 else 1.0
 
-	# Apply gravity centrally (Celeste-style)
-	# States control gravity_multiplier for variable fall speed
-	var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
-	var grav_mult = (
-		state_machine.current_state.gravity_multiplier
-		if state_machine.current_state
-		else 1.0
-	)
-	velocity.y += gravity * grav_mult * delta
+    # Apply gravity centrally (Celeste-style)
+    # States control gravity_multiplier for variable fall speed
+    var gravity: int = ProjectSettings.get_setting("physics/2d/default_gravity")
+    var grav_mult = (
+        state_machine.current_state.gravity_multiplier
+        if state_machine.current_state
+        else 1.0
+    )
+    velocity.y += gravity * grav_mult * delta
 
-	state_machine.process_physics(delta)
+    state_machine.process_physics(delta)
 
 func _process(delta: float) -> void:
-	state_machine.process_frame(delta)
+    state_machine.process_frame(delta)
 
 ## Toggle OneWayPlatform collision for ladder climbing through platforms
 func toggle_oneway_platforms(enabled: bool) -> void:
-	var platforms = get_tree().get_nodes_in_group("OneWayPlatforms")
-	for platform in platforms:
-		if platform is TileMapLayer:
-			platform.collision_enabled = enabled
+    var platforms = get_tree().get_nodes_in_group("OneWayPlatforms")
+    for platform in platforms:
+        if platform is TileMapLayer:
+            platform.collision_enabled = enabled
 
 func receive_damage(amount: int) -> void:
-	# Ignore damage during invincibility frames
-	if is_invincible:
-		return
+    # Ignore damage during invincibility frames
+    if is_invincible:
+        return
 
-	print("%s received %d damage!" % [self.name, amount])
-	health -= amount
-	print("%s Is now at health: %d of %d" % [self.name, health, max_health])
+    print("%s received %d damage!" % [ self.name, amount])
+    health -= amount
+    print("%s Is now at health: %d of %d" % [ self.name, health, max_health])
 
-	if health <= 0:
-		print("%s has been defeated!" % [self.name])
-		# Trigger dying state - NEVER queue_free!
-		if state_machine and state_machine.states.has("dying"):
-			state_machine.change_state(state_machine.states.get("dying"))
-		return
+    if health <= 0:
+        print("%s has been defeated!" % [ self.name])
+        # Trigger dying state - NEVER queue_free!
+        if state_machine and state_machine.states.has("dying"):
+            state_machine.change_state(state_machine.states.get("dying"))
+        return
 
-	# Trigger hurt state for knockback
-	if state_machine and state_machine.states.has("hurt"):
-		state_machine.change_state(state_machine.states.get("hurt"))
+    # Trigger hurt state for knockback
+    if state_machine and state_machine.states.has("hurt"):
+        state_machine.change_state(state_machine.states.get("hurt"))
 
 ## Get dash direction based on current input state
 ## Returns normalized Vector2 or Vector2.ZERO if no valid dash input
 func get_dash_direction() -> Vector2:
-	var dir := Vector2.ZERO
+    var dir := Vector2.ZERO
 
-	# Get horizontal input
-	var h_input = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
-	# Get vertical input (Godot: Y negative = up, Y positive = down)
-	var v_up = -1.0 if Input.is_action_pressed(INPUT_ACTIONS.MOVE_UP) else 0.0
-	var v_down = 1.0 if Input.is_action_pressed(INPUT_ACTIONS.MOVE_DOWN) else 0.0
-	var v_input = v_up + v_down
+    # Get horizontal input
+    var h_input = Input.get_axis(INPUT_ACTIONS.MOVE_LEFT, INPUT_ACTIONS.MOVE_RIGHT)
+    # Get vertical input (Godot: Y negative = up, Y positive = down)
+    var v_up = -1.0 if Input.is_action_pressed(INPUT_ACTIONS.MOVE_UP) else 0.0
+    var v_down = 1.0 if Input.is_action_pressed(INPUT_ACTIONS.MOVE_DOWN) else 0.0
+    var v_input = v_up + v_down
 
-	# On ground: Only horizontal or down dash allowed
-	if is_on_floor():
-		if v_input > 0: # Down pressed (positive Y)
-			# Ground slide - horizontal in sprite direction
-			dir.x = 1.0 if not sprite.flip_h else -1.0
-			dir.y = 0.0
-		return dir
+    # On ground: Only horizontal or down dash allowed
+    if is_on_floor():
+        if v_input > 0: # Down pressed (positive Y)
+            # Ground slide - horizontal in sprite direction
+            dir.x = 1.0 if not sprite.flip_h else -1.0
+            dir.y = 0.0
+        return dir
 
-	# In air: All 8 directions possible
-	if can_air_dash:
-		dir.x = h_input
-		dir.y = v_input
+    # In air: All 8 directions possible
+    if can_air_dash:
+        dir.x = h_input
+        dir.y = v_input
 
-		# If no direction at all, dash in sprite direction (horizontal)
-		if dir.length_squared() == 0:
-			dir.x = 1.0 if not sprite.flip_h else -1.0
+        # If no direction at all, dash in sprite direction (horizontal)
+        if dir.length_squared() == 0:
+            dir.x = 1.0 if not sprite.flip_h else -1.0
 
-		return dir.normalized()
+        return dir.normalized()
 
-	return Vector2.ZERO
+    return Vector2.ZERO

@@ -26,6 +26,7 @@
 [ext_resource type="Texture2D" uid="uid://ged4ii3cxr38" path="res://Assets/Characters/Caprica_Sprites/animations/running-8-frames/east/frame_000-sheet.png" id="15_r7t2e"]
 [ext_resource type="Script" uid="uid://ddgrulfddgvff" path="res://Scripts/dash_state.gd" id="16_fd4e3"]
 [ext_resource type="Texture2D" uid="uid://dcpmhfmmhrwd" path="res://Assets/Characters/Caprica_Sprites/animations/running-slide/south-east/frame_000-sheet.png" id="16_nmr2m"]
+[ext_resource type="Script" uid="uid://b3mkicqnnk4ua" path="res://Scripts/run_slide_state.gd" id="16_runslide"]
 [ext_resource type="Texture2D" uid="uid://caliq068jisob" path="res://Assets/Characters/Caprica_Sprites/animations/walking-10/east/frame_000-sheet.png" id="17_ax3m3"]
 [ext_resource type="Script" uid="uid://1k5ip308v8ia" path="res://Scripts/hurt_state.gd" id="17_qqcod"]
 [ext_resource type="Texture2D" uid="uid://bvhws4otfsur7" path="res://Assets/Characters/Caprica_Sprites/animations/walk/south/frame_000-sheet.png" id="18_3vlem"]
@@ -34,7 +35,6 @@
 [ext_resource type="Texture2D" uid="uid://drq6jgvsc6sw8" path="res://Assets/Characters/Caprica_Sprites/animations/walk/north/frame_000-sheet.png" id="19_8eeqe"]
 [ext_resource type="Script" uid="uid://e144abrw837y" path="res://Scripts/ladder_grab_state.gd" id="19_fs7ks"]
 [ext_resource type="Texture2D" uid="uid://cp332q8j7kyro" path="res://Assets/Characters/Caprica_Sprites/animations/sad-walk/south-east/frame_000-sheet.png" id="19_nv4vc"]
-[ext_resource type="Script" uid="uid://dicy26aslt3uo" path="res://Scripts/state.gd" id="27_nv4vc"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_aysp5"]
 radius = 5.0
@@ -1115,8 +1115,8 @@ script = ExtResource("14_yrwt2")
 animation_name = "run"
 
 [node name="RunSlideState" type="Node" parent="StateMachine/RunState"]
-script = ExtResource("27_nv4vc")
-metadata/_custom_type_script = "uid://dicy26aslt3uo"
+script = ExtResource("16_runslide")
+animation_name = "run_slide"
 
 [node name="AttackState" type="Node" parent="StateMachine"]
 script = ExtResource("15_i56dd")
@@ -1176,6 +1176,5 @@ debug_color = Color(0, 0.6509804, 0, 0.41960785)
 [node name="SlideSensor" type="RayCast2D" parent="CollisionDetectors"]
 unique_name_in_owner = true
 position = Vector2(0, -21)
-rotation = -1.5707964
-target_position = Vector2(0, 9)
+target_position = Vector2(14, 0)
 collision_mask = 21
