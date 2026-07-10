@@ -59,11 +59,11 @@ func activate_layer(layer_name: String, tile_name: String,
     if not active_atlas:
         push_error("No music atlas loaded")
         return
-    
+
     if not layers.has(layer_name):
         push_error("Layer not found: %s" % layer_name)
         return
-    
+
     var layer: MusicLayer = layers[layer_name]
     layer.play_tile(active_atlas, tile_name, start_on_beat)
     layer_activated.emit(layer_name, tile_name)
@@ -71,7 +71,7 @@ func activate_layer(layer_name: String, tile_name: String,
 func deactivate_layer(layer_name: String) -> void:
     if not layers.has(layer_name):
         return
-    
+
     var layer: MusicLayer = layers[layer_name]
     layer.stop_tile()
     layer_deactivated.emit(layer_name)
@@ -84,7 +84,7 @@ func clear_all_layers() -> void:
 func set_layer_volume(layer_name: String, volume_db: float) -> void:
     if not layers.has(layer_name):
         return
-    
+
     layer_volumes[layer_name] = volume_db
     var layer: MusicLayer = layers[layer_name]
     layer.volume_db = volume_db
@@ -92,7 +92,7 @@ func set_layer_volume(layer_name: String, volume_db: float) -> void:
 func fade_in_layer(layer_name: String, duration: float = 1.0) -> void:
     if not layers.has(layer_name):
         return
-    
+
     var layer: MusicLayer = layers[layer_name]
     var tween = create_tween()
     tween.tween_property(layer, "volume_db", layer_volumes[layer_name], duration)
@@ -101,11 +101,11 @@ func fade_out_layer(layer_name: String, duration: float = 1.0,
                    stop_after_fade: bool = true) -> void:
     if not layers.has(layer_name):
         return
-    
+
     var layer: MusicLayer = layers[layer_name]
     var tween = create_tween()
     tween.tween_property(layer, "volume_db", -80.0, duration)
-    
+
     if stop_after_fade:
         tween.finished.connect(func(): deactivate_layer(layer_name))
 
@@ -139,7 +139,7 @@ func get_save_data() -> Dictionary:
     for layer_name in layers.keys():
         if is_layer_active(layer_name):
             active_layers[layer_name] = get_active_tile(layer_name)
-    
+
     return {
         "active_atlas": active_atlas.resource_path if active_atlas else "",
         "active_layers": active_layers,
@@ -152,15 +152,15 @@ func load_save_data(data: Dictionary) -> void:
         var atlas = load(data["active_atlas"]) as MusicAtlas
         if atlas:
             load_atlas(atlas)
-            
+
             if data.has("atlas_save_data"):
                 atlas.load_save_data(data["atlas_save_data"])
-    
+
     if data.has("layer_volumes"):
         layer_volumes = data["layer_volumes"]
         for layer_name in layer_volumes.keys():
             set_layer_volume(layer_name, layer_volumes[layer_name])
-    
+
     if data.has("active_layers") and active_atlas:
         for layer_name in data["active_layers"].keys():
             activate_layer(layer_name, data["active_layers"][layer_name])

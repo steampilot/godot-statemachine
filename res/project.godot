@@ -25,6 +25,7 @@ AUDIO="*res://Globals/AUDIO.gd"
 MUSIC_PLAYER="*res://Globals/MUSIC_PLAYER.tscn"
 LEVEL_LOADER="*res://Globals/LEVEL_LOADER.gd"
 INPUT_ACTIONS="*res://Globals/INPUT_ACTIONS.gd"
+PLAYER="*res://Globals/ANIMATIONS.gd"
 SCENE_MANAGER="*res://Globals/SCENE_MANAGER.gd"
 AUDIO_MANAGER="*res://Globals/AUDIO.gd"
 
@@ -33,6 +34,11 @@ AUDIO_MANAGER="*res://Globals/AUDIO.gd"
 window/size/viewport_width=640
 window/size/viewport_height=480
 window/size/initial_position_type=3
+
+[editor]
+
+movie_writer/movie_file="C:/Users/Steampilot/Videos/CapricaGameVideoOutput.avi"
+movie_writer/disable_vsync=true
 
 [global_group]
 

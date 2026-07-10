@@ -14,11 +14,8 @@ position = Vector2(889, 286)
 
 [node name="Camera2D" type="Camera2D" parent="Player"]
 position = Vector2(0, -16)
+scale = Vector2(2, 2)
 zoom = Vector2(2, 2)
 limit_left = 0
 limit_top = 0
 position_smoothing_enabled = true
-
-[node name="CanvasModulate" type="CanvasModulate" parent="."]
-visible = false
-color = Color(1.15514e-06, 0.259701, 0.433874, 1)

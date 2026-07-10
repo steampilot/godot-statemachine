@@ -10,60 +10,60 @@ signal entity_fell(entity: Node)
 signal player_respawned
 
 func _ready() -> void:
-	body_entered.connect(_on_body_entered)
+    body_entered.connect(_on_body_entered)
 
-	if respawn_position == Vector2.ZERO:
-		respawn_position = position
+    if respawn_position == Vector2.ZERO:
+        respawn_position = position
 
-	print("✓ KillZone initialized at position: %s" % respawn_position)
+    print("✓ KillZone initialized at position: %s" % respawn_position)
 
 func _on_body_entered(body: Node2D) -> void:
-	if not body:
-		return
+    if not body:
+        return
 
-	entity_fell.emit(body)
-	print("KillZone: %s fell!" % body.name)
+    entity_fell.emit(body)
+    print("KillZone: %s fell!" % body.name)
 
-	# Spezial-Handling für Player
-	if body is Player or body.get_script().get_class() == "Player":
-		_respawn_player(body)
-	# Für andere Entities (Enemy, etc.)
-	else:
-		_kill_entity(body)
+    # Spezial-Handling für Player
+    if body is Player or body.get_script().get_class() == "Player":
+        _respawn_player(body)
+    # Für andere Entities (Enemy, etc.)
+    else:
+        _kill_entity(body)
 
 ## Player respawnen
 func _respawn_player(player: Node) -> void:
-	print("Respawning player at: %s" % respawn_position)
+    print("Respawning player at: %s" % respawn_position)
 
-	# Player zu Spawn-Position teleportieren
-	player.global_position = respawn_position
+    # Player zu Spawn-Position teleportieren
+    player.global_position = respawn_position
 
-	# Health resetten
-	if player.has_node("HealthComponent"):
-		var health = player.get_node("HealthComponent")
-		health.set_health(player_respawn_health)
+    # Health resetten
+    if player.has_node("HealthComponent"):
+        var health = player.get_node("HealthComponent")
+        health.set_health(player_respawn_health)
 
-	# Reset Player komplett
-	if player.has_method("reset_player"):
-		player.reset_player()
+    # Reset Player komplett
+    if player.has_method("reset_player"):
+        player.reset_player()
 
-	player_respawned.emit()
+    player_respawned.emit()
 
 ## Andere Entities löschen oder deaktivieren
 func _kill_entity(entity: Node) -> void:
-	print("Killing entity: %s" % entity.name)
+    print("Killing entity: %s" % entity.name)
 
-	# Wenn DeathComponent vorhanden, nutze Death-Sequenz
-	if entity.has_node("DeathComponent"):
-		var death_comp = entity.get_node("DeathComponent")
-		death_comp.handle_death()
-	else:
-		# Sonst direkt löschen
-		entity.queue_free()
+    # Wenn DeathComponent vorhanden, nutze Death-Sequenz
+    if entity.has_node("DeathComponent"):
+        var death_comp = entity.get_node("DeathComponent")
+        death_comp.handle_death()
+    else:
+        # Sonst direkt löschen
+        entity.queue_free()
 
 ## Position wo Entities respawnen
 func set_respawn_position(pos: Vector2) -> void:
-	respawn_position = pos
+    respawn_position = pos
 
 func get_respawn_position() -> Vector2:
-	return respawn_position
+    return respawn_position

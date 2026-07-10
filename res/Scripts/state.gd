@@ -13,22 +13,22 @@ var states: Dictionary = {} # Populated by StateMachine
 
 
 func enter() -> void:
-	# Validate that animation_name is set
-	if animation_name == "":
-		push_error("%s: animation_name is not set! Please set it in the Inspector." % get_class())
-		return
+    # Validate that animation_name is set
+    if animation_name == "":
+        push_error("%s: animation_name is not set! Please set it in the Inspector." % get_class())
+        return
 
-	if parent and parent.sprite:
-		parent.sprite.play(animation_name)
+    if parent and parent.sprite:
+        parent.sprite.play(animation_name)
 
 func exit() -> void:
-	pass
+    pass
 
 func process_input(_event: InputEvent) -> State:
-	return null
+    return null
 
 func process_frame(_delta: float) -> State:
-	return null
+    return null
 
 func process_physics(_delta: float) -> State:
-	return null
+    return null

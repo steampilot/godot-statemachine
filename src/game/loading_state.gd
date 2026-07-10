@@ -6,15 +6,15 @@ extends GameState
 var scene_loader: SceneLoader
 
 func _init(loader: SceneLoader) -> void:
-	super._init(GameState.Type.LOADING)
-	scene_loader = loader
+    super._init(GameState.Type.LOADING)
+    scene_loader = loader
 
 func enter() -> void:
-	var target_scene = context.get("target_scene", "")
-	print("LoadingState: Loading %s" % target_scene)
+    var target_scene = context.get("target_scene", "")
+    print("LoadingState: Loading %s" % target_scene)
 
 func exit() -> void:
-	print("LoadingState: Exited")
+    print("LoadingState: Exited")
 
 func handle_intent(intent: Intent) -> void:
-	pass
+    pass

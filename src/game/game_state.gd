@@ -3,27 +3,27 @@ class_name GameState
 ## Basis-State für Game State Machine
 
 enum Type {
-	MAIN_MENU,
-	LOADING,
-	RUNNING,
-	PAUSED
+    MAIN_MENU,
+    LOADING,
+    RUNNING,
+    PAUSED
 }
 
 var type: Type
 var context: Dictionary = {}
 
 func _init(t: Type, ctx: Dictionary = {}) -> void:
-	type = t
-	context = ctx
+    type = t
+    context = ctx
 
 func enter() -> void:
-	pass
+    pass
 
 func exit() -> void:
-	pass
+    pass
 
 func handle_intent(intent: Intent) -> void:
-	pass
+    pass
 
 func update(delta: float) -> void:
-	pass
+    pass
