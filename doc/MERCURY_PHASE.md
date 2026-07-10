@@ -12,6 +12,7 @@
 **Philosophie:** Eine Sache nach der anderen. Jede Mercury-Mission meistert **ein Core-System in vollständiger Isolation**.
 
 **Deliverable am Ende:** Spielbare 1-Level-Demo mit:
+
 - Caprica kann herumspringen
 - Erster Gegner (Zombie)
 - Erste Attack (Kick)
@@ -21,7 +22,7 @@
 ### Mercury-Missions Übersicht
 
 ```
-Mercury 0  → Animation Foundation  (Bone2D verstehen)
+Mercury 0  → Sprite Animation Foundation  (PixelLab AI + Godot SpriteFrames)
 Mercury 1  → Beat Detection        (Audio verstehen)
 Mercury 2  → Intent Input System   (Input verstehen)
 Mercury 3  → First Enemy           (Gegner verstehen)
@@ -34,33 +35,35 @@ Jede Mission: **Isoliert, fokussiert, spielbar.**
 
 ---
 
-## 🔵 Mercury 0: Dein ERSTES - Bone2D Animation
+## 🔵 Mercury 0: Dein ERSTES - Sprite Animation Pipeline
 
-**Learning Goal:** Wie funktioniert Godot Skeleton2D + Bone2D?
+**Learning Goal:** Wie kommen PixelLab-AI-generierte Animationen sauber und wiederholbar in Godot an?
 
 **Was du lernst:**
-- Caprica aus PNG-Teilen zusammensetzen (Head, Torso, Arms, Legs)
-- Bone-Hierarchie aufbauen
-- Animation-Curves schreiben
-- Bones rotieren lassen über Zeit
+
+- PixelLab-AI-Frames oder Sprite-Sheets exportieren
+- Assets sinnvoll unter `res/Assets/Characters/` ablegen
+- SpriteFrames in Godot einrichten
+- Animationsnamen mit den Player-States synchron halten
 
 **Konkrete Milestones:**
-1. ✅ Caprica Idle-Animation (steht rum, atmet subtil)
-2. ✅ Caprica Walk-Cycle (läuft vorwärts und rückwärts)
-3. ✅ Caprica Jump-Animation (startup → airborne → landing)
-4. ✅ Zombie mit gleichem Rig testen (Animation wiederverwendbar!)
+
+1. Caprica Idle-Animation ist als SpriteFrames-Animation spielbar.
+2. Caprica Walk/Run ist als SpriteFrames-Animation spielbar.
+3. Caprica Jump/Fall ist als SpriteFrames-Animation spielbar.
+4. Erste Combat-Animation ist als SpriteFrames-Animation spielbar.
+5. Ein Zombie nutzt dieselbe Pipeline mit eigenem Sprite-Set.
 
 **Praktischer Anfang:**
-→ **Siehe:** [MERCURY_0_IMPLEMENTATION.md](MERCURY_0_IMPLEMENTATION.md) ← **START HIER!**
+→ **Siehe:** [ANIMATION_PIPELINE.md](ANIMATION_PIPELINE.md) ← **START HIER!**
 
-Das ist dein **Schritt-für-Schritt Guide** um vom Default-Warrior zu Caprica zu wechseln.
+Das ist der neue Einstieg für die Sprite-basierte Animationsarbeit.
 
 ---
-4. ✅ Zombie mit gleichem Rig testen (Animation wiederverwendbar!)
-
-**Wie lange?** 1-2 Tage (für einen Entwickler)
+**Wie lange?** 1-2 Tage für eine erste saubere Pipeline.
 
 **DoD (Definition of Done):**
+
 ```gdscript
 # In deinem Test-Script funktioniert:
 caprica.play_animation("idle")      # Steht, atmet
@@ -69,7 +72,7 @@ caprica.play_animation("walk_right") # Läuft rechts
 caprica.play_animation("jump")       # Springt auf und runter
 ```
 
-→ **Siehe Details:** [PAPERDOLL_ANIMATION.md](PAPERDOLL_ANIMATION.md)
+→ **Siehe Details:** [ANIMATION_PIPELINE.md](ANIMATION_PIPELINE.md)
 
 ---
 
@@ -78,12 +81,14 @@ caprica.play_animation("jump")       # Springt auf und runter
 **Learning Goal:** Wie bekomme ich aus einem Audio-Stream Beat-Informationen?
 
 **Was du lernst:**
+
 - Godot AudioBus + FFT Analysis (Frequenz-Daten)
 - BPM erkennen aus Audio (oder manuell setzen)
 - Beat-Events emittieren (Signale)
 - Timing messen (±50ms Genauigkeit)
 
 **Konkrete Milestones:**
+
 1. ✅ AudioBus-Analysis Setup
 2. ✅ BPM aus Sample-Song bestimmen
 3. ✅ Beat-Pulse-Signal emittieren
@@ -93,6 +98,7 @@ caprica.play_animation("jump")       # Springt auf und runter
 **Wie lange?** 2-3 Tage
 
 **DoD (Definition of Done):**
+
 ```gdscript
 # Beat-Detektion funktioniert:
 beat_detector.on_beat.connect(_on_beat_detected)
@@ -109,12 +115,14 @@ func _on_beat_detected() -> void:
 **Learning Goal:** Wie entkopple ich Input von Game-Logic?
 
 **Was du lernst:**
+
 - Input-Polling in Input-Klasse isolieren
 - Intent-Objekte / Intent-Enum erstellen
 - Intent-Signale emittieren
 - Verschiedene Input-Sources (Controller, Keyboard, AI) können gleiche Intents senden
 
 **Konkrete Milestones:**
+
 1. ✅ IntentEmitter-Klasse schreiben
 2. ✅ MOVE, JUMP, ATTACK Intents definieren
 3. ✅ Input-Polling funktioniert (D-Pad → MOVE Intent)
@@ -124,6 +132,7 @@ func _on_beat_detected() -> void:
 **Wie lange?** 1-2 Tage
 
 **DoD (Definition of Done):**
+
 ```gdscript
 # Intent-System funktioniert:
 intent_emitter.move.connect(_on_move_intent)
@@ -142,13 +151,15 @@ func _on_move_intent(direction: float) -> void:
 **Learning Goal:** Wie mache ich einen Gegner mit Health, Damage, Death?
 
 **Was du lernst:**
+
 - Component-basierte Architektur (HealthComponent)
 - Collision-Detection (HurtBox, HitBox)
 - Signals für State-Changes
 - Enemy-Animation abspielen
 
 **Konkrete Milestones:**
-1. ✅ SLOB-Zombie Paperdoll-Rig (nutzt Mercury 0)
+
+1. ✅ SLOB-Zombie Sprite-Set nutzt die PixelLab-AI-Pipeline aus Mercury 0
 2. ✅ HealthComponent schreiben (take_damage, health_changed Signal)
 3. ✅ Zombie spawnt in Level
 4. ✅ Zombie-Health anzeigen (HUD oder Healthbar über Kopf)
@@ -158,6 +169,7 @@ func _on_move_intent(direction: float) -> void:
 **Wie lange?** 2-3 Tage
 
 **DoD (Definition of Done):**
+
 ```gdscript
 # Zombie funktioniert:
 zombie.health.take_damage(5)           # -5 HP
@@ -173,6 +185,7 @@ zombie.die()                           # Death-Animation + Remove
 **Learning Goal:** Wie registriere ich Hits? Wie funktioniert Beat-Timing Bonus?
 
 **Was du lernst:**
+
 - Hitbox/Hurtbox System (Area2D Collision)
 - Hit-Registration mit Overlap-Detektion
 - Beat-Timing Fenster (war Hit im Beat?)
@@ -180,6 +193,7 @@ zombie.die()                           # Death-Animation + Remove
 - Combo-Counter (Fenster für Follow-up)
 
 **Konkrete Milestones:**
+
 1. ✅ Caprica Kick-Animation (nutzt Mercury 0)
 2. ✅ Kick-Hitbox spawnt (0.2s - 0.4s während Animation)
 3. ✅ Hit auf Zombie registrieren (health.take_damage)
@@ -190,6 +204,7 @@ zombie.die()                           # Death-Animation + Remove
 **Wie lange?** 3-4 Tage
 
 **DoD (Definition of Done):**
+
 ```gdscript
 # Attack funktioniert:
 caprica.play_animation("kick")
@@ -206,6 +221,7 @@ caprica.play_animation("kick")
 **Learning Goal:** Wie funktioniert progressive Musik + Boss-Encounter?
 
 **Was du lernst:**
+
 - Boss als stärkerer Gegner (mehr Health, andere Animationen)
 - Music-Wave-System (Drums → +Guitar → +Vocals)
 - Audio-Track Layer-Switching
@@ -213,6 +229,7 @@ caprica.play_animation("kick")
 - Visual Intensity Scaling
 
 **Konkrete Milestones:**
+
 1. ✅ Boss-Zombie (5x Health von Regular)
 2. ✅ Boss-Animationen (aggressiver Idle, Attack)
 3. ✅ Music startet: Wave 1 (Drums + Bass)
@@ -224,6 +241,7 @@ caprica.play_animation("kick")
 **Wie lange?** 3-4 Tage
 
 **DoD (Definition of Done):**
+
 ```gdscript
 # Boss-Encounter funktioniert:
 boss.spawn()  # Boss erscheint
@@ -242,6 +260,7 @@ music.play("boss_song")
 **Learning Goal:** Wie funktioniert Level-Wechsel mit Portalen?
 
 **Was du lernst:**
+
 - Scene-Management (Level 1 → Level 2)
 - Portal als Trigger-Area
 - Spawn-Points
@@ -249,6 +268,7 @@ music.play("boss_song")
 - Puppet-Manager Basis (optionaler Visual-Polish)
 
 **Konkrete Milestones:**
+
 1. ✅ Level 1 Scene (Exploration → Combat → Boss)
 2. ✅ Portal am Ende von Level 1
 3. ✅ Spawn-Point in Level 2
@@ -259,6 +279,7 @@ music.play("boss_song")
 **Wie lange?** 2-3 Tage
 
 **DoD (Definition of Done):**
+
 ```gdscript
 # Level-Wechsel funktioniert:
 caprica.enter_portal()
@@ -275,7 +296,7 @@ caprica.enter_portal()
 
 | Mission | Fokus | Wie lange? | DoD |
 |---------|-------|-----------|-----|
-| **0** | Bone2D Animation | 1-2 Tage | Caprica Idle/Walk/Jump |
+| **0** | Sprite Animation Pipeline | 1-2 Tage | Caprica Idle/Walk/Jump |
 | **1** | Beat Detection | 2-3 Tage | Beat-Signal zuverlässig |
 | **2** | Intent System | 1-2 Tage | Input → Intent funktioniert |
 | **3** | First Enemy | 2-3 Tage | Zombie spawnt & stirbt |
@@ -307,11 +328,13 @@ Nach Mercury 0-6 hast du:
 Jede Mercury-Mission macht **EINE Sache und macht sie gut.**
 
 ❌ **NICHT:**
+
 - "Lass mich Combo-System, Visual-Effects, Sound-Effects und Difficulty-Balancing gleichzeitig machen"
 - "Ich mache schnell die Animation fertig und springe zu Combat"
 - "Lass mich jetzt schon die Home Studio implementieren"
 
 ✅ **JA:**
+
 - Mercury 0: Animation. Fertig. Gut.
 - Mercury 1: Beats. Fertig. Gut.
 - Mercury 2: Input. Fertig. Gut.
@@ -326,18 +349,21 @@ Jede Mercury-Mission macht **EINE Sache und macht sie gut.**
 **Das ist NICHT JETZT relevant!** Aber zur Info:
 
 🟢 **Gemini Phase** (nach Mercury)
+
 - Multiple Enemy-Types
 - Home Studio UI
 - Audio-System Refinement
 - Deliverable: 3-Level Campaign
 
 🟡 **Apollo Phase** (nach Gemini)
+
 - Story Integration
 - Visual Polish
 - Boss Variety
 - Deliverable: Vertical Slice
 
 🔴 **Artemis Phase** (parallel Apollo)
+
 - Advanced Sample-Mixing
 - Community Features
 - Deliverable: Creative Experience
@@ -346,7 +372,7 @@ Jede Mercury-Mission macht **EINE Sache und macht sie gut.**
 
 ---
 
-## 💡 Dein Fokus JETZT:
+## 💡 Dein Fokus JETZT
 
 1. Starte mit Mercury 0 (Animation)
 2. Mach es fertig

@@ -12,7 +12,7 @@ var states: Dictionary = {}
 # Build a dictionary of all available states and share it
 func init(parent: Player) -> void:
     # First pass: collect all states (including nested ones)
-    _collect_states(self )
+    _collect_states(self)
 
     # Second pass: initialize states with parent and states dict
     for state_name in states:
@@ -48,8 +48,8 @@ func change_state(new_state: State) -> void:
     current_state = new_state
     current_state.enter()
 
- # Pass through functions for the player to call on the current state
- # handling state changes as needed
+# Pass through functions for the player to call on the current state,
+# handling state changes as needed.
 
 func process_physics(delta: float) -> void:
     var new_state = current_state.process_physics(delta)

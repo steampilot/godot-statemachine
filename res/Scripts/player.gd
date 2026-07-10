@@ -3,22 +3,22 @@ extends CharacterBody2D
 
 @export var max_health: int = 100
 
-## Jump Release Gravity Multiplikator
-## erhöhte Fallgeschwindigkeit wenn Jump-Button losgelassen wird
-## Ermöglicht präzise Jump-Stomp-Attacken (höher = schnellerer Fall)
+## Jump release gravity multiplier.
+## Increases falling speed after releasing the jump button.
+## Enables precise jump-stomp attacks. Higher values mean faster falling.
 @export var jump_release_gravity_multiplier: float = 3.0
 @export var max_speed: float = 150.0
-## Acceleration als Multiplikator der max_speed (6.0 = erreicht max_speed in 1/6 Sekunde)
+## Acceleration as a multiplier of max_speed.
 @export var acceleration: float = 6.0
-## Deceleration als Multiplikator der max_speed
+## Deceleration as a multiplier of max_speed.
 @export var deceleration: float = 4.5
-## Turn speed Multiplikator für schnellere Richtungswechsel
+## Turn speed multiplier for faster direction changes.
 @export var turn_speed: float = 1.5
-## Air control Multiplikator - wie viel Kontrolle in der Luft (0.0-1.0)
+## Air control multiplier. 0.0 means no air control, 1.0 means full control.
 @export var air_control: float = 0.65
-## Jump height in Pixeln - maximale Sprunghöhe wenn Button gehalten wird
+## Maximum jump height in pixels when the jump button is held.
 @export var jump_height: float = 80.0
-## Coyote time - Zeit nach Verlassen der Plattform, in der noch gesprungen werden kann (Sekunden)
+## Time after leaving a platform where jumping is still allowed, in seconds.
 @export var coyote_time: float = 0.15
 ## Climb speed as multiplier of max_speed for ladder movement
 @export var climb_speed: float = 0.8
@@ -44,7 +44,7 @@ var on_ladder: bool = false
 @onready var slide_sensor: RayCast2D = %SlideSensor
 
 func _ready() -> void:
-    state_machine.init(self )
+    state_machine.init(self)
 
     # Connect LadderDetector signals to track ladder overlap
     if ladder_detector:
@@ -110,12 +110,12 @@ func receive_damage(amount: int) -> void:
     if is_invincible:
         return
 
-    print("%s received %d damage!" % [ self.name, amount])
+    print("%s received %d damage!" % [self.name, amount])
     health -= amount
-    print("%s Is now at health: %d of %d" % [ self.name, health, max_health])
+    print("%s Is now at health: %d of %d" % [self.name, health, max_health])
 
     if health <= 0:
-        print("%s has been defeated!" % [ self.name])
+        print("%s has been defeated!" % [self.name])
         # Trigger dying state - NEVER queue_free!
         if state_machine and state_machine.states.has("dying"):
             state_machine.change_state(state_machine.states.get("dying"))

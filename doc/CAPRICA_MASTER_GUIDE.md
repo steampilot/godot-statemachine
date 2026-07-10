@@ -55,11 +55,13 @@ B-Button                = Angriff (ATTACK Intent)
 ### Gameplay Loop
 
 #### 1. **Exploration Phase**
+
 - Bewege Caprica durch Level
 - Sammle Coins & Kassetten (Story-Fragmente)
 - Finde Türen / Portale zur nächsten Area
 
 #### 2. **Combat Arena Phase**
+
 - Musik startet (Welle 1: Drums+Bass)
 - Enemies spawnen progressiv
 - **Intent-basierter Combat:**
@@ -69,18 +71,21 @@ B-Button                = Angriff (ATTACK Intent)
   - **Beat-Timing Bonus:** +50% Schaden wenn auf Beat getroffen
 
 #### 3. **Combo-System**
+
 - Kick → Jump → Stomp-Combo-Chain möglich
 - **Soft-Docking:** Spieler "dockt" an Feind an (Nähe-Mechanik, nicht hart)
 - Knockback erzeugt Knockback-Leverage (GGC-Stil): nutze Impuls um weitre Enemies zu treffen
 - Welle endet wenn alle Enemies besiegt
 
 #### 4. **Boss-Battle Phase**
+
 - Finale Welle mit Boss
 - Song erreicht Crescendo (alle Instrumente)
 - Beat-Timing wird kritischer
 - Victory ermöglicht: Eintritt in Home Studio
 
 #### 5. **Home Recording Studio Phase** (Post-Boss)
+
 - Spieler arrangiert **Song-Samples** der besiegten Bosses
 - Grid-basiertes Interface (ähnlich Music Maker / Garageband)
 - Zielsetzung: **"Mama, I made music!"** – Empowerment durch Kreativität
@@ -89,6 +94,7 @@ B-Button                = Angriff (ATTACK Intent)
 ### Movement System
 
 **5-Phase Polish Roadmap** (vor Combat):
+
 1. Basis-Gravity & Platform-Jump
 2. Double-Jump hinzufügen
 3. Wall-Grab & Wall-Slide
@@ -123,22 +129,26 @@ B-Button                = Angriff (ATTACK Intent)
 Das Spiel vermittelt mehrschichtige Botschaften:
 
 ### 1. **Künstlerische Empowerment**
+
 - Caprica ist nicht einfach eine Kriegerin – sie ist eine **Musikerin**
 - Sie kämpft mit ihrer eigenen Kraft (ihre Musik), nicht mit fremder Waffe
 - Post-Game: **Spieler wird selbst Creator** (Home Studio) → "Ich habe Musik gemacht"
 
 ### 2. **Musik als Resistenz**
+
 - SLOB Zombies sind "Musik-infiziert" → verdrehte Version musikalischer Kraft
 - Caprica kämpft nicht gegen Musik, sondern gegen deren **Missbrauch**
 - Ihr Song besiegt verdorbene Songs
 - **Metapher:** Künstler vs. Zensur / Kreativität vs. Kontrolle
 
 ### 3. **Schnittstellenlosigkeit der Musik**
+
 - Musik durchdringt alles: Combat, Story, Level-Design, Worldbuilding, Empowerment
 - Nicht Musik *im* Spiel, sondern Musik *als* Spiel
 - Spieler erlebt Musik nicht als Zuschauer, sondern als **aktiver Partizipant**
 
 ### 4. **Heimkehr & Familie**
+
 - Caprica will **nach Hause** (nicht "die Welt retten")
 - Home Studio-Ending: Sie zeigt ihrer Mama "Ich habe Musik gemacht"
 - Intimität statt Apokalypse-Szenario
@@ -148,27 +158,27 @@ Das Spiel vermittelt mehrschichtige Botschaften:
 
 ---
 
-## 🎨 ANIMATION ARCHITECTURE: Paperdoll-System
+## 🎨 ANIMATION ARCHITECTURE: PixelLab-AI-Sprite-Pipeline
 
-**Wichtige Design-Entscheidung:** Weg von klassischem Animated Sprite Sheet, hin zu **Bone2D Paperdoll Animation**.
+**Aktuelle Design-Entscheidung:** Weg von Paperdoll/Bone2D als aktiver Zielarchitektur, hin zu **PixelLab-AI-generierten Sprite-Animationen**.
 
 ### Warum?
 
-✅ **Vorteile:**
-- **Reusable Rigs:** Ein Animations-Rig für Caprica, Zombies, NPCs → Code-Reuse
-- **Asset-Effizient:** Body-Parts sind einzelne PNG-Dateien (80% weniger Memory)
-- **Künstler-freundlich:** Keine perfekte Pixel-Art-Animation nötig, nur saubere Grafiken
-- **Flexibel:** Equipment/Skins ohne neue Animationen
-- **Godot-native:** Skeleton2D + Bone2D sind eingebaut, keine Plugins nötig
+**Vorteile:**
+
+- **Schneller sichtbarer Fortschritt:** Caprica, Gegner und Combat-Animationen können direkt als Frames/Sprite-Sheets getestet werden.
+- **Passt zum aktiven Projektstand:** `player.tscn` nutzt bereits Sprite-basierte Animationen.
+- **Weniger technischer Vorlauf:** Kein Rigging, keine Bone-Hierarchie, keine zusätzliche Animationsebene vor der spielbaren Demo.
+- **Besser für Mercury:** Erst die spielbare Slice stabilisieren, danach über komplexere Animationstechnik nachdenken.
 
 ### Wie funktioniert es?
 
-1. **Assets:** Caprica wird aus einzelnen PNG-Teilen zusammengesetzt (Head, Torso, Arme, Beine)
-2. **Bones:** Godot Skeleton2D mit Bone-Hierarchie (wie Marionette)
-3. **Animation:** Curves bestimmen Bone-Rotation über Zeit
-4. **Reuse:** Gleicher Rig mit anderen Body-Parts = neuer Character
+1. **Generieren:** Animationen mit PixelLab AI erzeugen.
+2. **Importieren:** Frames oder Sprite-Sheets unter `res/Assets/Characters/` beziehungsweise `res/Assets/Sprites/` ablegen.
+3. **Integrieren:** Animationen in Godot über `AnimatedSprite2D` und SpriteFrames einbinden.
+4. **Benennen:** Animationsnamen zentral halten, damit States nur `sprite.play(animation_name)` auslösen müssen.
 
-→ **Siehe:** [PAPERDOLL_ANIMATION.md](PAPERDOLL_ANIMATION.md)
+→ **Siehe:** [ANIMATION_PIPELINE.md](ANIMATION_PIPELINE.md)
 
 ---
 
@@ -188,6 +198,7 @@ Das Spiel vermittelt mehrschichtige Botschaften:
 ### Audio Design Philosophy
 
 **Rhythm vs QTE (Quick-Time-Event):**
+
 - ❌ QTE: Spiel überrascht Spieler → Panik, Reactive
 - ✅ Rhythm: Spieler *antizipiert* Beats → Flow-State, Proactive
 
@@ -202,14 +213,17 @@ Der Spieler hört den Beat kommen und bereitet sich vor. Das ist psychologisch b
 Das Projekt ist in **4 Missions-Phasen + 1 Foundation Phase** unterteilt, jede mit klaren Learning-Zielen:
 
 ### **Mercury 0 (Woche 1, Foundation)**
-**Paperdoll Animation Fundamentals** – Bevor wir Game-Logic bauen, müssen wir verstehen wie Godot Bone2D Animation funktioniert.
 
-→ **Siehe:** [ARTEMIS_MISSIONS.md](ARTEMIS_MISSIONS.md#mercury-0-paperdoll-animation-foundation), [PAPERDOLL_ANIMATION.md](PAPERDOLL_ANIMATION.md)
+**Sprite Animation Foundation** – Bevor wir Combat ausbauen, müssen die PixelLab-AI-Sprites sauber in Godot spielbar sein.
+
+→ **Siehe:** [ANIMATION_PIPELINE.md](ANIMATION_PIPELINE.md)
 
 ### 🔵 **Mercury Mission** (Woche 1-3)
+
 *Fundamentals: Core Systems Basics*
 
 **Mercury 1-6:**
+
 1. **Beat Detection & Audio-Bus Setup**
 2. **Intent Emitter Foundation**
 3. **First Enemy (Basic SLOB Zombie)**
@@ -224,9 +238,11 @@ Das Projekt ist in **4 Missions-Phasen + 1 Foundation Phase** unterteilt, jede m
 ---
 
 ### 🟢 **Gemini Mission** (Woche 4-7)
+
 *Integration: Systeme verbinden & verfeinern*
 
 **Gemini 1-6:**
+
 1. Home Studio UI Prototype
 2. Sample Arrangement System
 3. Multiple Enemy Types & Behaviors
@@ -239,9 +255,11 @@ Das Projekt ist in **4 Missions-Phasen + 1 Foundation Phase** unterteilt, jede m
 ---
 
 ### 🟡 **Apollo Mission** (Woche 8-10)
+
 *Production: Vollständiges Game mit Polish*
 
 **Apollo 1-5:**
+
 1. Story Integration (Cassette Collection, Dialogue)
 2. Visual Polish (Animations, Effects, Screen Transitions)
 3. Boss Variety & Escalation
@@ -253,9 +271,11 @@ Das Projekt ist in **4 Missions-Phasen + 1 Foundation Phase** unterteilt, jede m
 ---
 
 ### 🔴 **Artemis Mission** (Parallel mit Apollo, Woche 8-10)
+
 *Expansion: Home Studio als Creative Experience*
 
 **Artemis 1-3:**
+
 1. Advanced Sample Mixing (Multiple Tracks, Effects)
 2. Community Features (Share Arrangements?, Leaderboards?)
 3. Extended Music Selection & Boss-Sample Library
@@ -267,6 +287,7 @@ Das Projekt ist in **4 Missions-Phasen + 1 Foundation Phase** unterteilt, jede m
 ### Technische Architektur
 
 **Kern-Patterns:**
+
 - **Intent-Based Input System:** Input Decoupling (B-Button → ATTACK Intent → Auto-Dash + Hit-Registration)
 - **Component-Based Architecture:** HealthComponent, VelocityComponent, PhysicsComponent, DeathComponent, KillZone
 - **Beat-Synchronized Systems:** AudioBus Analysis → Beat Detection → Game Events
